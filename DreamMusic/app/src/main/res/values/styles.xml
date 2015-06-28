@@ -26,5 +26,25 @@
         <item name="android:drawablePadding">@dimen/d_text_padding</item>
         <item name="android:background">@drawable/slidemenu_item_selector</item>
     </style>
+    <style name="setting_item_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/color_white</item>
+    </style>
+
+    <style name="split_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/color_split_line</item>
+    </style>
+
+    <style name="array_right">
+        <item name="android:src">@drawable/ic_arrow_toward_right</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/activity_vertical_margin</item>
+    </style>
 
 </resources>

@@ -8,11 +8,10 @@
         android:id="@+id/ib_top_back"
         android:layout_width="@dimen/d_top_height"
         android:layout_height="@dimen/d_top_height"
-        android:src="@drawable/ic_top_logo"
+        android:src="@drawable/ic_top_back"
         android:background="@drawable/top_btn_selector"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:visibility="gone"
         />
     <ImageButton
         android:id="@+id/ib_top_logo_left"
@@ -22,6 +21,7 @@
         android:background="@drawable/top_btn_selector"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/tv_top_title"

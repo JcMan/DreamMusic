@@ -45,6 +45,7 @@
         style="@style/SplitLine"
         />
     <TextView
+        android:id="@+id/tv_set_sleep_time"
         style="@style/slidemenu_item"
         android:text="睡眠"
         android:drawableLeft="@drawable/icon_sleep_mode"
@@ -53,6 +54,7 @@
         style="@style/SplitLine"
         />
     <TextView
+        android:id="@+id/tv_setting"
         style="@style/slidemenu_item"
         android:text="设置"
         android:drawableLeft="@drawable/icon_preferences_dark"
@@ -61,6 +63,7 @@
         style="@style/SplitLine"
         />
     <TextView
+        android:id="@+id/tv_exit"
         style="@style/slidemenu_item"
         android:text="退出"
         android:drawableLeft="@drawable/icon_exit"

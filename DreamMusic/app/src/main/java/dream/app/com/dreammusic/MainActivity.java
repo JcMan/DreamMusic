@@ -24,6 +24,7 @@ import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.ui.activity.BaseActivity;
+import dream.app.com.dreammusic.ui.activity.SettingActivity;
 import dream.app.com.dreammusic.ui.view.CircleView;
 import dream.app.com.dreammusic.ui.view.SlideMenu;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
@@ -34,7 +35,7 @@ import static dream.app.com.dreammusic.entry.UserEntry.USERNAME;
 public class MainActivity extends BaseActivity implements Handler.Callback,FragmentMenuLogin.LoginListener{
 
     private SlideMenu mSlideMenu;
-    private TextView mSearchMusic,mChangeMainBg;
+    private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit;
     private Handler mHandler;
     private android.app.Fragment mFragment;
 
@@ -47,6 +48,24 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
         initListener();
         mHandler = new Handler(this);
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        updateLoginView();
+    }
+
+    /**
+     * 更新登录界面，如果退出账号
+     */
+    private void updateLoginView() {
+        SharedPreferences preferences = SharedPreferencesUtil.getSharedPreferences(ApplicationConfig.USER);
+        boolean login = preferences.getBoolean(UserEntry.LOGIN,false);
+        if(!login){
+            mFragment = new FragmentMenuLogin();
+            getFragmentManager().beginTransaction().replace(R.id.fr_login_layout,mFragment).commit();
+        }
     }
 
     /**
@@ -63,6 +82,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
         mSlideMenu = (SlideMenu) findViewById(R.id.slidemenu);
         mSearchMusic = (TextView) findViewById(R.id.tv_search_music);
         mChangeMainBg = (TextView) findViewById(R.id.tv_change_mainbg);
+        mSetting = (TextView) findViewById(R.id.tv_setting);
+        mSleepTime = (TextView) findViewById(R.id.tv_set_sleep_time);
+        mExit = (TextView) findViewById(R.id.tv_exit);
         setTopBackBtnGone();
         setTopLeftLogoVisible();
         initLoginView();
@@ -90,6 +112,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
         mSlideMenu.setOnClickListener(this);
         mSearchMusic.setOnClickListener(this);
         mChangeMainBg.setOnClickListener(this);
+        mSleepTime.setOnClickListener(this);
+        mSetting.setOnClickListener(this);
+        mExit.setOnClickListener(this);
     }
     @Override
     protected void clickOnLeftLogo(){
@@ -106,6 +131,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()){
+            case R.id.tv_setting:
+                startNewActivity(SettingActivity.class);
+                break;
             default:
                 break;
         }

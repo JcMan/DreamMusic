@@ -20,6 +20,8 @@
             android:name="UMENG_APPKEY"
             android:value="556302d167e58ec059004c20" />
 
+        <activity android:name=".ui.activity.SettingActivity"></activity>
+
         <activity
             android:name="com.umeng.socialize.view.ShareActivity"
             android:configChanges="orientation|keyboard"

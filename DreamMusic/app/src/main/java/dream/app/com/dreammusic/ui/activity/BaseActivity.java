@@ -1,6 +1,7 @@
 package dream.app.com.dreammusic.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -85,6 +86,10 @@ public class BaseActivity extends Activity implements View.OnClickListener{
      */
     protected void clickOnLeftLogo(){
 
+    }
+
+    protected void startNewActivity(Class pclass){
+        startActivity(new Intent(this,pclass));
     }
 
     public void showMessage(String msg){
