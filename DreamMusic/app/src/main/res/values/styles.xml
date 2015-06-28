@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="ImageButton_Normal">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <style name="SplitLine">
+        <item name="android:background">@drawable/ic_sliding_menu_line</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+    <style name="slidemenu_item">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_sss</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:paddingTop">@dimen/d_slidemenu_item_padding</item>
+        <item name="android:paddingBottom">@dimen/d_slidemenu_item_padding</item>
+        <item name="android:paddingLeft">@dimen/d_login_btn_margin</item>
+        <item name="android:drawablePadding">@dimen/d_text_padding</item>
+        <item name="android:background">@drawable/slidemenu_item_selector</item>
+    </style>
+
+</resources>

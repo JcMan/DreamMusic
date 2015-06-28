@@ -1,0 +1,18 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="d_top_height">50dp</dimen>
+    <dimen name="d_slidemenu_width">220dp</dimen>
+    <dimen name="d_content_login_height">100dp</dimen>
+    <dimen name="d_login_btn_margin">20dp</dimen>
+    <dimen name="d_text_padding">10dp</dimen>
+    <dimen name="d_slidemenu_item_padding">12dp</dimen>
+
+    <dimen name="text_size_s">15sp</dimen>
+    <dimen name="text_size_ss">16sp</dimen>
+    <dimen name="text_size_sss">17sp</dimen>
+    <dimen name="text_size_ssss">18sp</dimen>
+    <dimen name="text_size_4s">19sp</dimen>
+    <dimen name="text_size_5s">20sp</dimen>
+</resources>

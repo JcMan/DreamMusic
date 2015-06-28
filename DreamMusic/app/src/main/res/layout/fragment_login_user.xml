@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:jc="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/d_slidemenu_width"
+    android:layout_height="@dimen/d_content_login_height"
+    android:background="@color/color_slidemenu_bg">
+    <dream.app.com.dreammusic.ui.view.CircleView
+        android:id="@+id/circle_headimage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/boy"
+        android:scaleType="fitXY"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/d_login_btn_margin"
+        >
+        </dream.app.com.dreammusic.ui.view.CircleView>
+    <TextView
+        android:id="@+id/tv_username"
+        style="@style/slidemenu_item"
+        android:layout_toRightOf="@id/circle_headimage"
+        android:text="飞梦音乐"
+        android:layout_centerVertical="true"
+
+        />
+
+</RelativeLayout>

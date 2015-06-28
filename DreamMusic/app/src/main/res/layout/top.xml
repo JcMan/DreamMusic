@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/d_top_height"
+    android:background="@color/color_top_bg"
+    >
+    <ImageButton
+        android:id="@+id/ib_top_back"
+        android:layout_width="@dimen/d_top_height"
+        android:layout_height="@dimen/d_top_height"
+        android:src="@drawable/ic_top_logo"
+        android:background="@drawable/top_btn_selector"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
+        />
+    <ImageButton
+        android:id="@+id/ib_top_logo_left"
+        android:layout_width="@dimen/d_top_height"
+        android:layout_height="@dimen/d_top_height"
+        android:src="@drawable/ic_top_logo"
+        android:background="@drawable/top_btn_selector"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        />
+    <TextView
+        android:id="@+id/tv_top_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_white"
+        android:text="飞梦音乐"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/text_size_ssss"
+        />
+
+
+</RelativeLayout>
