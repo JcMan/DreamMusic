@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
         super.onClick(v);
         switch (v.getId()){
             case R.id.tv_setting:
-                startNewActivity(SettingActivity.class);
+                startNewActivity(SettingActivity.class,R.anim.base_slide_right_in,R.anim.base_slide_remain);
                 break;
             default:
                 break;

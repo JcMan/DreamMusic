@@ -4,14 +4,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 
 /**
- * Created by Administrator on 2015/6/28.
+ * Created by JcMan on 2015/6/28.
  */
 public class SettingActivity extends BaseActivity{
 
@@ -28,6 +27,7 @@ public class SettingActivity extends BaseActivity{
     @Override
     public void initView() {
         super.initView();
+        setTitle("设置");
         mExitLayout = findViewById(R.id.view_setting_exit);
         mExitBtn = (Button) findViewById(R.id.btn_setting_exit);
     }
@@ -67,5 +67,11 @@ public class SettingActivity extends BaseActivity{
                 logout();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.base_slide_remain,R.anim.base_slide_right_out);
     }
 }

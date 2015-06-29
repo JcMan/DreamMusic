@@ -15,9 +15,9 @@
                 android:layout_marginTop="@dimen/d_text_padding"
                 style="@style/setting_item_layout"
                 >
-                <TextView
+                <View
                    style="@style/split_line"
-                    android:layout_alignParentTop="true"
+                   android:layout_alignParentTop="true"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -28,23 +28,23 @@
                     android:layout_marginLeft="@dimen/activity_vertical_margin"
                     android:text="摇一摇切歌"
                     />
-                <ImageView
-                    style="@style/array_right"
+                <dream.app.com.dreammusic.ui.view.SwitchButton
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
                     />
 
-                <TextView
+
+                <View
                     style="@style/split_line"
                     android:layout_alignParentBottom="true"
                     />
             </RelativeLayout>
             <RelativeLayout
-                android:layout_marginTop="5dp"
                 style="@style/setting_item_layout"
                 >
-                <TextView
-                    style="@style/split_line"
-                    android:layout_alignParentTop="true"
-                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,13 +63,8 @@
                     />
             </RelativeLayout>
             <RelativeLayout
-                android:layout_marginTop="5dp"
                 style="@style/setting_item_layout"
                 >
-                <TextView
-                    style="@style/split_line"
-                    android:layout_alignParentTop="true"
-                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,13 +84,8 @@
                     />
             </RelativeLayout>
             <RelativeLayout
-                android:layout_marginTop="5dp"
                 style="@style/setting_item_layout"
                 >
-                <TextView
-                    style="@style/split_line"
-                    android:layout_alignParentTop="true"
-                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -109,7 +99,7 @@
                     style="@style/array_right"
                     />
 
-                <TextView
+                <View
                     style="@style/split_line"
                     android:layout_alignParentBottom="true"
                     />
@@ -119,7 +109,7 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-                <TextView
+                <View
                     android:layout_marginTop="@dimen/activity_vertical_margin"
                     style="@style/split_line"
                     />
@@ -130,7 +120,7 @@
                     android:text="退出当前账号"
                     style="?android:attr/actionButtonStyle"
                     />
-                <TextView
+                <View
                     style="@style/split_line"
                     />
 

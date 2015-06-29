@@ -88,6 +88,21 @@ public class BaseActivity extends Activity implements View.OnClickListener{
 
     }
 
+    /**
+     * 打开新的Activity，可以设置打开动画
+     * @param pclass
+     * @param inStyle 新的Activity进入的动画
+     * @param outStyle 旧Activity出去的动画
+     */
+    protected void startNewActivity(Class pclass,int inStyle,int outStyle){
+        startActivity(new Intent(this,pclass));
+        overridePendingTransition(inStyle,outStyle);
+    }
+
+    /**
+     * 打开新的Activity，默认的打开方式
+     * @param pclass
+     */
     protected void startNewActivity(Class pclass){
         startActivity(new Intent(this,pclass));
     }

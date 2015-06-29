@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="@dimen/d_slidemenu_width"
         android:background="@drawable/ic_top_login_panel_background"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/d_top_height">
         <TextView
             style="@style/slidemenu_item"
             android:text="@string/app_name"

@@ -5,4 +5,6 @@ package dream.app.com.dreammusic.config;
  */
 public class ApplicationConfig {
     public static final String USER = "User";
+    public static final String SETTING = "Setting";
+
 }
