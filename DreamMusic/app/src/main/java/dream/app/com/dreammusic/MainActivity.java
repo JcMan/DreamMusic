@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.tool.logger.Logger;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -134,9 +135,19 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
             case R.id.tv_setting:
                 startNewActivity(SettingActivity.class,R.anim.base_slide_right_in,R.anim.base_slide_remain);
                 break;
+            case R.id.tv_exit:
+                exit();
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 退出程序
+     */
+    private void exit() {
+        finish();
     }
 
 
@@ -156,5 +167,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
     @Override
     public void loginFailure(JSONObject object) {
         showMessage("登录失败");
+    }
+
+   private static long back_pressed = 0;
+    @Override
+    public void onBackPressed() {
+        if(back_pressed+2000>System.currentTimeMillis())
+            super.onBackPressed();
+        else {
+            showMessage("再按一次退出飞梦音乐");
+            back_pressed = System.currentTimeMillis();
+        }
     }
 }
