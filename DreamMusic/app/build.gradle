@@ -27,4 +27,5 @@ dependencies {
     compile files('libs/logger.jar')
     compile files('libs/afinal_0.5.1_bin.jar')
     compile files('libs/library.jar')
+    compile files('libs/libjpush175.jar')
 }

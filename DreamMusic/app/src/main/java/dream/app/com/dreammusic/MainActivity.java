@@ -1,4 +1,8 @@
 package dream.app.com.dreammusic;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,10 +24,13 @@ import net.tsz.afinal.FinalBitmap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.jpush.android.api.InstrumentedActivity;
+import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
+import dream.app.com.dreammusic.jpush.ExampleUtil;
 import dream.app.com.dreammusic.ui.activity.BaseActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
 import dream.app.com.dreammusic.ui.view.CircleView;
@@ -33,10 +40,14 @@ import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
 import static dream.app.com.dreammusic.entry.UserEntry.USERNAME;
 
-public class MainActivity extends BaseActivity implements Handler.Callback,FragmentMenuLogin.LoginListener{
+public class MainActivity extends InstrumentedActivity implements Handler.Callback,
+        FragmentMenuLogin.LoginListener,View.OnClickListener{
+
+    public static boolean isForeground = false;
 
     private SlideMenu mSlideMenu;
     private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit;
+    private ImageButton mLeftLogo,mLeftBack;
     private Handler mHandler;
     private android.app.Fragment mFragment;
 
@@ -53,8 +64,21 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
 
     @Override
     protected void onResume(){
-        super.onResume();
+        isForeground = true;
         updateLoginView();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 
     /**
@@ -76,18 +100,20 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
+        initJPush();
+
     }
-    @Override
     public void initView(){
-        super.initView();
         mSlideMenu = (SlideMenu) findViewById(R.id.slidemenu);
         mSearchMusic = (TextView) findViewById(R.id.tv_search_music);
         mChangeMainBg = (TextView) findViewById(R.id.tv_change_mainbg);
         mSetting = (TextView) findViewById(R.id.tv_setting);
         mSleepTime = (TextView) findViewById(R.id.tv_set_sleep_time);
         mExit = (TextView) findViewById(R.id.tv_exit);
-        setTopBackBtnGone();
-        setTopLeftLogoVisible();
+        mLeftLogo = (ImageButton) findViewById(R.id.ib_top_logo_left);
+        mLeftBack  = (ImageButton) findViewById(R.id.ib_top_back);
+        mLeftBack.setVisibility(View.GONE);
+        mLeftLogo.setVisibility(View.VISIBLE);
         initLoginView();
     }
 
@@ -107,19 +133,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
         getFragmentManager().beginTransaction().add(R.id.fr_login_layout, mFragment).commit();
     }
 
-    @Override
     protected void initListener() {
-        super.initListener();
         mSlideMenu.setOnClickListener(this);
         mSearchMusic.setOnClickListener(this);
         mChangeMainBg.setOnClickListener(this);
         mSleepTime.setOnClickListener(this);
         mSetting.setOnClickListener(this);
         mExit.setOnClickListener(this);
+        mLeftLogo.setOnClickListener(this);
     }
-    @Override
     protected void clickOnLeftLogo(){
-        super.clickOnLeftLogo();
         mSlideMenu.toggle();
     }
     @Override
@@ -130,13 +153,15 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
         switch (v.getId()){
             case R.id.tv_setting:
                 startNewActivity(SettingActivity.class,R.anim.base_slide_right_in,R.anim.base_slide_remain);
                 break;
             case R.id.tv_exit:
                 exit();
+                break;
+            case R.id.ib_top_logo_left:
+                clickOnLeftLogo();
                 break;
             default:
                 break;
@@ -179,4 +204,54 @@ public class MainActivity extends BaseActivity implements Handler.Callback,Fragm
             back_pressed = System.currentTimeMillis();
         }
     }
+
+    private void showMessage(String msg){
+        Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
+    }
+
+    protected void startNewActivity(Class pclass,int inStyle,int outStyle){
+        startActivity(new Intent(this,pclass));
+        overridePendingTransition(inStyle,outStyle);
+    }
+
+    private void initJPush(){
+        JPushInterface.init(getApplicationContext());
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
+        registerMessageReceiver();
+    }
+
+    /**
+     * 得到从JPush得到的推送消息
+     */
+    private MessageReceiver mMessageReceiver;
+    public static final String MESSAGE_RECEIVED_ACTION = "dream.app.com.dreammusic.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_EXTRAS = "extras";
+
+    public void registerMessageReceiver(){
+        mMessageReceiver = new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        filter.addAction(MESSAGE_RECEIVED_ACTION);
+        registerReceiver(mMessageReceiver, filter);
+    }
+
+    public class MessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent){
+            if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())){
+                String messge = intent.getStringExtra(KEY_MESSAGE);
+                String extras = intent.getStringExtra(KEY_EXTRAS);
+                StringBuilder showMsg = new StringBuilder();
+                showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+                if (!ExampleUtil.isEmpty(extras)) {
+                    showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+                }
+            }
+        }
+    }
 }
+

@@ -29,14 +29,28 @@
                     android:text="摇一摇切歌"
                     />
                 <dream.app.com.dreammusic.ui.view.SwitchButton
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
+                    style="@style/setting_switchbutton"
                     />
-
-
+                <View
+                    style="@style/split_line"
+                    android:layout_alignParentBottom="true"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                style="@style/setting_item_layout"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_sss"
+                    android:textColor="@color/color_black"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_vertical_margin"
+                    android:text="接收推送消息"
+                    />
+                <dream.app.com.dreammusic.ui.view.SwitchButton
+                    style="@style/setting_switchbutton"
+                    />
                 <View
                     style="@style/split_line"
                     android:layout_alignParentBottom="true"
@@ -129,6 +143,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>
