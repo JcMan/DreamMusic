@@ -28,7 +28,7 @@ import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
-        FragmentMenuLogin.LoginListener,View.OnClickListener{
+        FragmentMenuLogin.LoginListener,View.OnClickListener,FragmentMain.FragmentClickListener{
 
     public static boolean isForeground = false;
 
@@ -244,6 +244,15 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         filter.addAction(MESSAGE_RECEIVED_ACTION);
         registerReceiver(mMessageReceiver, filter);
+    }
+
+    /**
+     * 来自FragmentClickListener的接口方法
+     * @param id
+     */
+    @Override
+    public void click(int id) {
+
     }
 
     public class MessageReceiver extends BroadcastReceiver {

@@ -69,6 +69,7 @@
         <item name="android:background">@color/color_0000</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_marginTop">10dp</item>
+        <item name="android:clickable">false</item>
     </style>
     <style name="textview_main_item">
         <item name="android:layout_width">wrap_content</item>
