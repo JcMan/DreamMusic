@@ -20,7 +20,7 @@ import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
 
 /**
- * Created by Administrator on 2015/6/29.
+ * Created by JcMan on 2015/6/29.
  */
 public class WelcomeActivity extends BaseActivity implements Handler.Callback{
 

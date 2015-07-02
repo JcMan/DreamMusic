@@ -38,6 +38,7 @@
         android:theme="@style/AppTheme" >
         <!--android:name="dream.app.com.dreammusic.jpush.JPushApplication"-->
         <activity
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:name=".MainActivity"
             android:label="@string/app_name" >
 
