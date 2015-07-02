@@ -505,9 +505,11 @@ public class SlideMenu extends FrameLayout {
 
             float diff = x - mHistoricalX;
 
-            if((mDirection*diff > 50 && mMode == MODE_READY) || (mDirection*diff < -50 && mMode == MODE_FINISHED)) {
-                mHistoricalX = (int) x;
 
+            //(mDirection*diff > 50 && mMode == MODE_READY) ||
+            /*修改之后只能向左滑动而不能向右滑动*/
+            if( (mDirection*diff < -50 && mMode == MODE_FINISHED)) {
+                mHistoricalX = (int) x;
                 initSlideMode();
             } else if(mMode == MODE_SLIDE) {
                 mOffset += diff;

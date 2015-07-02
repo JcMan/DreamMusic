@@ -8,6 +8,9 @@
     <dimen name="d_login_btn_margin">20dp</dimen>
     <dimen name="d_text_padding">10dp</dimen>
     <dimen name="d_slidemenu_item_padding">12dp</dimen>
+    <dimen name="d_bottom_height">65dp</dimen>
+    <dimen name="d_bottom_icon">55dp</dimen>
+    <dimen name="d_bottom_imagebutton">45dp</dimen>
 
     <dimen name="text_size_s">15sp</dimen>
     <dimen name="text_size_ss">16sp</dimen>
