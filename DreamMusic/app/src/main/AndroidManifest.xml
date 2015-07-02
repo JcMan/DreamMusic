@@ -48,6 +48,7 @@
             android:value="556302d167e58ec059004c20" />
         <!--自定义Activity-->
         <activity android:name=".ui.activity.SettingActivity"></activity>
+        <activity android:name=".ui.activity.CommonActivity"></activity>
         <activity android:name=".ui.activity.WelcomeActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

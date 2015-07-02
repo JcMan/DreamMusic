@@ -12,6 +12,7 @@
     <dimen name="d_bottom_icon">55dp</dimen>
     <dimen name="d_bottom_imagebutton">45dp</dimen>
     <dimen name="d_edit_height">40dp</dimen>
+    <dimen name="d_viewpagerindicator_height">45dp</dimen>
 
     <dimen name="text_size_s">15sp</dimen>
     <dimen name="text_size_ss">16sp</dimen>

@@ -23,7 +23,10 @@ import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
+import dream.app.com.dreammusic.ui.activity.CommonActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
+import dream.app.com.dreammusic.util.ActivityUtil;
+import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
@@ -222,6 +225,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         overridePendingTransition(inStyle,outStyle);
     }
 
+
     private void initJPush(){
         JPushInterface.init(getApplicationContext());
         JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
@@ -252,7 +256,19 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      */
     @Override
     public void click(int id) {
+        switch (id){
+            case R.id.view_music_store:
+                Intent intent  = new Intent();
+                intent.putExtra(ActivityUtil.TITLE,"乐库");
+                startNewActivityWithAnim(CommonActivity.class,intent);
+                break;
+        }
+    }
 
+    protected void startNewActivityWithAnim(Class pclass ,Intent intent){
+        intent.setClass(this,pclass);
+        startActivity(intent);
+        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     public class MessageReceiver extends BroadcastReceiver {

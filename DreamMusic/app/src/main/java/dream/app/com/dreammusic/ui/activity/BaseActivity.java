@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.util.AnimUtil;
 
 /**
  * Created by Administrator on 2015/6/26.
@@ -21,7 +22,6 @@ public class BaseActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
     @Override
     protected void onStart() {
@@ -97,6 +97,16 @@ public class BaseActivity extends Activity implements View.OnClickListener{
     protected void startNewActivity(Class pclass,int inStyle,int outStyle){
         startActivity(new Intent(this,pclass));
         overridePendingTransition(inStyle,outStyle);
+    }
+
+    protected void startNewActivityWithAnim(Class pclass){
+        startActivity(new Intent(this,pclass));
+        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+    }
+    protected void startNewActivityWithAnim(Class pclass ,Intent intent){
+        intent.setClass(this,pclass);
+        startActivity(intent);
+        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     /**
