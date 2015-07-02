@@ -28,6 +28,7 @@ import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.UserEntry;
+import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
@@ -115,6 +116,14 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mLeftBack.setVisibility(View.GONE);
         mLeftLogo.setVisibility(View.VISIBLE);
         initLoginView();
+        initMainView();
+    }
+
+    /**
+     * 初始化MainFragment
+     */
+    private void initMainView() {
+        getFragmentManager().beginTransaction().add(R.id.fragment_main,new FragmentMain()).commit();
     }
 
     /**

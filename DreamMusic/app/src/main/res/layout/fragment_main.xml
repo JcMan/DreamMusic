@@ -18,6 +18,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 >
                 <EditText
                     android:layout_width="0dp"
@@ -27,6 +29,7 @@
                     android:drawablePadding="5dp"
                     android:paddingLeft="10dp"
                     android:background="#70ffffff"
+                    android:hint="搜一搜"
                     android:singleLine="true"
                     android:textColor="@color/color_dark_gray"
                     />
@@ -76,10 +79,11 @@
                         android:layout_height="35dp"
                         android:background="#0000"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="20sp"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_diange_btn"
                         android:scaleType="fitXY"
+
                         />
                     <View
                         android:layout_width="fill_parent"
