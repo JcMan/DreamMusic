@@ -14,13 +14,13 @@
         android:layout_alignParentLeft="true"
         />
     <ImageButton
-        android:id="@+id/ib_top_logo_left"
+        android:id="@+id/ib_top_logo_right"
         android:layout_width="@dimen/d_top_height"
         android:layout_height="@dimen/d_top_height"
         android:src="@drawable/ic_top_logo"
         android:background="@drawable/top_btn_selector"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:visibility="gone"
         />
     <TextView

@@ -15,7 +15,7 @@ import dream.app.com.dreammusic.R;
  * Created by Administrator on 2015/6/26.
  */
 public class BaseActivity extends Activity implements View.OnClickListener{
-    private ImageButton mTopBack,mTopLeftLogo;
+    private ImageButton mTopBack,mTopRightLogo;
     private TextView mTopTitle;
 
     @Override
@@ -33,7 +33,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
      */
     protected void initListener() {
         mTopBack.setOnClickListener(this);
-        mTopLeftLogo.setOnClickListener(this);
+        mTopRightLogo.setOnClickListener(this);
     }
 
     /**
@@ -41,7 +41,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
      */
     public void initView(){
         mTopBack = (ImageButton) findViewById(R.id.ib_top_back);
-        mTopLeftLogo = (ImageButton) findViewById(R.id.ib_top_logo_left);
+        mTopRightLogo = (ImageButton) findViewById(R.id.ib_top_logo_right);
         mTopTitle = (TextView) findViewById(R.id.tv_top_title);
     }
 
@@ -55,15 +55,15 @@ public class BaseActivity extends Activity implements View.OnClickListener{
     /**
      * 设置左侧Logo按钮不可见
      */
-    protected void setTopLeftLogoGone(){
-        mTopLeftLogo.setVisibility(View.GONE);
+    protected void setTopRightLogoGone(){
+        mTopRightLogo.setVisibility(View.GONE);
     }
 
     /**
      * 设置左侧Logo按钮可见
      */
-    protected  void setTopLeftLogoVisible(){
-        mTopLeftLogo.setVisibility(View.VISIBLE);
+    protected  void setTopLeftRightVisible(){
+        mTopRightLogo.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -84,7 +84,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
     /**
      * 响应顶部Logo按钮的点击事件
      */
-    protected void clickOnLeftLogo(){
+    protected void clickOnRightLogo(){
 
     }
 
@@ -116,8 +116,8 @@ public class BaseActivity extends Activity implements View.OnClickListener{
             case R.id.ib_top_back:
                 clickOnBackBtn();
                 break;
-            case R.id.ib_top_logo_left:
-                clickOnLeftLogo();
+            case R.id.ib_top_logo_right:
+                clickOnRightLogo();
                 break;
             default:
                 break;
