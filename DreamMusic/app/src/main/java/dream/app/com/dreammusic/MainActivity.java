@@ -23,7 +23,7 @@ import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
-import dream.app.com.dreammusic.ui.activity.CommonActivity;
+import dream.app.com.dreammusic.ui.activity.MusicStoreActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
@@ -90,7 +90,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
-       initJPush();
+//        initJPush();
     }
     public void initView(){
         mSlideMenu = (DrawerLayout) findViewById(R.id.slidemenu);
@@ -260,7 +260,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             case R.id.view_music_store:
                 Intent intent  = new Intent();
                 intent.putExtra(ActivityUtil.TITLE,"乐库");
-                startNewActivityWithAnim(CommonActivity.class,intent);
+                startNewActivityWithAnim(MusicStoreActivity.class, intent);
                 break;
         }
     }

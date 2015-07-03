@@ -16,7 +16,7 @@ import dream.app.com.dreammusic.util.AnimUtil;
  * Created by Administrator on 2015/6/26.
  */
 public class BaseActivity extends Activity implements View.OnClickListener{
-    private ImageButton mTopBack,mTopRightLogo;
+    private ImageButton mTopBack,mTopRightLogo,mTopToggle;
     private TextView mTopTitle;
 
     @Override
@@ -34,6 +34,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
     protected void initListener() {
         mTopBack.setOnClickListener(this);
         mTopRightLogo.setOnClickListener(this);
+        mTopToggle.setOnClickListener(this);
     }
 
     /**
@@ -43,6 +44,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
         mTopBack = (ImageButton) findViewById(R.id.ib_top_back);
         mTopRightLogo = (ImageButton) findViewById(R.id.ib_top_logo_right);
         mTopTitle = (TextView) findViewById(R.id.tv_top_title);
+        mTopToggle = (ImageButton) findViewById(R.id.ib_top_toggle);
     }
 
     /**
@@ -64,6 +66,14 @@ public class BaseActivity extends Activity implements View.OnClickListener{
      */
     protected  void setTopLeftRightVisible(){
         mTopRightLogo.setVisibility(View.VISIBLE);
+    }
+
+    protected void setTopRightToggleVisible(){
+        mTopToggle.setVisibility(View.VISIBLE);
+    }
+
+    protected void setTopRightToggleGone(){
+        mTopToggle.setVisibility(View.GONE);
     }
 
     /**
@@ -109,6 +119,10 @@ public class BaseActivity extends Activity implements View.OnClickListener{
         overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
+    protected void clickOnToggle() {
+
+    }
+
     /**
      * 打开新的Activity，默认的打开方式
      * @param pclass
@@ -129,11 +143,16 @@ public class BaseActivity extends Activity implements View.OnClickListener{
             case R.id.ib_top_logo_right:
                 clickOnRightLogo();
                 break;
+            case R.id.ib_top_toggle:
+                clickOnToggle();
+                break;
             default:
                 break;
         }
 
     }
+
+
 
 
 }

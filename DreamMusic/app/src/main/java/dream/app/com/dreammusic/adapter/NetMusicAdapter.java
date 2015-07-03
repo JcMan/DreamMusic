@@ -1,4 +1,4 @@
-package dream.app.com.dreammusic;
+package dream.app.com.dreammusic.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.entry.NetMusic;
 
 /**
