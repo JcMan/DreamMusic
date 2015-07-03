@@ -54,24 +54,9 @@ public class FragmentNetNewMusic extends Fragment {
             @Override
             public void onSuccess(ResponseInfo<String> stringResponseInfo) {
                 mList = new ArrayList<NetMusicEntry>();
-                try {
-                    JSONObject object = new JSONObject(stringResponseInfo.result);
-                    JSONArray array = object.getJSONArray(NetMusicEntry.SONG_LIST);
-                    for(int i=0;i<array.length();i++){
-                        JSONObject obj = array.getJSONObject(i);
-                        NetMusicEntry entry = new NetMusicEntry();
-                        entry.setAuthor(obj.getString(NetMusicEntry.AUTHOR));
-                        entry.setTitle(obj.getString(NetMusicEntry.TITLE));
-                        entry.setPic_small(obj.getString(NetMusicEntry.PIC_SMALL));
-                        entry.setPic_big(obj.getString(NetMusicEntry.PIC_BIG));
-                        entry.setSong_id(obj.getString(NetMusicEntry.SONG_ID));
-                        mList.add(entry);
-                    }
-                    String[] types = {NetMusicEntry.PIC_SMALL,NetMusicEntry.TITLE,NetMusicEntry.AUTHOR};
-                    mNewMusicListView.setAdapter(new NetMusicAdapter(getActivity(),mList,types));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                NetMusicEntry.setNetMusicEntryList(stringResponseInfo,mList);
+                String[] types = {NetMusicEntry.PIC_SMALL,NetMusicEntry.TITLE,NetMusicEntry.AUTHOR};
+                mNewMusicListView.setAdapter(new NetMusicAdapter(getActivity(),mList,types));
             }
             @Override
             public void onFailure(HttpException e, String s) {
@@ -79,6 +64,8 @@ public class FragmentNetNewMusic extends Fragment {
             }
         });
     }
+
+
 
     private void initView(View view) {
         mNewMusicListView = (ListView) view.findViewById(R.id.listview_new_music);

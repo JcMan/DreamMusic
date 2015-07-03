@@ -16,7 +16,7 @@
         android:drawablePadding="5dp"
         />
     <ListView
-        android:id="@+id/listview_new_music"
+        android:id="@+id/listview_radio_music"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         />
