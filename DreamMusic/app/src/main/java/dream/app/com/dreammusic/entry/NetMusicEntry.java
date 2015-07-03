@@ -3,7 +3,7 @@ package dream.app.com.dreammusic.entry;
 /**
  * Created by Administrator on 2015/7/2.
  */
-public class NetMusic {
+public class NetMusicEntry {
     public static final String ARTIST_ID = "artist_id";
     public static final String AUTHOR = "author";
     public static final String ALBUM_ID = "album_id";
@@ -11,6 +11,9 @@ public class NetMusic {
     public static final String SONG_ID = "song_id";
     public static final String PIC_SMALL = "pic_small";
     public static final String PIC_BIG = "pic_big";
+    public static final String TITLE = "title";
+    public static final String SONG_LIST = "song_list";
+
 
     private String author;
     private String album_id;
@@ -18,7 +21,14 @@ public class NetMusic {
     private String song_id;
     private String pic_small;
     private String pic_big;
+    private String title;
 
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
     public void setArtist_id(String artist_id) {
         this.artist_id = artist_id;
     }
@@ -75,6 +85,27 @@ public class NetMusic {
 
     public void setPic_big(String pic_big) {
         this.pic_big = pic_big;
+    }
+
+    public String getString(String type){
+        String s = "";
+        if(type.equals(ARTIST_ID))
+            s = getArtist_id();
+        else if(type.equals(AUTHOR))
+            s = getAuthor();
+        else if(type.equals(ALBUM_ID))
+            s = getAlbum_id();
+        else if(type.equals(ALBUM_TITLE))
+            s = getAlbum_title();
+        else if(type.equals(SONG_ID))
+            s = getSong_id();
+        else if(type.equals(PIC_SMALL))
+            s = getPic_small();
+        else if(type.equals(PIC_BIG))
+            s = getPic_big();
+        else if(type.equals(TITLE))
+            s = getTitle();
+        return s;
     }
 
 

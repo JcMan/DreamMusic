@@ -82,25 +82,32 @@ public class MusicStoreActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         super.onClick(v);
+        int flag = 0;
         FragmentManager manager = getFragmentManager();
         switch (v.getId()){
             case R.id.view_menuitem_newmusic:
-                manager.beginTransaction().add(R.id.fr_music_store,new FragmentNetNewMusic()).commit();
+                flag = 1;
+                manager.beginTransaction().replace(R.id.fr_music_store,new FragmentNetNewMusic()).commit();
                 break;
             case R.id.view_menuitem_hotmusic:
-                manager.beginTransaction().add(R.id.fr_music_store,new FragmentNetHotMusic()).commit();
+                flag = 1;
+                manager.beginTransaction().replace(R.id.fr_music_store,new FragmentNetHotMusic()).commit();
                 break;
             case R.id.view_menuitem_ktvmusic:
-                manager.beginTransaction().add(R.id.fr_music_store, new FragmentNetKtvMusic()).commit();
+                flag = 1;
+                manager.beginTransaction().replace(R.id.fr_music_store, new FragmentNetKtvMusic()).commit();
                 break;
             case R.id.view_menuitem_singerlist:
-                manager.beginTransaction().add(R.id.fr_music_store,new FragmentNetSingerList()).commit();
+                flag = 1;
+                manager.beginTransaction().replace(R.id.fr_music_store,new FragmentNetSingerList()).commit();
                 break;
             case R.id.view_menuitem_radiolist:
-                manager.beginTransaction().add(R.id.fr_music_store, new FragmentNetRadioList()).commit();
+                flag = 1;
+                manager.beginTransaction().replace(R.id.fr_music_store, new FragmentNetRadioList()).commit();
                 break;
         }
-        toggleMenu();
+        if(flag==1)
+            toggleMenu();
     }
 
     @Override
