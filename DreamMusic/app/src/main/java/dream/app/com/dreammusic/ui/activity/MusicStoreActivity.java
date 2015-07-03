@@ -1,11 +1,18 @@
 package dream.app.com.dreammusic.ui.activity;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.fragment.FragmentNetHotMusic;
+import dream.app.com.dreammusic.fragment.FragmentNetKtvMusic;
+import dream.app.com.dreammusic.fragment.FragmentNetNewMusic;
+import dream.app.com.dreammusic.fragment.FragmentNetRadioList;
+import dream.app.com.dreammusic.fragment.FragmentNetSingerList;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 
@@ -24,6 +31,7 @@ public class MusicStoreActivity extends BaseActivity {
         initView();
         initListener();
         setTitle(gettitleFromIntent());
+        getFragmentManager().beginTransaction().add(R.id.fr_music_store,new FragmentNetNewMusic()).commit();
     }
 
     @Override
@@ -60,11 +68,39 @@ public class MusicStoreActivity extends BaseActivity {
     @Override
     protected void clickOnToggle() {
         super.clickOnToggle();
+        toggleMenu();
+    }
+
+    private void toggleMenu() {
         boolean isOpen = mLayout.isDrawerOpen(mMenuView);
         if (!isOpen)
             mLayout.openDrawer(mMenuView);
         else
             mLayout.closeDrawer(mMenuView);
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        FragmentManager manager = getFragmentManager();
+        switch (v.getId()){
+            case R.id.view_menuitem_newmusic:
+                manager.beginTransaction().add(R.id.fr_music_store,new FragmentNetNewMusic()).commit();
+                break;
+            case R.id.view_menuitem_hotmusic:
+                manager.beginTransaction().add(R.id.fr_music_store,new FragmentNetHotMusic()).commit();
+                break;
+            case R.id.view_menuitem_ktvmusic:
+                manager.beginTransaction().add(R.id.fr_music_store, new FragmentNetKtvMusic()).commit();
+                break;
+            case R.id.view_menuitem_singerlist:
+                manager.beginTransaction().add(R.id.fr_music_store,new FragmentNetSingerList()).commit();
+                break;
+            case R.id.view_menuitem_radiolist:
+                manager.beginTransaction().add(R.id.fr_music_store, new FragmentNetRadioList()).commit();
+                break;
+        }
+        toggleMenu();
     }
 
     @Override
