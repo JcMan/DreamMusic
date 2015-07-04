@@ -1,5 +1,6 @@
 package dream.app.com.dreammusic.entry;
 
+import com.app.tool.logger.Logger;
 import com.lidroid.xutils.http.ResponseInfo;
 
 import org.json.JSONArray;
@@ -25,14 +26,14 @@ public class NetMusicEntry {
     public static final String NAME = "name";
     public static final String CH_NAME = "ch_name";
     public static final String THUMB = "thumb";
+    public static final String TING_UID = "ting_uid";
+    public static final String AVATAR_MIDDLE = "avatar_middle";
+
 
 
 
     private String channellist;
     private String name;
-
-
-
     private String ch_name;
     private String thumb;
     private String author;
@@ -43,6 +44,28 @@ public class NetMusicEntry {
     private String pic_big;
     private String title;
     private String artist_id;
+
+    private String ting_uid;
+    private String avatar_middle;
+
+    public String getTing_uid() {
+        return ting_uid;
+    }
+
+    public void setTing_uid(String ting_uid) {
+        this.ting_uid = ting_uid;
+    }
+
+    public String getAvatar_middle() {
+        return avatar_middle;
+    }
+
+    public void setAvatar_middle(String avatar_middle) {
+        this.avatar_middle = avatar_middle;
+    }
+
+
+
 
     public String getTitle() {
         return title;
@@ -160,6 +183,10 @@ public class NetMusicEntry {
             s = getThumb();
         else if(type.equals(CH_NAME))
             s = getCh_name() ;
+        else if(type.equals(TING_UID))
+            s = getTing_uid();
+        else if(type.equals(AVATAR_MIDDLE))
+            s = getAvatar_middle();
         return s;
     }
     public static void setNetMusicEntryList(ResponseInfo<String> stringResponseInfo,List<NetMusicEntry> mList) {
@@ -208,6 +235,29 @@ public class NetMusicEntry {
                 }catch (Exception e){}
                 try {
                     entry.setCh_name(obj.getString(NetMusicEntry.CH_NAME));
+                }catch (Exception e){}
+                mList.add(entry);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setNetSingerList(ResponseInfo<String> info,List<NetMusicEntry> mList){
+        try {
+            JSONObject object = new JSONObject(info.result);
+            JSONArray array = object.getJSONArray("artist");
+            for(int i=0;i<array.length();i++){
+                JSONObject obj = array.getJSONObject(i);
+                NetMusicEntry entry = new NetMusicEntry();
+                try {
+                    entry.setName(obj.getString(NetMusicEntry.NAME));
+                }catch (Exception e){}
+                try {
+                    entry.setTing_uid(obj.getString(NetMusicEntry.TING_UID));
+                }catch (Exception e){}
+                try {
+                    entry.setAvatar_middle(obj.getString(NetMusicEntry.AVATAR_MIDDLE));
                 }catch (Exception e){}
                 mList.add(entry);
             }
