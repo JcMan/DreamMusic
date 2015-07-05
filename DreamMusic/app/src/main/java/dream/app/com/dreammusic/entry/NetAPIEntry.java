@@ -24,6 +24,11 @@ public class NetAPIEntry {
 
     private static final String SONGIDURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
             "from=qianqian&version=2.1.0&method=baidu.ting.song.getInfos&format=json&songid=JcMan&ts=1408284347323&e=JoN56kTXnnbEpd9MVczkYJCSx%2FE1mkLx%2BPMIkTcOEu4%3D&nw=2&ucf=1&res=1";
+    public static final String SINGERINFOURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
+            "from=qianqian&version=2.1.0&method=baidu.ting.artist.getinfo&format=json&tinguid=";
+
+    public static final String MUSICOFSINGER = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
+            "from=qianqian&version=2.1.0&method=baidu.ting.artist.getSongList&format=json?=2&tinguid=JcMan&offset=0&limits=100";
 
 
     public static String getNewMusicUrl(){
@@ -45,8 +50,14 @@ public class NetAPIEntry {
         return NETHITOMUSICURL;
     }
     public static String getUrlBySongId(String songId){
-        String url = SONGIDURL.replace("JcMan",songId);
-        return url;
+         return SONGIDURL.replace("JcMan",songId);
+    }
+    public static String getSingerInfoUrlByTing_uid(String ting_uid){
+        return SINGERINFOURL+ting_uid;
+    }
+
+    public static String getMusicOfSingerUrlByTingUid(String uid){
+        return MUSICOFSINGER.replace("JcMan",uid);
     }
 
 }

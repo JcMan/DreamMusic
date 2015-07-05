@@ -63,23 +63,29 @@ public class FragmentNetKtvMusic extends Fragment implements AdapterView.OnItemC
     @Override
     public void onResume() {
         super.onResume();
-        loadingDialog.show();
-        HttpUtils httpUtil = new HttpUtils();
-        httpUtil.send(HttpRequest.HttpMethod.GET, NetAPIEntry.getKtvMusicUrl(), new RequestCallBack<String>(){
+        updateListView();
+    }
 
-            @Override
-            public void onSuccess(ResponseInfo<String> stringResponseInfo) {
-                loadingDialog.cancel();
-                mList = new ArrayList<NetMusicEntry>();
-                NetMusicEntry.setNetMusicEntryList(stringResponseInfo,mList);
-                String[] types = {NetMusicEntry.PIC_SMALL,NetMusicEntry.TITLE,NetMusicEntry.AUTHOR};
-                mKtvMusicListView.setAdapter(new NetMusicAdapter(getActivity(),mList,types));
-            }
-            @Override
-            public void onFailure(HttpException e, String s) {
-                loadingDialog.cancel();
-            }
-        });
+    private void updateListView() {
+        if(mList==null||mList.size()<1){
+            loadingDialog.show();
+            HttpUtils httpUtil = new HttpUtils();
+            httpUtil.send(HttpRequest.HttpMethod.GET, NetAPIEntry.getKtvMusicUrl(), new RequestCallBack<String>(){
+
+                @Override
+                public void onSuccess(ResponseInfo<String> stringResponseInfo) {
+                    loadingDialog.cancel();
+                    mList = new ArrayList<NetMusicEntry>();
+                    NetMusicEntry.setNetMusicEntryList(stringResponseInfo,mList);
+                    String[] types = {NetMusicEntry.PIC_SMALL,NetMusicEntry.TITLE,NetMusicEntry.AUTHOR};
+                    mKtvMusicListView.setAdapter(new NetMusicAdapter(getActivity(),mList,types));
+                }
+                @Override
+                public void onFailure(HttpException e, String s) {
+                    loadingDialog.cancel();
+                }
+            });
+        }
     }
 
     @Override

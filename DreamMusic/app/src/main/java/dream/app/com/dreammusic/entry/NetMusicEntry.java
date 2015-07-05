@@ -7,12 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2015/7/2.
  */
-public class NetMusicEntry {
+public class NetMusicEntry implements Serializable{
     public static final String ARTIST_ID = "artist_id";
     public static final String AUTHOR = "author";
     public static final String ALBUM_ID = "album_id";
@@ -28,6 +29,7 @@ public class NetMusicEntry {
     public static final String THUMB = "thumb";
     public static final String TING_UID = "ting_uid";
     public static final String AVATAR_MIDDLE = "avatar_middle";
+    public static final String AVATAR_BIG = "avatar_big";
     public static final String FILE_LINK = "file_link";
 
 
@@ -47,7 +49,15 @@ public class NetMusicEntry {
     private String artist_id;
     private String ting_uid;
     private String avatar_middle;
+    private String avatar_big;
     private String file_link;
+    public String getAvatar_big() {
+        return avatar_big;
+    }
+
+    public void setAvatar_big(String avatar_big) {
+        this.avatar_big = avatar_big;
+    }
 
     public String getFile_link() {
         return file_link;
@@ -166,6 +176,28 @@ public class NetMusicEntry {
         this.pic_big = pic_big;
     }
 
+    @Override
+    public String toString() {
+        return "NetMusicEntry{" +
+                "channellist='" + channellist + '\'' +
+                ", name='" + name + '\'' +
+                ", ch_name='" + ch_name + '\'' +
+                ", thumb='" + thumb + '\'' +
+                ", author='" + author + '\'' +
+                ", album_id='" + album_id + '\'' +
+                ", album_title='" + album_title + '\'' +
+                ", song_id='" + song_id + '\'' +
+                ", pic_small='" + pic_small + '\'' +
+                ", pic_big='" + pic_big + '\'' +
+                ", title='" + title + '\'' +
+                ", artist_id='" + artist_id + '\'' +
+                ", ting_uid='" + ting_uid + '\'' +
+                ", avatar_middle='" + avatar_middle + '\'' +
+                ", avatar_big='" + avatar_big + '\'' +
+                ", file_link='" + file_link + '\'' +
+                '}';
+    }
+
     public String getString(String type){
         String s = "";
         if(type.equals(ARTIST_ID))
@@ -196,6 +228,8 @@ public class NetMusicEntry {
             s = getAvatar_middle();
         else if(type.equals(FILE_LINK))
             s = getFile_link();
+        else if(type.equals(AVATAR_BIG))
+            s = getAvatar_big();
         return s;
     }
     public static void setNetMusicEntryList(ResponseInfo<String> stringResponseInfo,List<NetMusicEntry> mList) {
@@ -267,6 +301,9 @@ public class NetMusicEntry {
                 }catch (Exception e){}
                 try {
                     entry.setAvatar_middle(obj.getString(NetMusicEntry.AVATAR_MIDDLE));
+                }catch (Exception e){}
+                try {
+                    entry.setAvatar_big(obj.getString(NetMusicEntry.AVATAR_BIG));
                 }catch (Exception e){}
                 mList.add(entry);
             }

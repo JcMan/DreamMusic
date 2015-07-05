@@ -61,25 +61,32 @@ public class FragmentNetHitoMusic extends Fragment implements AdapterView.OnItem
     @Override
     public void onResume() {
         super.onResume();
-        loadingDialog.show();
-        HttpUtils httpUtil = new HttpUtils();
-        httpUtil.send(HttpRequest.HttpMethod.GET,NetAPIEntry.getHitoMusicUrl(), new RequestCallBack<String>(){
-
-            @Override
-            public void onSuccess(ResponseInfo<String> stringResponseInfo) {
-                loadingDialog.cancel();
-                mList = new ArrayList<NetMusicEntry>();
-                NetMusicEntry.setNetHitoMusicList(stringResponseInfo, mList);
-                String[] types = {NetMusicEntry.PIC_SMALL,NetMusicEntry.TITLE,NetMusicEntry.AUTHOR};
-                mHitoMusicListView.setAdapter(new NetMusicAdapter(getActivity(),mList,types));
-            }
-            @Override
-            public void onFailure(HttpException e, String s) {
-                loadingDialog.cancel();
-                ToastUtil.showMessage(getActivity(),"加载失败");
-            }
-        });
+        updateListView();
     }
+
+    private void updateListView() {
+        if(mList==null||mList.size()<1){
+            loadingDialog.show();
+            HttpUtils httpUtil = new HttpUtils();
+            httpUtil.send(HttpRequest.HttpMethod.GET, NetAPIEntry.getHitoMusicUrl(), new RequestCallBack<String>(){
+
+                @Override
+                public void onSuccess(ResponseInfo<String> stringResponseInfo) {
+                    loadingDialog.cancel();
+                    mList = new ArrayList<NetMusicEntry>();
+                    NetMusicEntry.setNetHitoMusicList(stringResponseInfo, mList);
+                    String[] types = {NetMusicEntry.PIC_SMALL,NetMusicEntry.TITLE,NetMusicEntry.AUTHOR};
+                    mHitoMusicListView.setAdapter(new NetMusicAdapter(getActivity(),mList,types));
+                }
+                @Override
+                public void onFailure(HttpException e, String s) {
+                    loadingDialog.cancel();
+                    ToastUtil.showMessage(getActivity(), "加载失败");
+                }
+            });
+        }
+    }
+
     private void initView(View view) {
         mHitoMusicListView = (ListView) view.findViewById(R.id.listview_hito_music);
     }

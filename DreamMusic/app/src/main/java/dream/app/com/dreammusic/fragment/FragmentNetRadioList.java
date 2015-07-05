@@ -50,22 +50,24 @@ public class FragmentNetRadioList extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        loadingDialog.show();
-        HttpUtils httpUtil = new HttpUtils();
-        httpUtil.send(HttpRequest.HttpMethod.GET, NetAPIEntry.getRadioListUrl(), new RequestCallBack<String>() {
+        if (mList==null||mList.size()<1){
+            loadingDialog.show();
+            HttpUtils httpUtil = new HttpUtils();
+            httpUtil.send(HttpRequest.HttpMethod.GET, NetAPIEntry.getRadioListUrl(), new RequestCallBack<String>() {
 
-            @Override
-            public void onSuccess(ResponseInfo<String> stringResponseInfo) {
-                loadingDialog.cancel();
-                mList = new ArrayList<NetMusicEntry>();
-                NetMusicEntry.setNetChannelList(stringResponseInfo, mList);
-                String[] types = {NetMusicEntry.THUMB,NetMusicEntry.NAME};
-                mRadioMusicListView.setAdapter(new RadioAndSingerAdapter(getActivity(), mList, types));
-            }
-            @Override
-            public void onFailure(HttpException e, String s) {
-                loadingDialog.cancel();
-            }
-        });
+                @Override
+                public void onSuccess(ResponseInfo<String> stringResponseInfo) {
+                    loadingDialog.cancel();
+                    mList = new ArrayList<NetMusicEntry>();
+                    NetMusicEntry.setNetChannelList(stringResponseInfo, mList);
+                    String[] types = {NetMusicEntry.THUMB,NetMusicEntry.NAME};
+                    mRadioMusicListView.setAdapter(new RadioAndSingerAdapter(getActivity(), mList, types));
+                }
+                @Override
+                public void onFailure(HttpException e, String s) {
+                    loadingDialog.cancel();
+                }
+            });
+        }
     }
 }
