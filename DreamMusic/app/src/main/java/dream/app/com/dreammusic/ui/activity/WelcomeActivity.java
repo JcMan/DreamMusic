@@ -12,12 +12,14 @@ import android.widget.ImageView;
 
 import net.tsz.afinal.FinalBitmap;
 
+import java.io.File;
 import java.util.Random;
 import java.util.logging.MemoryHandler;
 
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.config.ApplicationConfig;
 
 /**
  * Created by JcMan on 2015/6/29.
@@ -34,6 +36,15 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         setContentView(R.layout.activity_welcome);
         mHandler = new Handler(this);
         mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN,3000);
+        initDirs();
+    }
+
+    private void initDirs() {
+        File file = new File(ApplicationConfig.DOWNLOADDIE);
+        if(!file.exists()){
+            file.mkdirs();
+
+        }
     }
 
     @Override

@@ -28,6 +28,14 @@
             style="@style/SplitLine"
             />
         <TextView
+            android:id="@+id/view_menuitem_hitomusic"
+            style="@style/item_menu_music_store"
+            android:text="Hito中文榜"
+            />
+        <TextView
+            style="@style/SplitLine"
+            />
+        <TextView
             android:id="@+id/view_menuitem_ktvmusic"
             style="@style/item_menu_music_store"
             android:text="KTV金曲"

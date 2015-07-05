@@ -27,11 +27,13 @@ public class NetMusicAdapter extends BaseAdapter {
     private Context mContext;
     private String types[];
     private Bitmap loadBitmap;
+    private Bitmap failBitmap;
     public NetMusicAdapter(Context context,List<NetMusicEntry> list,String[] types){
         mContext = context;
         mList = list;
         this.types = types;
         loadBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_loading_singer);
+        failBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_loading_singer);
     }
     @Override
     public int getCount() {
@@ -63,7 +65,7 @@ public class NetMusicAdapter extends BaseAdapter {
         }
         NetMusicEntry entry = mList.get(position);
         FinalBitmap finalBitmap = FinalBitmap.create(mContext);
-        finalBitmap.display(holder.icon,entry.getString(types[0]),loadBitmap);
+        finalBitmap.display(holder.icon,entry.getString(types[0]),loadBitmap,failBitmap);
         holder.s_top.setText(mList.get(position).getString(types[1]));
         holder.s_bottom.setText(mList.get(position).getString(types[2]));
         return convertView;

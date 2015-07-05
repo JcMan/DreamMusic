@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.fragment.FragmentNetHitoMusic;
 import dream.app.com.dreammusic.fragment.FragmentNetHotMusic;
 import dream.app.com.dreammusic.fragment.FragmentNetKtvMusic;
 import dream.app.com.dreammusic.fragment.FragmentNetNewMusic;
@@ -23,7 +24,7 @@ public class MusicStoreActivity extends BaseActivity {
 
     private DrawerLayout mLayout;
     private View mMenuView;
-    private View view_newmusic,view_hotmusic,view_ktv,view_singerlist,view_radiolist;
+    private View view_newmusic,view_hotmusic,view_ktv,view_singerlist,view_radiolist,view_hitomusic;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class MusicStoreActivity extends BaseActivity {
         mMenuView = findViewById(R.id.menu_music_store);
         view_newmusic = findViewById(R.id.view_menuitem_newmusic);
         view_hotmusic = findViewById(R.id.view_menuitem_hotmusic);
+        view_hitomusic = findViewById(R.id.view_menuitem_hitomusic);
         view_ktv = findViewById(R.id.view_menuitem_ktvmusic);
         view_singerlist = findViewById(R.id.view_menuitem_singerlist);
         view_radiolist = findViewById(R.id.view_menuitem_radiolist);
@@ -52,6 +54,7 @@ public class MusicStoreActivity extends BaseActivity {
         super.initListener();
         view_newmusic.setOnClickListener(this);
         view_hotmusic.setOnClickListener(this);
+        view_hitomusic.setOnClickListener(this);
         view_ktv.setOnClickListener(this);
         view_singerlist.setOnClickListener(this);
         view_radiolist.setOnClickListener(this);
@@ -104,6 +107,10 @@ public class MusicStoreActivity extends BaseActivity {
             case R.id.view_menuitem_radiolist:
                 flag = 1;
                 manager.beginTransaction().replace(R.id.fr_music_store, new FragmentNetRadioList()).commit();
+                break;
+            case R.id.view_menuitem_hitomusic:
+                flag = 1;
+                manager.beginTransaction().replace(R.id.fr_music_store, new FragmentNetHitoMusic()).commit();
                 break;
         }
         if(flag==1)

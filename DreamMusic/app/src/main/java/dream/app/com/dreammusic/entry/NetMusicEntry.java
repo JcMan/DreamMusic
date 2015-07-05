@@ -28,6 +28,7 @@ public class NetMusicEntry {
     public static final String THUMB = "thumb";
     public static final String TING_UID = "ting_uid";
     public static final String AVATAR_MIDDLE = "avatar_middle";
+    public static final String FILE_LINK = "file_link";
 
 
 
@@ -44,10 +45,16 @@ public class NetMusicEntry {
     private String pic_big;
     private String title;
     private String artist_id;
-
     private String ting_uid;
     private String avatar_middle;
+    private String file_link;
 
+    public String getFile_link() {
+        return file_link;
+    }
+    public void setFile_link(String file_link) {
+        this.file_link = file_link;
+    }
     public String getTing_uid() {
         return ting_uid;
     }
@@ -187,6 +194,8 @@ public class NetMusicEntry {
             s = getTing_uid();
         else if(type.equals(AVATAR_MIDDLE))
             s = getAvatar_middle();
+        else if(type.equals(FILE_LINK))
+            s = getFile_link();
         return s;
     }
     public static void setNetMusicEntryList(ResponseInfo<String> stringResponseInfo,List<NetMusicEntry> mList) {
@@ -264,5 +273,46 @@ public class NetMusicEntry {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setNetHitoMusicList(ResponseInfo<String> info,List<NetMusicEntry> mList){
+        try {
+            JSONObject object = new JSONObject(info.result);
+            JSONArray array = object.getJSONArray(NetMusicEntry.SONG_LIST);
+            for(int i=0;i<array.length();i++){
+                JSONObject obj = array.getJSONObject(i);
+                NetMusicEntry entry = new NetMusicEntry();
+                try {
+                    entry.setAuthor(obj.getString(NetMusicEntry.AUTHOR));
+                }catch (Exception e){}
+                try {
+                    entry.setTitle(obj.getString(NetMusicEntry.TITLE));
+                }catch (Exception e){}
+                try {
+                    entry.setSong_id(obj.getString(NetMusicEntry.SONG_ID));
+                }catch (Exception e){}
+                try {
+                    entry.setPic_small(obj.getString(NetMusicEntry.PIC_SMALL));
+                }catch (Exception e){}
+                mList.add(entry);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getFileLink(String json){
+        String file_url = "";
+        try {
+            JSONObject object = new JSONObject(json);
+            JSONObject object1 = object.getJSONObject("songurl");
+            JSONArray array = object1.getJSONArray("url");
+            if(array.length()>1)
+                file_url = array.getJSONObject(0).getString(NetMusicEntry.FILE_LINK);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return file_url;
     }
 }

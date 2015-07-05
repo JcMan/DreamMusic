@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent">
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:text="新歌首发"
-        android:background="@color/color_white"
-        android:textColor="@color/color_top_bg"
-        android:textSize="@dimen/text_size_ssss"
-        android:gravity="center_vertical"
-        android:paddingLeft="16sp"
-        android:drawableLeft="@drawable/music_note"
-        android:drawablePadding="5dp"
-        />
-    <ListView
-        android:id="@+id/listview_new_music"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
-
-
-</LinearLayout>
+        android:layout_height="fill_parent">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:text="新歌首发"
+            android:background="@color/color_white"
+            android:textColor="@color/color_top_bg"
+            android:textSize="@dimen/text_size_ssss"
+            android:gravity="center_vertical"
+            android:paddingLeft="16sp"
+            android:drawableLeft="@drawable/music_note"
+            android:drawablePadding="5dp"
+            />
+        <ListView
+            android:id="@+id/listview_new_music"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+    </LinearLayout>
+</RelativeLayout>

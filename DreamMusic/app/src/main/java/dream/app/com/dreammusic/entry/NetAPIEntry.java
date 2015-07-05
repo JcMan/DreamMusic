@@ -19,6 +19,12 @@ public class NetAPIEntry {
     public static final String NETSINGERLIST = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
             "from=qianqian&version=2.1.0&method=baidu.ting.artist.get72HotArtist&format=json?=1&offset=0&limit=100";
 
+    public static final String NETHITOMUSICURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
+            "from=qianqian&version=2.1.0&method=baidu.ting.billboard.billList&format=json&type=18&offset=0&size=50";
+
+    private static final String SONGIDURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
+            "from=qianqian&version=2.1.0&method=baidu.ting.song.getInfos&format=json&songid=JcMan&ts=1408284347323&e=JoN56kTXnnbEpd9MVczkYJCSx%2FE1mkLx%2BPMIkTcOEu4%3D&nw=2&ucf=1&res=1";
+
 
     public static String getNewMusicUrl(){
         return NETNEWMUSCIURL;
@@ -34,6 +40,13 @@ public class NetAPIEntry {
     }
     public static String getSingerListUrl(){
         return NETSINGERLIST;
+    }
+    public static String getHitoMusicUrl(){
+        return NETHITOMUSICURL;
+    }
+    public static String getUrlBySongId(String songId){
+        String url = SONGIDURL.replace("JcMan",songId);
+        return url;
     }
 
 }
