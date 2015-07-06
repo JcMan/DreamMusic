@@ -26,6 +26,9 @@ import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 public class FragmentMenuLogin extends android.app.Fragment implements View.OnClickListener{
     private ImageButton mLoginQQ,mLoginSina,mLoginRenRen;
     private LoginListener mLoginListener;
+    public FragmentMenuLogin(){
+
+    }
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg){

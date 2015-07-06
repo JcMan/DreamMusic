@@ -41,4 +41,8 @@ public class FragmentMenuUser extends Fragment {
         this.name = name;
         this.headimageurl = headimageurl;
     }
+
+    public FragmentMenuUser(){
+
+    }
 }

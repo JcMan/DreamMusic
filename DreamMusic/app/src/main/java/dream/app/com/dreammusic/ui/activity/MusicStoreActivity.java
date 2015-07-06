@@ -32,7 +32,7 @@ public class MusicStoreActivity extends BaseActivity {
         initView();
         initListener();
         setTitle(gettitleFromIntent());
-        getFragmentManager().beginTransaction().add(R.id.fr_music_store,new FragmentNetNewMusic()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fr_music_store,new FragmentNetNewMusic()).commit();
     }
 
     @Override

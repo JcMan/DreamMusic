@@ -52,6 +52,7 @@ public class FragmentNetNewMusic extends Fragment implements AdapterView.OnItemC
     private List<NetMusicEntry> mList;
     private LoadingDialog loadingDialog;
     private PopupWindow mPopupWindow;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

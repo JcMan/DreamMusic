@@ -29,6 +29,8 @@ public class NetAPIEntry {
 
     public static final String MUSICOFSINGER = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
             "from=qianqian&version=2.1.0&method=baidu.ting.artist.getSongList&format=json?=2&tinguid=JcMan&offset=0&limits=100";
+    public static final String CHANNLEMUSICLISTURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
+            "from=qianqian&version=2.1.0&method=baidu.ting.radio.getChannelSong&format=json&pn=0&rn=100&channelname=";
 
 
     public static String getNewMusicUrl(){
@@ -58,6 +60,11 @@ public class NetAPIEntry {
 
     public static String getMusicOfSingerUrlByTingUid(String uid){
         return MUSICOFSINGER.replace("JcMan",uid);
+    }
+
+    public static String getChannelMusicListUrlByCh_Name(String ch_name){
+        return CHANNLEMUSICLISTURL+ch_name;
+
     }
 
 }

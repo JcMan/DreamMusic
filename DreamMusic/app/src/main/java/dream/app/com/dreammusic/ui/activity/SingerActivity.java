@@ -24,22 +24,18 @@ import net.tsz.afinal.FinalBitmap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.entry.NetAPIEntry;
 import dream.app.com.dreammusic.entry.NetMusicEntry;
-import dream.app.com.dreammusic.ui.view.CircleView;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.DownLoadUtil;
 import dream.app.com.dreammusic.util.MyHttpUtil;
 
 /**
- * Created by Administrator on 2015/7/5.
+ * Created by JcMan on 2015/7/5.
  */
 public class SingerActivity extends BaseActivity{
 
@@ -60,11 +56,6 @@ public class SingerActivity extends BaseActivity{
         initListener();
         getDataFromIntent();
         updateView();
-       /* mList = new ArrayList<NetMusicEntry>();
-        for (int i=0;i<20;i++){
-            mList.add(new NetMusicEntry());
-        }
-        mAllMusicListView.setAdapter(new AllMusicSingerAdapter(mList));*/
         getSingerInfo();
     }
 
@@ -216,7 +207,6 @@ public class SingerActivity extends BaseActivity{
                             DownLoadUtil downloadUtil = new DownLoadUtil(SingerActivity.this,entry);
                             downloadUtil.download();
                         }
-
                         @Override
                         public void onFailure(HttpException e, String s) {
                             loadingdialog.cancel();
@@ -226,7 +216,6 @@ public class SingerActivity extends BaseActivity{
             });
             return convertView;
         }
-
         class Holder{
             TextView tv_num;
             TextView tv_name;

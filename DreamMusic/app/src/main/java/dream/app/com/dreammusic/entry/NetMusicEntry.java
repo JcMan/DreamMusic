@@ -15,10 +15,12 @@ import java.util.List;
  */
 public class NetMusicEntry implements Serializable{
     public static final String ARTIST_ID = "artist_id";
+    public static final String ARTIST = "artist";
     public static final String AUTHOR = "author";
     public static final String ALBUM_ID = "album_id";
     public static final String ALBUM_TITLE = "album_title";
     public static final String SONG_ID = "song_id";
+    public static final String SONGID = "songid";
     public static final String PIC_SMALL = "pic_small";
     public static final String PIC_BIG = "pic_big";
     public static final String TITLE = "title";
@@ -51,6 +53,27 @@ public class NetMusicEntry implements Serializable{
     private String avatar_middle;
     private String avatar_big;
     private String file_link;
+    private String songid ;
+    private String artist;
+
+    public String getSongid() {
+        return songid;
+    }
+
+    public void setSongid(String songid) {
+        this.songid = songid;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+
+
     public String getAvatar_big() {
         return avatar_big;
     }
@@ -230,6 +253,10 @@ public class NetMusicEntry implements Serializable{
             s = getFile_link();
         else if(type.equals(AVATAR_BIG))
             s = getAvatar_big();
+        else if(type.equals(ARTIST))
+            s = getArtist();
+        else if(type.equals(SONGID))
+            s = getSongid();
         return s;
     }
     public static void setNetMusicEntryList(ResponseInfo<String> stringResponseInfo,List<NetMusicEntry> mList) {

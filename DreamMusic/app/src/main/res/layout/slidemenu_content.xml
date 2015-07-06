@@ -16,7 +16,7 @@
             android:drawableLeft="@drawable/ic_top_logo"
             />
     </RelativeLayout>
-    <!--<include layout="@layout/fragment_login_user" />-->
+
     <FrameLayout
         android:id="@+id/fr_login_layout"
         android:layout_width="@dimen/d_slidemenu_width"
@@ -49,6 +49,15 @@
         style="@style/slidemenu_item"
         android:text="睡眠"
         android:drawableLeft="@drawable/icon_sleep_mode"
+        />
+    <TextView
+        style="@style/SplitLine"
+        />
+    <TextView
+        android:id="@+id/tv_message"
+        style="@style/slidemenu_item"
+        android:text="消息"
+        android:drawableLeft="@drawable/ic_message"
         />
     <TextView
         style="@style/SplitLine"

@@ -29,14 +29,16 @@ import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
+import dream.app.com.dreammusic.util.ToastUtil;
 
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
-        FragmentMenuLogin.LoginListener,View.OnClickListener,FragmentMain.FragmentClickListener{
+        FragmentMenuLogin.LoginListener,View.OnClickListener,
+        FragmentMain.FragmentClickListener{
 
     public static boolean isForeground = false;
 
     private DrawerLayout mSlideMenu;
-    private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit;
+    private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit,mMessage;
     private ImageButton mRightLogo,mLeftBack;
     private Handler mHandler;
     private android.app.Fragment mFragment;
@@ -57,6 +59,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         isForeground = true;
         updateLoginView();
         super.onResume();
+
     }
 
     @Override
@@ -90,13 +93,14 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
-        initJPush();
+//        initJPush();
     }
     public void initView(){
         mSlideMenu = (DrawerLayout) findViewById(R.id.slidemenu);
         mSearchMusic = (TextView) findViewById(R.id.tv_search_music);
         mChangeMainBg = (TextView) findViewById(R.id.tv_change_mainbg);
         mSetting = (TextView) findViewById(R.id.tv_setting);
+        mMessage = (TextView) findViewById(R.id.tv_message);
         mSleepTime = (TextView) findViewById(R.id.tv_set_sleep_time);
         mExit = (TextView) findViewById(R.id.tv_exit);
         mRightLogo = (ImageButton) findViewById(R.id.ib_top_logo_right);
@@ -127,7 +131,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             String HeadImageUrl = preferences.getString(UserEntry.HEADIMAGE,"");
             mFragment = new FragmentMenuUser(Username,HeadImageUrl);
         }
-        getFragmentManager().beginTransaction().add(R.id.fr_login_layout, mFragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fr_login_layout, mFragment).commit();
     }
 
     protected void initListener() {
@@ -135,6 +139,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mChangeMainBg.setOnClickListener(this);
         mSleepTime.setOnClickListener(this);
         mSetting.setOnClickListener(this);
+        mMessage.setOnClickListener(this);
         mExit.setOnClickListener(this);
         mRightLogo.setOnClickListener(this);
     }
@@ -282,6 +287,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
                 if (!ExampleUtil.isEmpty(extras)) {
                     showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+
                 }
             }
         }
