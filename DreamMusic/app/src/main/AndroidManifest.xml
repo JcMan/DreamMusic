@@ -51,7 +51,10 @@
         <activity android:name=".ui.activity.MusicStoreActivity"></activity>
         <activity android:name=".ui.activity.SingerActivity"></activity>
         <activity android:name=".ui.activity.RadioActivity"></activity>
-        <activity android:name=".ui.activity.WelcomeActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <activity android:name=".ui.activity.MessageActivity"></activity>
+        <activity
+            android:name=".ui.activity.WelcomeActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

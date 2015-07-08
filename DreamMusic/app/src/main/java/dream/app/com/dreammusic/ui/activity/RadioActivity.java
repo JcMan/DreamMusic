@@ -1,6 +1,4 @@
 package dream.app.com.dreammusic.ui.activity;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -8,20 +6,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-
-import com.app.tool.logger.Logger;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.NetMusicAdapter;
 import dream.app.com.dreammusic.entry.NetAPIEntry;

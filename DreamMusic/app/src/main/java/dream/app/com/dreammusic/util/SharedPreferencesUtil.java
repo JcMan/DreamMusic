@@ -3,6 +3,9 @@ package dream.app.com.dreammusic.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.entry.UserEntry;
+
 
 /**
  * Created by Administrator on 2015/6/26.
@@ -34,5 +37,10 @@ public class SharedPreferencesUtil {
     public static SharedPreferences.Editor getEditor(String name){
         SharedPreferences.Editor editor = getSharedPreferences(name).edit();
         return editor;
+    }
+
+    public static String getHeadImageUrl(){
+        mPreference = getSharedPreferences(ApplicationConfig.USER);
+        return mPreference.getString(UserEntry.HEADIMAGE,"");
     }
 }

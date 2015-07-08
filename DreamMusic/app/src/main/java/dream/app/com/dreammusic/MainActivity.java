@@ -23,6 +23,7 @@ import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
+import dream.app.com.dreammusic.ui.activity.MessageActivity;
 import dream.app.com.dreammusic.ui.activity.MusicStoreActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
 import dream.app.com.dreammusic.util.ActivityUtil;
@@ -169,12 +170,22 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             case R.id.tv_exit:
                 exit();
                 break;
+            case R.id.tv_message:
+                startMessageActivity();
+                break;
             case R.id.ib_top_logo_right:
                 clickOnRightLogo();
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 打开MessageActivity
+     */
+    private void startMessageActivity() {
+        startNewActivity(MessageActivity.class, AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     /**
