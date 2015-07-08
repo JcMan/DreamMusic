@@ -52,6 +52,9 @@
         <activity android:name=".ui.activity.SingerActivity"></activity>
         <activity android:name=".ui.activity.RadioActivity"></activity>
         <activity android:name=".ui.activity.MessageActivity"></activity>
+        <activity android:name=".ui.activity.SearchActivity"></activity>
+
+
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">

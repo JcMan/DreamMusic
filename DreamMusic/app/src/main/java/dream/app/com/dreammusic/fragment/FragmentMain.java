@@ -2,22 +2,31 @@ package dream.app.com.dreammusic.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.ui.activity.SearchActivity;
+import dream.app.com.dreammusic.util.AnimUtil;
+import dream.app.com.dreammusic.util.ToastUtil;
 
 /**
- * Created by Administrator on 2015/7/2.
+ * Created by JcMan on 2015/7/2.
  */
 public class FragmentMain extends Fragment implements View.OnClickListener{
     private View mLocalMusic,mMyLove,mMyMusicList,
             mDowdloadManager,mLocalHistory,mMusicStore,
             mCasuallyListen;
     private FragmentClickListener mClickListener;
+
+    private EditText mEdit;
+    private Button mBtn;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,12 +47,13 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         mLocalHistory.setOnClickListener(this);
         mMusicStore.setOnClickListener(this);
         mCasuallyListen.setOnClickListener(this);
+        mBtn.setOnClickListener(this);
     }
 
     /**
      * 初始化控件
      */
-    private void initView(View v) {
+    private void initView(View v){
         mLocalMusic = v.findViewById(R.id.view_local_music);
         mMyLove = v.findViewById(R.id.view_my_love);
         mMyMusicList = v.findViewById(R.id.view_my_music_list);
@@ -51,12 +61,27 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         mLocalHistory = v.findViewById(R.id.view_localentry_history);
         mMusicStore = v.findViewById(R.id.view_music_store);
         mCasuallyListen = v.findViewById(R.id.view_casually_listen);
+
+        mEdit = (EditText) v.findViewById(R.id.et_search_fragmentmain);
+        mBtn = (Button) v.findViewById(R.id.btn_search_fragment);
     }
 
     @Override
     public void onClick(View v) {
-        mClickListener.click(v.getId());
+        if(v.getId()==R.id.btn_search_fragment){
+            String query = mEdit.getText().toString();
+            if(query.length()<1)
+                ToastUtil.showMessage(getActivity(),"输入内容不能为空");
+            else{
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                intent.putExtra("query",mEdit.getText().toString());
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+            }
+        }else
+            mClickListener.click(v.getId());
     }
+
 
     public interface FragmentClickListener{
         public  abstract void click(int id);

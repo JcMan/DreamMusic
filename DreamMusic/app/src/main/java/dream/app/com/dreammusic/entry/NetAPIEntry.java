@@ -32,6 +32,8 @@ public class NetAPIEntry {
     public static final String CHANNLEMUSICLISTURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?" +
             "from=qianqian&version=2.1.0&method=baidu.ting.radio.getChannelSong&format=json&pn=0&rn=100&channelname=";
 
+    public static final String SEARCHURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.search.common&format=json&query=JcMan&page_no=1&page_size=100";
+
 
     public static String getNewMusicUrl(){
         return NETNEWMUSCIURL;
@@ -64,7 +66,10 @@ public class NetAPIEntry {
 
     public static String getChannelMusicListUrlByCh_Name(String ch_name){
         return CHANNLEMUSICLISTURL+ch_name;
+    }
 
+    public static String getSearchUrl(String query){
+        return SEARCHURL.replace("JcMan",query);
     }
 
 }

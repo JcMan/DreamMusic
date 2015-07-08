@@ -24,7 +24,7 @@ public class DialogUtil {
             public void run(){
                 dialog.cancel();
             }
-        },1000*5);
+        },1000*10);
         return dialog;
     }
 }
