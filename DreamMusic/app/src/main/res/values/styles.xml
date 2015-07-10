@@ -132,5 +132,14 @@
         <item name="android:focusable">true</item>
         <item name="android:background">@color/color_bfbfbf</item>
     </style>
+    <style name="text_dailog_music">
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_dark_gray</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_ssss</item>
+        <item name="android:background">@drawable/dialog_item_pressed</item>
+    </style>
 
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+    <RelativeLayout
+        android:background="@color/color_top_bg"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:drawableLeft="@drawable/ic_top_logo"
+            android:text="飞梦音乐"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_sss"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

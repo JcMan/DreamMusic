@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/dialog_top" />
+    <TextView
+        android:id="@+id/tv_dialogitem_detail"
+        style="@style/text_dailog_music"
+        android:text="详情"
+        />
+    <View
+        style="@style/SplitLine"
+        />
+    <TextView
+        android:id="@+id/tv_dialogitem_rename"
+        style="@style/text_dailog_music"
+        android:text="重命名"
+        />
+    <View
+        style="@style/SplitLine"
+        />
+    <TextView
+        android:id="@+id/tv_dialogitem_delete"
+        style="@style/text_dailog_music"
+        android:text="删除"
+
+        />
+    <View
+        style="@style/SplitLine"
+        />
+
+</LinearLayout>
