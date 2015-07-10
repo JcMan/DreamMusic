@@ -20,6 +20,7 @@ import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.ui.view.ScrollRelativeLayout;
 import dream.app.com.dreammusic.ui.view.ViewIndicator;
+import dream.app.com.dreammusic.util.MusicUtil;
 
 /**
  * Created by Administrator on 2015/7/9.
@@ -31,6 +32,7 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
     private ScrollRelativeLayout mMainContainer;
     private TextView mLocalMusicListView,mLoveBetterView;
     private List<Music> mLocalList,mLoveList;
+    ListView _List_local;
 
     @Nullable
     @Override
@@ -84,9 +86,8 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
     }
 
     private void initLocalView(View view_local) {
-        ListView _List_local = (ListView) view_local.findViewById(R.id.listview_localmusic);
-        for(int i=0;i<20;i++)
-            mLocalList.add(new Music());
+        _List_local = (ListView) view_local.findViewById(R.id.listview_localmusic);
+        mLocalList = MusicUtil.queryLocalMusic(getActivity());
         _List_local.setAdapter(new LocalAdapter(mLocalList,LocalAdapter.TYPE_LOCAL));
     }
 
@@ -177,21 +178,29 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
                 holder = new LocalHolder();
                 convertView=View.inflate(getActivity(),R.layout.item_localmusic_list,null);
                 holder.mImageView = (ImageButton) convertView.findViewById(R.id.iv_local);
-                holder.mTop = (TextView) convertView.findViewById(R.id.tv_item_local_title);
-                holder.mBottom = (TextView) convertView.findViewById(R.id.tv_item_local_author);
+                holder.mTitle = (TextView) convertView.findViewById(R.id.tv_item_local_title);
                 convertView.setTag(holder);
             }else{
                 holder = (LocalHolder) convertView.getTag();
             }
-            holder.mTop.setText("幻听");
-            holder.mBottom.setText("许嵩");
+            Music music = (Music) _List_local.getItemAtPosition(position);
+            if (music.musicName.contains("-")){
+                String _S[] = MusicUtil.getMusicName(music.musicName);
+                if(music.artist.contains("un"))
+                    music.artist="";
+                holder.mTitle.setText(_S[0]+" - "+_S[1]);
+            }else{
+                if(music.artist.contains("un"))
+                    holder.mTitle.setText(music.musicName);
+                else
+                    holder.mTitle.setText(music.artist+" - "+music.musicName);
+            }
             return convertView;
         }
-
         class LocalHolder{
             ImageButton mImageView;
-            TextView mTop;
-            TextView mBottom;
+            TextView mTitle;
+            TextView mArtist;
         }
     }
 }

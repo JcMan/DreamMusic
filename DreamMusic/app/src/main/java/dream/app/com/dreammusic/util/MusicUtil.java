@@ -3,16 +3,15 @@
  */
 package dream.app.com.dreammusic.util;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.app.tool.logger.Logger;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import dream.app.com.dreammusic.model.Music;
 
@@ -98,5 +97,10 @@ public class MusicUtil  {
         long s = (milliSecs % (60 * 1000)) / 1000;
         sb.append(s < 10 ? "0" + s : s);
         return sb.toString();
+    }
+
+    public static String[] getMusicName(String fullname){
+        String _S[] = fullname.split("-");
+        return _S;
     }
 }

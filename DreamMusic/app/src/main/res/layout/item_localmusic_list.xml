@@ -20,7 +20,6 @@
                 android:background="@drawable/btn_add_love_state"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-
                 />
             <ImageButton
                 android:id="@+id/iv_love"
@@ -41,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="微博控"
-                android:layout_marginTop="3dp"
+                android:layout_centerVertical="true"
                 android:textColor="@color/color_dark_gray"
                 android:textSize="@dimen/text_size_ss"
                 android:singleLine="true"
@@ -55,6 +54,7 @@
                 android:textSize="13sp"
                 android:layout_marginBottom="3dp"
                 android:layout_alignParentBottom="true"
+                android:visibility="gone"
                 />
         </RelativeLayout>
     </RelativeLayout>
