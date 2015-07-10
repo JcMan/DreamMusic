@@ -4,16 +4,23 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.ui.activity.SearchActivity;
+import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.AnimUtil;
+import dream.app.com.dreammusic.util.DialogUtil;
+import dream.app.com.dreammusic.util.Messageutil;
+import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 
 /**
@@ -27,13 +34,42 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
 
     private EditText mEdit;
     private Button mBtn;
+    private TextView tv_localmusic_number;
+
+    private LoadingDialog loadingDialog;
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(msg.what==Messageutil.MESSAGE_GO_LOCALMUSICFRAGMENT)
+                loadingDialog.cancel();
+                getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_main,new FragmentLocalMusic())
+                        .addToBackStack(null).commit();
+        }
+    };
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main,container,false);
         initView(view);
         initListener();
+        loadingDialog = DialogUtil.createLoadingDialog(getActivity(),"加载中···");
+
         return view;
+    }
+
+    private void updateView() {
+        updateLocalMusicNumber();
+    }
+
+    private void updateLocalMusicNumber(){
+        tv_localmusic_number.setText("" + MusicUtil.getLocalMusicNumber(getActivity()) + "首");
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateView();
     }
 
     /**
@@ -64,6 +100,8 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
 
         mEdit = (EditText) v.findViewById(R.id.et_search_fragmentmain);
         mBtn = (Button) v.findViewById(R.id.btn_search_fragment);
+
+        tv_localmusic_number = (TextView) v.findViewById(R.id.tv_localmusic_number);
     }
 
     @Override
@@ -78,10 +116,12 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
             }
+        }else if(v.getId()==R.id.view_local_music){
+            loadingDialog.show();
+            mHandler.sendEmptyMessageDelayed(Messageutil.MESSAGE_GO_LOCALMUSICFRAGMENT,1000);
         }else
             mClickListener.click(v.getId());
     }
-
 
     public interface FragmentClickListener{
         public  abstract void click(int id);

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_height="45dp">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="45dp">
+        <RelativeLayout
+            android:layout_centerVertical="true"
+            android:id="@+id/v_local"
+            android:layout_marginLeft="16dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp">
+            <ImageButton
+                android:id="@+id/iv_local"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="16dp"
+                android:scaleType="centerInside"
+                android:background="@drawable/btn_add_love_state"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+
+                />
+            <ImageButton
+                android:id="@+id/iv_love"
+                android:layout_centerInParent="true"
+                android:scaleType="centerInside"
+                android:background="@drawable/btn_minus_love"
+                android:visibility="gone"
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/v_local"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:id="@+id/tv_item_local_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="微博控"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/color_dark_gray"
+                android:textSize="@dimen/text_size_ss"
+                android:singleLine="true"
+                />
+            <TextView
+                android:singleLine="true"
+                android:id="@+id/tv_item_local_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="许嵩"
+                android:textSize="13sp"
+                android:layout_marginBottom="3dp"
+                android:layout_alignParentBottom="true"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

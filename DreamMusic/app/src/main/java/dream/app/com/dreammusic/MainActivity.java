@@ -12,9 +12,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.app.tool.logger.Logger;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.config.ApplicationConfig;
@@ -26,11 +29,12 @@ import dream.app.com.dreammusic.jpush.ExampleUtil;
 import dream.app.com.dreammusic.ui.activity.MessageActivity;
 import dream.app.com.dreammusic.ui.activity.MusicStoreActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
+import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
+import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
-import dream.app.com.dreammusic.util.ToastUtil;
 
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
         FragmentMenuLogin.LoginListener,View.OnClickListener,
@@ -45,6 +49,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private android.app.Fragment mFragment;
     private View mDrawerView;
 
+    private LoadingDialog loadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -52,6 +58,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         initUtil();
         initView();
         initListener();
+        loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
         mHandler = new Handler(this);
     }
 
@@ -222,15 +229,15 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     }
 
    private static long back_pressed = 0;
-    @Override
-    public void onBackPressed() {
+    //@Override
+    /*public void onBackPressed() {
         if(back_pressed+2000>System.currentTimeMillis())
             super.onBackPressed();
         else {
             showMessage("再按一次退出飞梦音乐");
             back_pressed = System.currentTimeMillis();
         }
-    }
+    }*/
 
     private void showMessage(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
@@ -271,14 +278,18 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * @param id
      */
     @Override
-    public void click(int id) {
+    public void click(int id){
         switch (id){
             case R.id.view_music_store:
-                Intent intent  = new Intent();
-                intent.putExtra(ActivityUtil.TITLE,"乐库");
-                startNewActivityWithAnim(MusicStoreActivity.class, intent);
+                startMusicStoreActivity();
                 break;
         }
+    }
+
+    private void startMusicStoreActivity() {
+        Intent intent  = new Intent();
+        intent.putExtra(ActivityUtil.TITLE,"乐库");
+        startNewActivityWithAnim(MusicStoreActivity.class, intent);
     }
 
     protected void startNewActivityWithAnim(Class pclass ,Intent intent){

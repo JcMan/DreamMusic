@@ -10,6 +10,11 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.ImageView;
 
+import com.app.tool.logger.Logger;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+
 import net.tsz.afinal.FinalBitmap;
 
 import java.io.File;
@@ -20,6 +25,7 @@ import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.util.MyHttpUtil;
 
 /**
  * Created by JcMan on 2015/6/29.
@@ -37,6 +43,7 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         mHandler = new Handler(this);
         mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN,3000);
         initDirs();
+
     }
 
     private void initDirs() {

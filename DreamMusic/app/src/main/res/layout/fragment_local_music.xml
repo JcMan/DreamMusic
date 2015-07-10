@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#EEEEEE"
+    android:layout_height="fill_parent">
+    <dream.app.com.dreammusic.ui.view.ScrollRelativeLayout
+        android:id="@+id/layout_localmusic_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <dream.app.com.dreammusic.ui.view.ViewIndicator
+            xmlns:indicator="http://schemas.android.com/apk/res/dream.app.com.dreammusic"
+            android:id="@+id/indicator_localmusic"
+            android:layout_width="fill_parent"
+            indicator:jcolor="@color/color_top_bg"
+            indicator:jheight="2dp"
+            android:layout_alignParentTop="true"
+            android:layout_height="45dp">
+            <TextView
+                android:id="@+id/tv_localmusic_indicator_label"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="本地列表"
+                android:textColor="@color/color_top_bg"
+                />
+            <TextView
+                android:id="@+id/tv_love_indicator_label"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:text="特别喜欢"
+                android:layout_height="fill_parent"
+                android:textColor="@color/color_gray"
+                />
+        </dream.app.com.dreammusic.ui.view.ViewIndicator>
+        <View
+            style="@style/SplitLine"
+            android:layout_below="@id/indicator_localmusic"
+            />
+        <android.support.v4.view.ViewPager
+            android:layout_below="@id/indicator_localmusic"
+            android:id="@+id/viewpager_localmusic"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
+
+    </dream.app.com.dreammusic.ui.view.ScrollRelativeLayout>
+
+</LinearLayout>
