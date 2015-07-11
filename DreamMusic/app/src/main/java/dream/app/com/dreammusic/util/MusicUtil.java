@@ -60,9 +60,6 @@ public class MusicUtil  {
             Music music = new Music();
             music.duration = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Audio.Media.DURATION));
-            if(music.duration<FILTER_DURATION){
-                continue;
-            }
             music.songId = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Audio.Media._ID));
             music.albumId = cursor.getInt(cursor
@@ -77,7 +74,9 @@ public class MusicUtil  {
             String folderPath = filePath.substring(0,
                     filePath.lastIndexOf(File.separator));
             music.folder = folderPath;
-            musicList.add(music);
+            double fileSize = StringUtil.getFileSizeDouble(music.data);
+            if(fileSize>0.3)
+                musicList.add(music);
         }
         cursor.close();
         return musicList;

@@ -1,5 +1,6 @@
 package dream.app.com.dreammusic.util;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.TextView;
@@ -26,5 +27,10 @@ public class DialogUtil {
             }
         },1000*10);
         return dialog;
+    }
+
+    public static Dialog createFeiMengDialog(Context context,int style){
+        Dialog dialog = new Dialog(context,style);
+        return  dialog;
     }
 }

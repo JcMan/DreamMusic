@@ -22,6 +22,7 @@
         android:textSize="@dimen/text_size_ss"
         android:paddingBottom="3dp"
         android:paddingLeft="40dp"
+        android:paddingRight="40dp"
         android:textColor="@color/color_dark_gray"
         />
     <TextView
