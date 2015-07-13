@@ -35,7 +35,6 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
     private EditText mEdit;
     private Button mBtn;
     private TextView tv_localmusic_number;
-
     private LoadingDialog loadingDialog;
 
     private Handler mHandler = new Handler(){
@@ -44,7 +43,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
             super.handleMessage(msg);
             if(msg.what==Messageutil.MESSAGE_GO_LOCALMUSICFRAGMENT)
                 loadingDialog.cancel();
-                getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_main,new FragmentLocalMusic())
+                getFragmentManager().beginTransaction().replace(R.id.fragment_main,new FragmentLocalMusic())
                         .addToBackStack(null).commit();
         }
     };
@@ -55,7 +54,6 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         initView(view);
         initListener();
         loadingDialog = DialogUtil.createLoadingDialog(getActivity(),"加载中···");
-
         return view;
     }
 

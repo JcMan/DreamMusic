@@ -3,7 +3,6 @@ package dream.app.com.dreammusic.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -149,6 +148,13 @@ public class BaseActivity extends Activity implements View.OnClickListener{
             default:
                 break;
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(AnimUtil.BASE_SLIDE_REMAIN,AnimUtil.BASE_SLIDE_RIGHT_OUT);
 
     }
 

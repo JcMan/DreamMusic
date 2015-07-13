@@ -26,6 +26,8 @@ import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
+import dream.app.com.dreammusic.service.AlarmTimerService;
+import dream.app.com.dreammusic.ui.activity.AlarmTimerActivity;
 import dream.app.com.dreammusic.ui.activity.MessageActivity;
 import dream.app.com.dreammusic.ui.activity.MusicStoreActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
@@ -41,14 +43,12 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         FragmentMain.FragmentClickListener{
 
     public static boolean isForeground = false;
-
     private DrawerLayout mSlideMenu;
     private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit,mMessage;
     private ImageButton mRightLogo,mLeftBack;
     private Handler mHandler;
     private android.app.Fragment mFragment;
     private View mDrawerView;
-
     private LoadingDialog loadingDialog;
 
     @Override
@@ -58,6 +58,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         initUtil();
         initView();
         initListener();
+       // bindService();
         loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
         mHandler = new Handler(this);
     }
@@ -78,8 +79,16 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(mMessageReceiver);
+//        unregisterReceiver(mMessageReceiver);
+        stopAllService();
         super.onDestroy();
+    }
+
+    /**
+     * 关闭所有服务
+     */
+    private void stopAllService() {
+        stopService(new Intent(this,AlarmTimerService.class));
     }
 
     /**
@@ -178,14 +187,20 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 exit();
                 break;
             case R.id.tv_message:
-                startMessageActivity();
+                startNewActivity(MessageActivity.class);
                 break;
             case R.id.ib_top_logo_right:
                 clickOnRightLogo();
                 break;
+            case R.id.tv_set_sleep_time:
+                startNewActivity(AlarmTimerActivity.class);
             default:
                 break;
         }
+    }
+
+    private void startAlarmTimerActivity() {
+        startNewActivity(AlarmTimerActivity.class,AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     /**
@@ -199,7 +214,11 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * 打开SettingActivity
      */
     private void startSettingActivity() {
-        startNewActivity(SettingActivity.class, R.anim.base_slide_right_in,R.anim.base_slide_remain);
+        startNewActivity(SettingActivity.class, AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+    }
+
+    private void startNewActivity(Class pclass){
+        startNewActivity(pclass, AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     /**
@@ -253,7 +272,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         JPushInterface.init(getApplicationContext());
         JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);     		// 初始化 JPush
-        registerMessageReceiver();
+        //registerMessageReceiver();
     }
 
     /**

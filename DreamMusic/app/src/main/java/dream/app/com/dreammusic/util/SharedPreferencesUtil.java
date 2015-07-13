@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.entry.SettingEntry;
 import dream.app.com.dreammusic.entry.UserEntry;
 
 
@@ -13,6 +14,7 @@ import dream.app.com.dreammusic.entry.UserEntry;
 public class SharedPreferencesUtil {
     private static Context mContext;
     private static SharedPreferences mPreference;
+    private static SharedPreferences.Editor mEditor;
     public static void init(Context context){
         mContext = context;
     }
@@ -35,12 +37,22 @@ public class SharedPreferencesUtil {
      * @return
      */
     public static SharedPreferences.Editor getEditor(String name){
-        SharedPreferences.Editor editor = getSharedPreferences(name).edit();
-        return editor;
+         mEditor = getSharedPreferences(name).edit();
+        return mEditor;
     }
 
     public static String getHeadImageUrl(){
         mPreference = getSharedPreferences(ApplicationConfig.USER);
         return mPreference.getString(UserEntry.HEADIMAGE,"");
+    }
+
+    public static boolean getIsSetSleep(){
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
+        return mPreference.getBoolean(SettingEntry.SETSLEEP,false);
+    }
+
+    public static void setIsSetSleep(boolean result){
+        mEditor = getEditor(ApplicationConfig.SETTING);
+        mEditor.putBoolean(SettingEntry.SETSLEEP,result);
     }
 }

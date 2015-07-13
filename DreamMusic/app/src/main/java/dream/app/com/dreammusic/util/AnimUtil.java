@@ -10,6 +10,4 @@ public class AnimUtil {
     public static final int BASE_SLIDE_RIGHT_OUT = R.anim.base_slide_right_out;
     public static final int BASE_SLIDE_RIGHT_IN = R.anim.base_slide_right_in;
     public static final int BASE_SLIDE_REMAIN = R.anim.base_slide_remain;
-
-
 }

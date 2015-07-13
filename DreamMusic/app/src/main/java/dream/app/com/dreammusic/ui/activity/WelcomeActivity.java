@@ -1,31 +1,18 @@
 package dream.app.com.dreammusic.ui.activity;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
-import android.view.Window;
-import android.widget.ImageView;
-
-import com.app.tool.logger.Logger;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
-
-import net.tsz.afinal.FinalBitmap;
 
 import java.io.File;
-import java.util.Random;
-import java.util.logging.MemoryHandler;
 
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
-import dream.app.com.dreammusic.util.MyHttpUtil;
+import dream.app.com.dreammusic.service.AlarmTimerService;
 
 /**
  * Created by JcMan on 2015/6/29.
@@ -43,7 +30,12 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         mHandler = new Handler(this);
         mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN,3000);
         initDirs();
+        startService();
 
+    }
+
+    private void startService() {
+        startService(new Intent(this, AlarmTimerService.class));
     }
 
     private void initDirs() {
