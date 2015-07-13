@@ -2,6 +2,7 @@ package dream.app.com.dreammusic.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,16 +36,12 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
     private EditText mEdit;
     private Button mBtn;
     private TextView tv_localmusic_number;
-    private LoadingDialog loadingDialog;
+    FragmentTransaction transaction ;
 
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what==Messageutil.MESSAGE_GO_LOCALMUSICFRAGMENT)
-                loadingDialog.cancel();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_main,new FragmentLocalMusic())
-                        .addToBackStack(null).commit();
         }
     };
     @Nullable
@@ -53,7 +50,8 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_main,container,false);
         initView(view);
         initListener();
-        loadingDialog = DialogUtil.createLoadingDialog(getActivity(),"加载中···");
+        transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.animator.enter,R.animator.exit,R.animator.pop_enter,R.animator.pop_exit);
         return view;
     }
 
@@ -115,8 +113,8 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
             }
         }else if(v.getId()==R.id.view_local_music){
-            loadingDialog.show();
-            mHandler.sendEmptyMessageDelayed(Messageutil.MESSAGE_GO_LOCALMUSICFRAGMENT,1000);
+           transaction.replace(R.id.fragment_main,new FragmentLocalMusic())
+            .addToBackStack(null).commit();
         }else
             mClickListener.click(v.getId());
     }

@@ -1,6 +1,5 @@
 package dream.app.com.dreammusic.ui.activity;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -89,6 +88,8 @@ public class MusicStoreActivity extends BaseActivity {
         int flag = 0;
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+       // transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.setCustomAnimations(R.animator.enter,R.animator.exit);
         switch (v.getId()){
             case R.id.view_menuitem_newmusic:
                 flag = 1;
