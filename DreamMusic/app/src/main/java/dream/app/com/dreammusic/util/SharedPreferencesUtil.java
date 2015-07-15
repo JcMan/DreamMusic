@@ -55,4 +55,16 @@ public class SharedPreferencesUtil {
         mEditor = getEditor(ApplicationConfig.SETTING);
         mEditor.putBoolean(SettingEntry.SETSLEEP,result);
     }
+
+    public static String getDefaultBgPath(){
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
+        String path = mPreference.getString(SettingEntry.BG,"001.jpg");
+        return path;
+    }
+
+    public static void setDefaultBgPath(String path){
+        mEditor= getEditor(ApplicationConfig.SETTING);
+        mEditor.putString(SettingEntry.BG,path);
+        mEditor.commit();
+    }
 }

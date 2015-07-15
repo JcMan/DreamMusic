@@ -17,10 +17,7 @@ import android.widget.TextView;
 
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.ui.activity.SearchActivity;
-import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.AnimUtil;
-import dream.app.com.dreammusic.util.DialogUtil;
-import dream.app.com.dreammusic.util.Messageutil;
 import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 
@@ -31,6 +28,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
     private View mLocalMusic,mMyLove,mMyMusicList,
             mDowdloadManager,mLocalHistory,mMusicStore,
             mCasuallyListen;
+    private View view_main;
     private FragmentClickListener mClickListener;
 
     private EditText mEdit;
@@ -59,6 +57,8 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         updateLocalMusicNumber();
     }
 
+
+
     private void updateLocalMusicNumber(){
         tv_localmusic_number.setText("" + MusicUtil.getLocalMusicNumber(getActivity()) + "首");
     }
@@ -71,7 +71,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
     /**
      * 设置监听器
      */
-    private void initListener() {
+    private void initListener(){
         mLocalMusic.setOnClickListener(this);
         mMyLove.setOnClickListener(this);
         mMyMusicList.setOnClickListener(this);
@@ -80,6 +80,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         mMusicStore.setOnClickListener(this);
         mCasuallyListen.setOnClickListener(this);
         mBtn.setOnClickListener(this);
+
     }
 
     /**
@@ -97,7 +98,10 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         mEdit = (EditText) v.findViewById(R.id.et_search_fragmentmain);
         mBtn = (Button) v.findViewById(R.id.btn_search_fragment);
 
+        view_main = v.findViewById(R.id.layout_fragment_main);
         tv_localmusic_number = (TextView) v.findViewById(R.id.tv_localmusic_number);
+
+
     }
 
     @Override

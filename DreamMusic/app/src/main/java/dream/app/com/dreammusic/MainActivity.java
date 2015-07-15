@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import org.json.JSONObject;
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.entry.BgEntry;
 import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
@@ -28,6 +30,7 @@ import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
 import dream.app.com.dreammusic.service.AlarmTimerService;
 import dream.app.com.dreammusic.ui.activity.AlarmTimerActivity;
+import dream.app.com.dreammusic.ui.activity.ChangeBgActivity;
 import dream.app.com.dreammusic.ui.activity.MessageActivity;
 import dream.app.com.dreammusic.ui.activity.MusicStoreActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
@@ -50,6 +53,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private android.app.Fragment mFragment;
     private View mDrawerView;
     private LoadingDialog loadingDialog;
+    private View view_main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -61,12 +65,18 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
        // bindService();
         loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
         mHandler = new Handler(this);
+        registerReceiver();
+    }
+
+    private void registerReceiver() {
+
     }
 
     @Override
     protected void onResume(){
         isForeground = true;
         updateLoginView();
+        updateBg();
         super.onResume();
 
     }
@@ -125,6 +135,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mLeftBack.setVisibility(View.GONE);
         mRightLogo.setVisibility(View.VISIBLE);
         mDrawerView = findViewById(R.id.drawer_layout);
+        view_main = findViewById(R.id.layout_activity_main);
         initLoginView();
         initMainView();
     }
@@ -161,6 +172,10 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mRightLogo.setOnClickListener(this);
     }
 
+    private void updateBg() {
+        view_main.setBackground(new BitmapDrawable(BgEntry.getDefaultBg(this)));
+    }
+
     /**
      * 打开或关闭侧滑菜单
      */
@@ -194,6 +209,10 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 break;
             case R.id.tv_set_sleep_time:
                 startNewActivity(AlarmTimerActivity.class);
+                break;
+            case R.id.tv_change_mainbg:
+                startNewActivity(ChangeBgActivity.class);
+                break;
             default:
                 break;
         }
