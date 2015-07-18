@@ -48,7 +48,6 @@ import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
-import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
@@ -240,40 +239,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         return false;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.tv_setting:
-                startNewActivity(SettingActivity.class);
-                break;
-            case R.id.tv_message:
-                startNewActivity(MessageActivity.class);
-                break;
-            case R.id.ib_top_logo_right:
-                clickOnRightLogo();
-                break;
-            case R.id.tv_set_sleep_time:
-                startNewActivity(AlarmTimerActivity.class);
-                break;
-            case R.id.tv_change_mainbg:
-                startNewActivity(ChangeBgActivity.class);
-                break;
-            case R.id.tv_exit:
-                exit();
-                break;
-            case R.id.ib_bottom_next:
-                playNext();
-                break;
-            case R.id.ib_bottom_pause:
-                pauseMusic();
-                break;
-            case R.id.ib_bottom_start:
-                startMusic();
-                break;
-            default:
-                break;
-        }
-    }
+
 
     private void startMusic() {
          mMusicService.start();
@@ -306,7 +272,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         updatePlayView();
     }
 
-
     private void startNewActivity(Class pclass){
         startNewActivity(pclass, AnimUtil.BASE_SLIDE_RIGHT_IN, AnimUtil.BASE_SLIDE_REMAIN);
     }
@@ -319,7 +284,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         stopService(new Intent(this,MusicService.class));
         finish();
     }
-
 
     @Override
     public void loginSuccess(JSONObject object) {
@@ -498,14 +462,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * @param position
      */
     @Override
-    public void onPlay(int position,int type) {
-        if(type==MusicService.TYPE_MUSIC_LOCAL){
-            if(mMusicService.getListType()!=MusicService.TYPE_MUSIC_LOCAL){
-                mMusicService.setMusicList(MusicUtil.queryLocalMusic(this),MusicService.TYPE_MUSIC_LOCAL);
-            }
-        }else if(type==MusicService.TYPE_MUSIC_DOWNLOAD){
-
-        }
+    public void onPlay(int position) {
         play(position);
     }
 
@@ -515,6 +472,41 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     @Override
     public void onUpdateMusicList(List<Music> list,int type) {
         mMusicService.setMusicList(list,type);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_setting:
+                startNewActivity(SettingActivity.class);
+                break;
+            case R.id.tv_message:
+                startNewActivity(MessageActivity.class);
+                break;
+            case R.id.ib_top_logo_right:
+                clickOnRightLogo();
+                break;
+            case R.id.tv_set_sleep_time:
+                startNewActivity(AlarmTimerActivity.class);
+                break;
+            case R.id.tv_change_mainbg:
+                startNewActivity(ChangeBgActivity.class);
+                break;
+            case R.id.tv_exit:
+                exit();
+                break;
+            case R.id.ib_bottom_next:
+                playNext();
+                break;
+            case R.id.ib_bottom_pause:
+                pauseMusic();
+                break;
+            case R.id.ib_bottom_start:
+                startMusic();
+                break;
+            default:
+                break;
+        }
     }
 
     public class MessageReceiver extends BroadcastReceiver {

@@ -294,7 +294,8 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mPlayMusicListener.onPlay(position, MusicService.TYPE_MUSIC_LOCAL);
+        mPlayMusicListener.onUpdateMusicList(mLocalList,MusicService.TYPE_MUSIC_LOCAL);
+        mPlayMusicListener.onPlay(position);
     }
 
     class LocalMusicPagerAdapter extends PagerAdapter{

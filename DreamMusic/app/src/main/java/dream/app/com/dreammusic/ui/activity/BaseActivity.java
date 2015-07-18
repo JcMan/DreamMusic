@@ -115,7 +115,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
     protected void startNewActivityWithAnim(Class pclass ,Intent intent){
         intent.setClass(this,pclass);
         startActivity(intent);
-        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+
     }
 
     protected void clickOnToggle() {
@@ -128,6 +128,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
      */
     protected void startNewActivity(Class pclass){
         startActivity(new Intent(this,pclass));
+        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     public void showMessage(String msg){

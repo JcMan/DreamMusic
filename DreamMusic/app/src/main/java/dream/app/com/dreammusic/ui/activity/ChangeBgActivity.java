@@ -77,7 +77,6 @@ public class ChangeBgActivity extends BaseActivity implements AdapterView.OnItem
             String[] bgList = am.list("bkgs");
             mBgList = new ArrayList<BgEntry>();
             for(String path:bgList){
-                Logger.e(path);
                 BgEntry bgEntry = new BgEntry();
                 InputStream is = am.open("bkgs/"+path);
                 Bitmap bitmap = BitmapFactory.decodeStream(is);

@@ -117,8 +117,14 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
             }
         }else if(v.getId()==R.id.view_local_music){
-           transaction.replace(R.id.fragment_main,new FragmentLocalMusic())
-            .addToBackStack(null).commit();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    transaction.replace(R.id.fragment_main,new FragmentLocalMusic())
+                            .addToBackStack(null).commit();
+                }
+            }).start();
+
         }else
             mClickListener.click(v.getId());
     }

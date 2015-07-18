@@ -16,6 +16,7 @@ public class SettingActivity extends BaseActivity{
 
     private Button mExitBtn;
     private View mExitLayout;
+    private View mAbout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,7 @@ public class SettingActivity extends BaseActivity{
         setTitle("设置");
         mExitLayout = findViewById(R.id.view_setting_exit);
         mExitBtn = (Button) findViewById(R.id.btn_setting_exit);
+        mAbout = findViewById(R.id.view_setting_about);
     }
 
     @Override
@@ -37,6 +39,7 @@ public class SettingActivity extends BaseActivity{
         super.initListener();
         mExitBtn.setOnClickListener(this);
         mExitLayout.setOnClickListener(this);
+        mAbout.setOnClickListener(this);
     }
 
     @Override
@@ -65,6 +68,9 @@ public class SettingActivity extends BaseActivity{
         switch (v.getId()){
             case R.id.btn_setting_exit:
                 logout();
+                break;
+            case R.id.view_setting_about:
+                startNewActivity(AboutActivity.class);
                 break;
         }
     }
