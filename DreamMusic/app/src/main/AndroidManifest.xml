@@ -58,6 +58,7 @@
 
         <!-- 自定义Service-->
         <service android:name=".service.AlarmTimerService"></service>
+        <service android:name=".service.MusicService"></service>
 
 
         <activity

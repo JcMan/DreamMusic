@@ -4,12 +4,18 @@
 package dream.app.com.dreammusic.util;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,5 +107,36 @@ public class MusicUtil  {
     public static String[] getMusicName(String fullname){
         String _S[] = fullname.split("-");
         return _S;
+    }
+
+    public static Bitmap getMusicBitemp(Context context, long songid,long albumid)
+    {
+        Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+
+        Bitmap bm = null;
+        // 专辑id和歌曲id小于0说明没有专辑、歌曲，并抛出异常
+        if (albumid < 0 && songid < 0) {
+            throw new IllegalArgumentException("Must specify an album or a song id");
+        }
+        try {
+            if (albumid < 0){
+                Uri uri = Uri.parse("content://media/external/audio/media/"+ songid + "/albumart");
+                ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
+                if (pfd != null) {
+                    FileDescriptor fd = pfd.getFileDescriptor();
+                    bm = BitmapFactory.decodeFileDescriptor(fd);
+                }
+            } else {
+                Uri uri = ContentUris.withAppendedId(sArtworkUri, albumid);
+                ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
+                if (pfd != null) {
+                    FileDescriptor fd = pfd.getFileDescriptor();
+                    bm = BitmapFactory.decodeFileDescriptor(fd);
+                } else {
+                    return null;
+                }
+            }
+        } catch (FileNotFoundException ex) {}
+        return bm;
     }
 }

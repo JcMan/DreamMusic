@@ -1,16 +1,21 @@
 package dream.app.com.dreammusic;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +34,7 @@ import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
 import dream.app.com.dreammusic.service.AlarmTimerService;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.activity.AlarmTimerActivity;
 import dream.app.com.dreammusic.ui.activity.ChangeBgActivity;
 import dream.app.com.dreammusic.ui.activity.MessageActivity;
@@ -43,29 +49,49 @@ import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
         FragmentMenuLogin.LoginListener,View.OnClickListener,
-        FragmentMain.FragmentClickListener{
+        FragmentMain.FragmentClickListener,SeekBar.OnSeekBarChangeListener,
+        MusicService.IMusicCompletionListener{
 
     public static boolean isForeground = false;
     private DrawerLayout mSlideMenu;
     private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit,mMessage;
-    private ImageButton mRightLogo,mLeftBack;
+    private TextView mMusicName,mSinger;
+    private ImageButton mRightLogo,mLeftBack,mNext,mStart,mPause;
+    private ImageView mSingerImg;
     private Handler mHandler;
     private android.app.Fragment mFragment;
     private View mDrawerView;
     private LoadingDialog loadingDialog;
     private View view_main;
+    private SeekBar mSeekBar;
+
+    private MusicService mMusicService;
+    private ServiceConnection conn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initUtil();
+        initVariable();
         initView();
         initListener();
-       // bindService();
         loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
         mHandler = new Handler(this);
         registerReceiver();
+        bindService();
+    }
+
+    private void initVariable() {
+        initConn();
+    }
+
+    /**
+     * 绑定服务
+     */
+    private void bindService() {
+        Intent intent = new Intent(this,MusicService.class);
+        boolean result = bindService(intent,conn,0);
     }
 
     private void registerReceiver() {
@@ -74,11 +100,10 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     @Override
     protected void onResume(){
+        super.onResume();
         isForeground = true;
         updateLoginView();
         updateBg();
-        super.onResume();
-
     }
 
     @Override
@@ -89,7 +114,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     @Override
     protected void onDestroy() {
-//        unregisterReceiver(mMessageReceiver);
         stopAllService();
         super.onDestroy();
     }
@@ -136,6 +160,16 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mRightLogo.setVisibility(View.VISIBLE);
         mDrawerView = findViewById(R.id.drawer_layout);
         view_main = findViewById(R.id.layout_activity_main);
+
+        mNext = (ImageButton) findViewById(R.id.ib_bottom_next);
+        mPause = (ImageButton) findViewById(R.id.ib_bottom_pause);
+        mStart = (ImageButton) findViewById(R.id.ib_bottom_start);
+
+        mSeekBar = (SeekBar) findViewById(R.id.probar_bottom);
+        mMusicName = (TextView) findViewById(R.id.tv_bottom_title);
+        mSinger = (TextView) findViewById(R.id.tv_bottom_singer);
+        mSingerImg = (ImageView) findViewById(R.id.iv_bottom_singer);
+        mSeekBar.setMax(0);
         initLoginView();
         initMainView();
     }
@@ -143,7 +177,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * 初始化MainFragment
      */
     private void initMainView(){
-        getFragmentManager().beginTransaction().add(R.id.fragment_main,new FragmentMain()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentMain()).commit();
     }
 
     /**
@@ -170,6 +204,11 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mMessage.setOnClickListener(this);
         mExit.setOnClickListener(this);
         mRightLogo.setOnClickListener(this);
+
+        mNext.setOnClickListener(this);
+        mPause.setOnClickListener(this);
+        mStart.setOnClickListener(this);
+        mSeekBar.setOnSeekBarChangeListener(this);
     }
 
     private void updateBg() {
@@ -188,7 +227,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     }
     @Override
     public boolean handleMessage(Message msg){
-
+        mSeekBar.setProgress(mMusicService.getPlayerPosition());
+        mHandler.sendEmptyMessageDelayed(0,500);
         return false;
     }
 
@@ -196,10 +236,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tv_setting:
-                startSettingActivity();
-                break;
-            case R.id.tv_exit:
-                exit();
+                startNewActivity(SettingActivity.class);
                 break;
             case R.id.tv_message:
                 startNewActivity(MessageActivity.class);
@@ -213,31 +250,56 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             case R.id.tv_change_mainbg:
                 startNewActivity(ChangeBgActivity.class);
                 break;
+            case R.id.tv_exit:
+                exit();
+                break;
+            case R.id.ib_bottom_next:
+                playNext();
+                break;
+            case R.id.ib_bottom_pause:
+                pauseMusic();
+                break;
+            case R.id.ib_bottom_start:
+                startMusic();
+                break;
             default:
                 break;
         }
     }
 
-    private void startAlarmTimerActivity() {
-        startNewActivity(AlarmTimerActivity.class,AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+    private void startMusic() {
+         mMusicService.start();
+         updatePlayView();
+    }
+
+    private void play(int position){
+        mMusicService.play(position);
+    }
+
+    private void pauseMusic() {
+        mMusicService.pause();
+        updatePlayView();
+    }
+
+    private boolean isPlaying(){
+        return mMusicService.getState()==MusicService.STATE_PALYING;
+    }
+
+    private boolean isPause(){
+        return mMusicService.getState()==MusicService.STATE_PAUSE;
     }
 
     /**
-     * 打开MessageActivity
+     * 下一首
      */
-    private void startMessageActivity() {
-        startNewActivity(MessageActivity.class, AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+    private void playNext() {
+        mMusicService.next();
+        updatePlayView();
     }
 
-    /**
-     * 打开SettingActivity
-     */
-    private void startSettingActivity() {
-        startNewActivity(SettingActivity.class, AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
-    }
 
     private void startNewActivity(Class pclass){
-        startNewActivity(pclass, AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+        startNewActivity(pclass, AnimUtil.BASE_SLIDE_RIGHT_IN, AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     /**
@@ -283,7 +345,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     protected void startNewActivity(Class pclass,int inStyle,int outStyle){
         startActivity(new Intent(this,pclass));
-        overridePendingTransition(inStyle,outStyle);
+        overridePendingTransition(inStyle, outStyle);
     }
 
 
@@ -333,7 +395,85 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     protected void startNewActivityWithAnim(Class pclass ,Intent intent){
         intent.setClass(this,pclass);
         startActivity(intent);
-        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN, AnimUtil.BASE_SLIDE_REMAIN);
+    }
+
+    /**
+     * 连接MusicService
+     */
+    private void initConn(){
+        conn = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mMusicService = ((MusicService.MusicBinder)service).getService();
+                mMusicService.setOnMusicCompletion(MainActivity.this);
+                if(mMusicService.isStop()){
+                    play(0);
+                    pauseMusic();
+                }
+                initPlayView();
+            }
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mMusicService = null;
+            }
+        };
+    }
+
+    /**
+     * 更新播放界面
+     */
+    private void initPlayView() {
+        if(mMusicService!=null&&mMusicService.getPosition()!=-1){
+            updatePlayView();
+        }
+    }
+
+    private void updatePlayView(){
+        int state = mMusicService.getState();
+        mSeekBar.setMax(mMusicService.getMusicDuration());
+        mHandler.sendEmptyMessageDelayed(0,500);
+        updateNameAndSingerAndImg();
+        updatePlayerView(state);
+    }
+
+    private void updateNameAndSingerAndImg() {
+        String name = mMusicService.getMusicName();
+        String singer = mMusicService.getSinger();
+        mMusicName.setText(name);
+        mSinger.setText(singer);
+    }
+
+    private void updatePlayerView(int state) {
+        if(state==MusicService.STATE_PALYING){
+            mPause.setVisibility(View.VISIBLE);
+            mStart.setVisibility(View.GONE);
+        }else if(state==MusicService.STATE_PAUSE||state==MusicService.STATE_STOP){
+            mPause.setVisibility(View.GONE);
+            mStart.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * 歌曲播放完成播放下一曲
+     */
+    @Override
+    public void onMusicCompletion() {
+        updatePlayView();
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        int position = seekBar.getProgress();
+        mMusicService.seekTo(position);
     }
 
     public class MessageReceiver extends BroadcastReceiver {

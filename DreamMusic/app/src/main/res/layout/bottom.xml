@@ -10,7 +10,7 @@
         android:layout_height="@dimen/d_bottom_icon"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/d_text_padding"
-        android:src="@drawable/singer"
+        android:src="@drawable/ic_launcher"
         android:scaleType="fitXY"
         />
     <RelativeLayout
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/probar_bottom"
             android:layout_marginLeft="5dp"
-            android:text="微博控"
+            android:maxLength="11"
             android:textColor="@color/color_dark_gray"
             android:textSize="@dimen/text_size_ss"
             />
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="许嵩"
+            android:text=""
             android:textSize="13sp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
@@ -55,12 +55,14 @@
             style="@style/bottom_btn"
             />
         <ImageButton
+            android:id="@+id/ib_bottom_pause"
             style="@style/bottom_btn"
             android:background="@drawable/bottom_btn_play_selector"
             android:layout_toLeftOf="@id/ib_bottom_next"
             android:visibility="gone"
             />
         <ImageButton
+            android:id="@+id/ib_bottom_start"
             style="@style/bottom_btn"
             android:background="@drawable/bottom_btn_pause_selector"
             android:layout_toLeftOf="@id/ib_bottom_next"

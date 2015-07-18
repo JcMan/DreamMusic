@@ -8,11 +8,11 @@ import android.view.KeyEvent;
 
 import java.io.File;
 
-import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.service.AlarmTimerService;
+import dream.app.com.dreammusic.service.MusicService;
 
 /**
  * Created by JcMan on 2015/6/29.
@@ -36,6 +36,7 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
 
     private void startService() {
         startService(new Intent(this, AlarmTimerService.class));
+        startService(new Intent(this, MusicService.class));
     }
 
     private void initDirs() {
@@ -57,19 +58,18 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         return false;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        JPushInterface.onPause(this);
+        //JPushInterface.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        JPushInterface.onResume(this);
+        //JPushInterface.onResume(this);
     }
 }
