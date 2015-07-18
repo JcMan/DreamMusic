@@ -24,6 +24,8 @@ import com.app.tool.logger.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.config.ApplicationConfig;
@@ -33,6 +35,8 @@ import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
 import dream.app.com.dreammusic.fragment.FragmentMenuUser;
 import dream.app.com.dreammusic.jpush.ExampleUtil;
+import dream.app.com.dreammusic.model.Music;
+import dream.app.com.dreammusic.myinterface.FragmentPlayMusicListener;
 import dream.app.com.dreammusic.service.AlarmTimerService;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.activity.AlarmTimerActivity;
@@ -44,13 +48,14 @@ import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
+import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
         FragmentMenuLogin.LoginListener,View.OnClickListener,
         FragmentMain.FragmentClickListener,SeekBar.OnSeekBarChangeListener,
-        MusicService.IMusicCompletionListener{
+        MusicService.IMusicCompletionListener,FragmentPlayMusicListener{
 
     public static boolean isForeground = false;
     private DrawerLayout mSlideMenu;
@@ -114,6 +119,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     @Override
     protected void onDestroy() {
+        mHandler.removeMessages(0);
         stopAllService();
         super.onDestroy();
     }
@@ -227,8 +233,10 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     }
     @Override
     public boolean handleMessage(Message msg){
-        mSeekBar.setProgress(mMusicService.getPlayerPosition());
-        mHandler.sendEmptyMessageDelayed(0,500);
+        if(mMusicService!=null){
+            mSeekBar.setProgress(mMusicService.getPlayerPosition());
+            mHandler.sendEmptyMessageDelayed(0,500);
+        }
         return false;
     }
 
@@ -274,6 +282,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     private void play(int position){
         mMusicService.play(position);
+        updatePlayView();
     }
 
     private void pauseMusic() {
@@ -306,6 +315,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * 退出程序
      */
     private void exit() {
+        mMusicService.stop();
+        stopService(new Intent(this,MusicService.class));
         finish();
     }
 
@@ -437,6 +448,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         updatePlayerView(state);
     }
 
+
+
     private void updateNameAndSingerAndImg() {
         String name = mMusicService.getMusicName();
         String singer = mMusicService.getSinger();
@@ -473,7 +486,35 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         int position = seekBar.getProgress();
+        seekTo(position);
+    }
+
+    private void seekTo(int position) {
         mMusicService.seekTo(position);
+    }
+
+    /**
+     * 来自Fragment的播放音乐的接口
+     * @param position
+     */
+    @Override
+    public void onPlay(int position,int type) {
+        if(type==MusicService.TYPE_MUSIC_LOCAL){
+            if(mMusicService.getListType()!=MusicService.TYPE_MUSIC_LOCAL){
+                mMusicService.setMusicList(MusicUtil.queryLocalMusic(this),MusicService.TYPE_MUSIC_LOCAL);
+            }
+        }else if(type==MusicService.TYPE_MUSIC_DOWNLOAD){
+
+        }
+        play(position);
+    }
+
+    /**
+     * 来自Fragment的播放音乐的接口
+     */
+    @Override
+    public void onUpdateMusicList(List<Music> list,int type) {
+        mMusicService.setMusicList(list,type);
     }
 
     public class MessageReceiver extends BroadcastReceiver {

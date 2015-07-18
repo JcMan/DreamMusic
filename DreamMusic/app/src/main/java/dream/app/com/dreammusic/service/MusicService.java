@@ -174,6 +174,14 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         listener.onMusicCompletion();
     }
 
+    public int getListType(){
+        return mListType;
+    }
+
+    public void setListType(int type){
+        mListType = type;
+    }
+
     public void setOnMusicCompletion(IMusicCompletionListener listener){
         this.listener = listener;
     }

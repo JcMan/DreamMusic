@@ -1,5 +1,6 @@
 package dream.app.com.dreammusic.fragment;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import java.util.List;
 
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.model.Music;
+import dream.app.com.dreammusic.myinterface.FragmentPlayMusicListener;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.ScrollRelativeLayout;
 import dream.app.com.dreammusic.ui.view.ViewIndicator;
 import dream.app.com.dreammusic.util.MusicUtil;
@@ -36,7 +39,8 @@ import dream.app.com.dreammusic.util.ToastUtil;
 /**
  * Created by JcMan on 2015/7/9.
  */
-public class FragmentLocalMusic extends Fragment implements View.OnClickListener,AdapterView.OnItemLongClickListener{
+public class FragmentLocalMusic extends Fragment implements View.OnClickListener,
+        AdapterView.OnItemLongClickListener,AdapterView.OnItemClickListener{
     private ViewPager mPager;
     private List<View> mViewList;
     private ViewIndicator mIndicator;
@@ -61,6 +65,7 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
         mLocalMusicListView.setOnClickListener(this);
         mLoveBetterView.setOnClickListener(this);
         mPager.setOnPageChangeListener(mPagerChangeListener);
+        _List_local.setOnItemClickListener(this);
     }
 
     /**
@@ -206,8 +211,10 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
             boolean result = file.delete();
             mLocalList.remove(position);
             adapter.notifyDataSetChanged();
-            if (result)
+            if (result){
                 ToastUtil.showMessage(getActivity(), "删除成功");
+                mPlayMusicListener.onUpdateMusicList(mLocalList,MusicService.TYPE_MUSIC_LOCAL);
+            }
             else
                 ToastUtil.showMessage(getActivity(),"删除失败");
         }
@@ -278,6 +285,16 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
         params.width = (int)(d.getWidth()*0.8);
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialogWindow.setAttributes(params);
+    }
+
+    private FragmentPlayMusicListener mPlayMusicListener;
+    public void setPlayMusicListener(FragmentPlayMusicListener listener){
+        mPlayMusicListener = listener;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        mPlayMusicListener.onPlay(position, MusicService.TYPE_MUSIC_LOCAL);
     }
 
     class LocalMusicPagerAdapter extends PagerAdapter{
@@ -362,5 +379,11 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
             TextView mTitle;
             TextView mArtist;
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setPlayMusicListener((FragmentPlayMusicListener)getActivity());
     }
 }
