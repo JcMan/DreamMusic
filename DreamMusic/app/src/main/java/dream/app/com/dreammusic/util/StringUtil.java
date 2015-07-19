@@ -28,6 +28,7 @@ public class StringUtil {
         try {
             in = new FileInputStream(new File(path));
             size = in.available()/(1024*1024*1.0);
+            in.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

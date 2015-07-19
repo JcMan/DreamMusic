@@ -26,7 +26,6 @@ import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.myinterface.FragmentPlayMusicListener;
 import dream.app.com.dreammusic.ui.view.PullToRefreshLayout;
 import dream.app.com.dreammusic.util.MusicUtil;
-import dream.app.com.dreammusic.util.ToastUtil;
 
 /**
  * Created by Administrator on 2015/7/19.
@@ -35,9 +34,9 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
 
     private ListView mListView;
     private List<Music> mList;
+    List<Music> _List ;
     private FragmentPlayMusicListener mListener;
     private SuiBianTingAdapter adapter;
-
     private PullToRefreshLayout refreshLayout;
     private View loading;
     private RotateAnimation loadingAnimation;
@@ -55,11 +54,12 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
     private void initView(View view) {
         mListView = (ListView) view.findViewById(R.id.listview_suibianting);
         mListView.setOnItemClickListener(this);
-        initList();
+        _List = MusicUtil.queryLocalMusic(getActivity());
+        if(mList==null)
+            initList();
         init(view);
         adapter = new SuiBianTingAdapter();
         mListView.setAdapter(adapter);
-
     }
 
     private void init(View v) {
@@ -74,7 +74,6 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
     }
 
     private void initList() {
-        List<Music> _List = MusicUtil.queryLocalMusic(getActivity());
         List<Integer> _ListNum = new ArrayList<Integer>();
         mList = new ArrayList<Music>();
         int size = _List.size()<7?_List.size():7;
@@ -114,8 +113,14 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
             @Override
             public void handleMessage(Message msg){
                 refreshLayout.refreshFinish(PullToRefreshLayout.REFRESH_SUCCEED);
-                initList();
-                adapter.notifyDataSetChanged();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initList();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
             }
         }.sendEmptyMessageDelayed(0, 2000);
     }
