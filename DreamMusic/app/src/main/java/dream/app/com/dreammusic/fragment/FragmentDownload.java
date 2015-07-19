@@ -19,7 +19,6 @@ import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.myinterface.FragmentPlayMusicListener;
-import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.util.MusicUtil;
 
 /**
@@ -49,7 +48,7 @@ public class FragmentDownload extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mListener.onUpdateMusicList(mList, MusicService.TYPE_MUSIC_DOWNLOAD);
+        mListener.onUpdateMusicList(mList);
         mListener.onPlay(position);
     }
 

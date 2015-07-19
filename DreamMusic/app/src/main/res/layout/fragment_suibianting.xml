@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/color_default_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:text="随便听听"
+        android:background="@color/color_white"
+        android:textColor="@color/color_top_bg"
+        android:textSize="@dimen/text_size_ssss"
+        android:gravity="center_vertical"
+        android:paddingLeft="16sp"
+        android:drawableLeft="@drawable/music_note"
+        android:drawablePadding="5dp"
+        />
+    <ListView
+        android:layout_weight="1"
+        android:id="@+id/listview_suibianting"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp">
+    </ListView>
+    <Button
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@+id/btn_cancel_alarm"
+        android:id="@+id/btn_change_list"
+        android:textColor="@color/color_white"
+        android:background="@drawable/btn_download"
+        android:text="换一批"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

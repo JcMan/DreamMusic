@@ -29,7 +29,6 @@ import java.util.List;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.myinterface.FragmentPlayMusicListener;
-import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.ScrollRelativeLayout;
 import dream.app.com.dreammusic.ui.view.ViewIndicator;
 import dream.app.com.dreammusic.util.MusicUtil;
@@ -213,7 +212,7 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
             adapter.notifyDataSetChanged();
             if (result){
                 ToastUtil.showMessage(getActivity(), "删除成功");
-                mPlayMusicListener.onUpdateMusicList(mLocalList,MusicService.TYPE_MUSIC_LOCAL);
+                mPlayMusicListener.onUpdateMusicList(mLocalList);
             }
             else
                 ToastUtil.showMessage(getActivity(),"删除失败");
@@ -294,7 +293,7 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mPlayMusicListener.onUpdateMusicList(mLocalList,MusicService.TYPE_MUSIC_LOCAL);
+        mPlayMusicListener.onUpdateMusicList(mLocalList);
         mPlayMusicListener.onPlay(position);
     }
 

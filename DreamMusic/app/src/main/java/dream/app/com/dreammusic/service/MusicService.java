@@ -21,6 +21,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
     public static final int TYPE_MUSIC_LOCAL = 0;
     public static final int TYPE_MUSIC_DOWNLOAD = 1;
+    public static final int TYPE_MUSIC_SUIBIANTING = 2;
 
     public static final int STATE_PALYING  = 0;
     public static final int STATE_PAUSE  = 1;
@@ -44,15 +45,23 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public void onCreate() {
         super.onCreate();
-        setMusicList(MusicUtil.queryLocalMusic(this),TYPE_MUSIC_LOCAL);
+        setMusicList(MusicUtil.queryLocalMusic(this));
         mPlayer = new MediaPlayer();
         mPlayer.setOnCompletionListener(this);
     }
 
+    public void setMusicList(List<Music> list){
+        mMusicList = list;
+    }
     public void setMusicList(List<Music> list,int type){
         mMusicList = list;
         mListType = type;
     }
+
+    public List<Music> getMusicList(){
+        return mMusicList;
+    }
+
 
     public int getPlayerPosition(){
         return mPlayer.getCurrentPosition();

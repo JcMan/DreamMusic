@@ -112,8 +112,15 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
             openLocalMusicFragment();
         }else if(v.getId()==R.id.view_download_manager){
             openDownloadFragment();
+        }else if(v.getId()==R.id.view_casually_listen){
+            openSuiBianTingFragment();
         }else
             mClickListener.click(v.getId());
+    }
+
+    private void openSuiBianTingFragment() {
+        transaction.replace(R.id.fragment_main,new FragmentSuiBianTing())
+                .addToBackStack(null).commit();
     }
 
     private void openDownloadFragment() {

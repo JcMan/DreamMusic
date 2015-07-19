@@ -97,7 +97,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      */
     private void bindService() {
         Intent intent = new Intent(this,MusicService.class);
-        boolean result = bindService(intent,conn,0);
+        bindService(intent,conn,0);
     }
 
     private void registerReceiver() {
@@ -482,8 +482,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * 来自Fragment的播放音乐的接口
      */
     @Override
-    public void onUpdateMusicList(List<Music> list,int type) {
-        mMusicService.setMusicList(list,type);
+    public void onUpdateMusicList(List<Music> list) {
+        mMusicService.setMusicList(list);
     }
 
     @Override
@@ -538,7 +538,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     }
 
     class AlarmTimerReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             mMusicService.pause();

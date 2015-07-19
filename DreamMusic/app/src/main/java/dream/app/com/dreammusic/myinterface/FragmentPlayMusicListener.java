@@ -11,5 +11,5 @@ public interface FragmentPlayMusicListener {
 
     public void onPlay(int position);
 
-    public void onUpdateMusicList(List<Music> list,int type);
+    public void onUpdateMusicList(List<Music> list);
 }
