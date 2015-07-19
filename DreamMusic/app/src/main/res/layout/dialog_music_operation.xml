@@ -30,5 +30,10 @@
     <View
         style="@style/SplitLine"
         />
+    <TextView
+        android:id="@+id/tv_dialogitem_add_to_love"
+        style="@style/text_dailog_music"
+        android:text="特别喜欢"
+        />
 
 </LinearLayout>

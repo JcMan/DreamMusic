@@ -90,7 +90,6 @@ public class FragmentDownload extends Fragment implements AdapterView.OnItemClic
             if(convertView==null){
                 holder = new LocalHolder();
                 convertView=View.inflate(getActivity(),R.layout.item_localmusic_list,null);
-                holder.mImageView = (ImageButton) convertView.findViewById(R.id.iv_local);
                 holder.mTitle = (TextView) convertView.findViewById(R.id.tv_item_local_title);
                 convertView.setTag(holder);
             }else{

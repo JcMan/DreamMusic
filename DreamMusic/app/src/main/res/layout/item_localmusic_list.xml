@@ -6,33 +6,9 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="45dp">
+
         <RelativeLayout
-            android:layout_centerVertical="true"
-            android:id="@+id/v_local"
             android:layout_marginLeft="16dp"
-            android:layout_width="15dp"
-            android:layout_height="15dp">
-            <ImageButton
-                android:id="@+id/iv_local"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="16dp"
-                android:scaleType="centerInside"
-                android:background="@drawable/btn_add_love_state"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                />
-            <ImageButton
-                android:id="@+id/iv_love"
-                android:layout_centerInParent="true"
-                android:scaleType="centerInside"
-                android:background="@drawable/btn_minus_love"
-                android:visibility="gone"
-                android:layout_width="15dp"
-                android:layout_height="15dp" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/v_local"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
             <TextView

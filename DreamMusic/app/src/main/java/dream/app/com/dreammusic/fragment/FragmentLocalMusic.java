@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -168,10 +167,12 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
         TextView tv_detail = (TextView) _View.findViewById(R.id.tv_dialogitem_detail);
         TextView tv_rename = (TextView) _View.findViewById(R.id.tv_dialogitem_rename);
         TextView tv_delete = (TextView) _View.findViewById(R.id.tv_dialogitem_delete);
+        TextView tv_add_to_love = (TextView) _View.findViewById(R.id.tv_dialogitem_add_to_love);
         View.OnClickListener listener = getDialogItemClickListener(dialog,position);
         tv_detail.setOnClickListener(listener);
         tv_rename.setOnClickListener(listener);
         tv_delete.setOnClickListener(listener);
+        tv_add_to_love.setOnClickListener(listener);
     }
 
     /**
@@ -193,6 +194,9 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
                         break;
                     case R.id.tv_dialogitem_delete:
                         deleteMusicFile(position);
+                        break;
+                    case R.id.tv_dialogitem_add_to_love:
+                        ToastUtil.showMessage(getActivity(),"<"+music.musicName+">添加到特别喜欢");
                         break;
                 }
             }
@@ -353,7 +357,6 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
             if(convertView==null){
                 holder = new LocalHolder();
                 convertView=View.inflate(getActivity(),R.layout.item_localmusic_list,null);
-                holder.mImageView = (ImageButton) convertView.findViewById(R.id.iv_local);
                 holder.mTitle = (TextView) convertView.findViewById(R.id.tv_item_local_title);
                 convertView.setTag(holder);
             }else{
@@ -375,9 +378,7 @@ public class FragmentLocalMusic extends Fragment implements View.OnClickListener
             return convertView;
         }
         class LocalHolder{
-            ImageButton mImageView;
             TextView mTitle;
-            TextView mArtist;
         }
     }
 
