@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.service.AlarmTimerService;
 import dream.app.com.dreammusic.ui.view.CircleTimerView;
 import dream.app.com.dreammusic.util.AnimUtil;
@@ -88,8 +89,9 @@ public class AlarmTimerActivity extends BaseActivity implements CircleTimerView.
 
     private void cancelAlarm(){
         if(mCircleTimerView.getState()==mCircleTimerView.STATE_START){
-              mCircleTimerView.pauseTimer();
-              mAlarmTimerService.setCurrentTime(0);
+            mCircleTimerView.pauseTimer();
+            mAlarmTimerService.setCurrentTime(0);
+            mAlarmTimerService.setState(AlarmTimerService.STATE_CANCEL);
             setbtnVisible(1);
         }
     }
@@ -99,6 +101,7 @@ public class AlarmTimerActivity extends BaseActivity implements CircleTimerView.
             mAlarmTimerService.setCurrentTime(currentTime);
             mCircleTimerView.startTimer();
             setbtnVisible(0);
+            mAlarmTimerService.setState(AlarmTimerService.STATE_ALARM);
         }
     }
 
@@ -144,6 +147,9 @@ public class AlarmTimerActivity extends BaseActivity implements CircleTimerView.
     public void onTimerStop() {
         //Logger.e("TimeStop");
         setbtnVisible(1);
+        sendBroadcast(new Intent(ApplicationConfig.RECEIVER_ALARM));
+        mAlarmTimerService.setState(AlarmTimerService.STATE_CANCEL);
+
     }
 
     @Override
@@ -154,5 +160,8 @@ public class AlarmTimerActivity extends BaseActivity implements CircleTimerView.
     @Override
     public void onTimerPause() {
       //  Logger.e("TimePause");
+
     }
+
+
 }

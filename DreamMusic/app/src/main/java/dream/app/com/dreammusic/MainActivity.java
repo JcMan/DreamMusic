@@ -54,7 +54,7 @@ import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
         FragmentMenuLogin.LoginListener,View.OnClickListener,
         FragmentMain.FragmentClickListener,SeekBar.OnSeekBarChangeListener,
-        MusicService.IMusicCompletionListener,FragmentPlayMusicListener{
+        MusicService.IMusicCompletionListener,FragmentPlayMusicListener {
 
     public static boolean isForeground = false;
     private DrawerLayout mSlideMenu;
@@ -68,6 +68,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private LoadingDialog loadingDialog;
     private View view_main;
     private SeekBar mSeekBar;
+
+    AlarmTimerReceiver receiver_alarm;
 
     private MusicService mMusicService;
     private ServiceConnection conn;
@@ -91,7 +93,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     }
 
     /**
-     * 绑定服务
+     * 绑定音乐服务
      */
     private void bindService() {
         Intent intent = new Intent(this,MusicService.class);
@@ -99,7 +101,13 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     }
 
     private void registerReceiver() {
+        receiver_alarm = new AlarmTimerReceiver();
+        IntentFilter filter = new IntentFilter(ApplicationConfig.RECEIVER_ALARM);
+        registerReceiver(receiver_alarm,filter);
+    }
 
+    private void unregisterReceiver(){
+        unregisterReceiver(receiver_alarm);
     }
 
     @Override
@@ -107,6 +115,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         super.onResume();
         isForeground = true;
         updateLoginView();
+        updatePlayView();
         updateBg();
     }
 
@@ -120,8 +129,11 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     protected void onDestroy() {
         mHandler.removeMessages(0);
         stopAllService();
+        unregisterReceiver();
         super.onDestroy();
     }
+
+
 
     /**
      * 关闭所有服务
@@ -405,14 +417,14 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     }
 
     private void updatePlayView(){
-        int state = mMusicService.getState();
-        mSeekBar.setMax(mMusicService.getMusicDuration());
-        mHandler.sendEmptyMessageDelayed(0,500);
-        updateNameAndSingerAndImg();
-        updatePlayerView(state);
+        if(mMusicService!=null){
+            int state = mMusicService.getState();
+            mSeekBar.setMax(mMusicService.getMusicDuration());
+            mHandler.sendEmptyMessageDelayed(0,500);
+            updateNameAndSingerAndImg();
+            updatePlayerView(state);
+        }
     }
-
-
 
     private void updateNameAndSingerAndImg() {
         String name = mMusicService.getMusicName();
@@ -520,9 +532,16 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
                 if (!ExampleUtil.isEmpty(extras)) {
                     showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
-
                 }
             }
+        }
+    }
+
+    class AlarmTimerReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mMusicService.pause();
         }
     }
 }

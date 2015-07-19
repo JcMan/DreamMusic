@@ -7,23 +7,36 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 
+import dream.app.com.dreammusic.config.ApplicationConfig;
+
 /**
  * Created by JcMan on 2015/7/12.
  */
 public class AlarmTimerService extends Service {
 
+    public static final int STATE_ALARM = 0;
+    public static final int STATE_CANCEL = 1;
+
     private int currentTime = 0;
+    private int mState = STATE_CANCEL;
+
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(currentTime>=1){
                 currentTime--;
-//                Logger.e(""+currentTime);
+            }else if(mState==STATE_ALARM){
+                sendBroadcast(new Intent(ApplicationConfig.RECEIVER_ALARM));
+                mState = STATE_CANCEL;
             }
             mHandler.sendEmptyMessageDelayed(0, 1000);
         }
     };
+
+    public void setState(int state){
+        mState = state;
+    }
     @Override
     public IBinder onBind(Intent intent) {
         return new AlarmTimerBinder();

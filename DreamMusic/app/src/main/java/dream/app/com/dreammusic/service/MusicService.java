@@ -102,8 +102,6 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     public void next(){
         if(mCurrentPosition+1<mMusicList.size()){
             play(++mCurrentPosition);
-        }else{
-            mState = STATE_STOP;
         }
     }
 
@@ -115,8 +113,10 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     }
 
     public void stop(){
-        mPlayer.stop();
-        mState = STATE_STOP;
+        if(mState!=STATE_STOP){
+            mPlayer.stop();
+            mState = STATE_STOP;
+        }
     }
 
     Music getMusic(int position){
