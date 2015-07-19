@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import dream.app.com.dreammusic.R;
@@ -30,6 +31,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
             mCasuallyListen;
     private View view_main;
     private FragmentClickListener mClickListener;
+    private ImageButton mDianGe;
 
     private EditText mEdit;
     private Button mBtn;
@@ -80,6 +82,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         mMusicStore.setOnClickListener(this);
         mCasuallyListen.setOnClickListener(this);
         mBtn.setOnClickListener(this);
+        mDianGe.setOnClickListener(this);
 
     }
 
@@ -97,11 +100,10 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
 
         mEdit = (EditText) v.findViewById(R.id.et_search_fragmentmain);
         mBtn = (Button) v.findViewById(R.id.btn_search_fragment);
+        mDianGe = (ImageButton) v.findViewById(R.id.ib_fagment_main_diange);
 
         view_main = v.findViewById(R.id.layout_fragment_main);
         tv_localmusic_number = (TextView) v.findViewById(R.id.tv_localmusic_number);
-
-
     }
 
     @Override

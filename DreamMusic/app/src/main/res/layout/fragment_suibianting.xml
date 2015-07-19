@@ -16,21 +16,19 @@
         android:drawableLeft="@drawable/music_note"
         android:drawablePadding="5dp"
         />
-    <ListView
-        android:layout_weight="1"
-        android:id="@+id/listview_suibianting"
+    <dream.app.com.dreammusic.ui.view.PullToRefreshLayout
+        android:id="@+id/refreshview"
         android:layout_width="fill_parent"
-        android:layout_height="0dp">
-    </ListView>
-    <Button
-        android:layout_margin="10dp"
-        android:layout_toRightOf="@+id/btn_cancel_alarm"
-        android:id="@+id/btn_change_list"
-        android:textColor="@color/color_white"
-        android:background="@drawable/btn_download"
-        android:text="换一批"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        />
-
+        android:layout_height="fill_parent">
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/refresh_head" />
+        <ListView
+            android:id="@+id/listview_suibianting"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <requestFocus />
+        </ListView>
+    </dream.app.com.dreammusic.ui.view.PullToRefreshLayout>
 </LinearLayout>

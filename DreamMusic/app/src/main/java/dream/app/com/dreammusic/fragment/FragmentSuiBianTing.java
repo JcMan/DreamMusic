@@ -3,13 +3,17 @@ package dream.app.com.dreammusic.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,23 +24,29 @@ import java.util.Random;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.myinterface.FragmentPlayMusicListener;
+import dream.app.com.dreammusic.ui.view.PullToRefreshLayout;
 import dream.app.com.dreammusic.util.MusicUtil;
+import dream.app.com.dreammusic.util.ToastUtil;
 
 /**
  * Created by Administrator on 2015/7/19.
  */
-public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemClickListener,View.OnClickListener{
+public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemClickListener,PullToRefreshLayout.OnRefreshListener{
 
     private ListView mListView;
     private List<Music> mList;
     private FragmentPlayMusicListener mListener;
-    private Button mBtnChange;
     private SuiBianTingAdapter adapter;
+
+    private PullToRefreshLayout refreshLayout;
+    private View loading;
+    private RotateAnimation loadingAnimation;
+    private TextView loadTextView;
 
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_suibianting,container,false);
         initView(view);
         return view;
@@ -44,12 +54,22 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
 
     private void initView(View view) {
         mListView = (ListView) view.findViewById(R.id.listview_suibianting);
-        mBtnChange = (Button) view.findViewById(R.id.btn_change_list);
-        mBtnChange.setOnClickListener(this);
         mListView.setOnItemClickListener(this);
         initList();
+        init(view);
         adapter = new SuiBianTingAdapter();
         mListView.setAdapter(adapter);
+
+    }
+
+    private void init(View v) {
+        refreshLayout = (PullToRefreshLayout) v.findViewById(R.id.refreshview);
+        refreshLayout.setOnRefreshListener(this);
+        //initExpandableListView();
+        loadingAnimation = (RotateAnimation) AnimationUtils.loadAnimation(getActivity(), R.anim.rotating);
+        // 添加匀速转动动画
+        LinearInterpolator lir = new LinearInterpolator();
+        loadingAnimation.setInterpolator(lir);
 
     }
 
@@ -57,8 +77,8 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
         List<Music> _List = MusicUtil.queryLocalMusic(getActivity());
         List<Integer> _ListNum = new ArrayList<Integer>();
         mList = new ArrayList<Music>();
-        int size = _List.size()<10?_List.size():10;
-        while(mList.size()<=9){
+        int size = _List.size()<7?_List.size():7;
+        while(mList.size()<=size){
             int num = new Random().nextInt(_List.size());
             int flag = 1;
             for(int i=0;i<_ListNum.size();i++){
@@ -70,7 +90,6 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
                 mList.add(_List.get(num));
             }
         }
-
     }
 
     @Override
@@ -85,11 +104,20 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
         mListener = (FragmentPlayMusicListener)getActivity();
     }
 
+    /**
+     * 下拉刷新
+     */
     @Override
-    public void onClick(View v) {
-        initList();
-        adapter.notifyDataSetChanged();
-
+    public void onRefresh() {
+        new Handler()
+        {
+            @Override
+            public void handleMessage(Message msg){
+                refreshLayout.refreshFinish(PullToRefreshLayout.REFRESH_SUCCEED);
+                initList();
+                adapter.notifyDataSetChanged();
+            }
+        }.sendEmptyMessageDelayed(0, 2000);
     }
 
     class SuiBianTingAdapter extends BaseAdapter{

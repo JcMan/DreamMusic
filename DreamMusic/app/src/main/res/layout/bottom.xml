@@ -33,9 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/probar_bottom"
             android:layout_marginLeft="5dp"
-            android:maxLength="11"
             android:textColor="@color/color_dark_gray"
             android:textSize="@dimen/text_size_ss"
+            android:singleLine="true"
             />
         <TextView
             android:id="@+id/tv_bottom_singer"

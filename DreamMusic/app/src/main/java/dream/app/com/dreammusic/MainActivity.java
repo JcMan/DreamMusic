@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Random;
 
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
@@ -48,6 +49,7 @@ import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
+import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
@@ -370,7 +372,18 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             case R.id.view_music_store:
                 startMusicStoreActivity();
                 break;
+            case R.id.ib_fagment_main_diange:
+                dianGe();
+                break;
         }
+    }
+
+    /**
+     * 点歌
+     */
+    private void dianGe() {
+        int num = new Random().nextInt(MusicUtil.getLocalMusicNumber(this));
+        play(num);
     }
 
     private void startMusicStoreActivity() {

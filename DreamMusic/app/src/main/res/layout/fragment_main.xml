@@ -80,14 +80,15 @@
                         android:drawableRight="@drawable/ic_arrow_image"
                         />
                     <ImageButton
+                        android:id="@+id/ib_fagment_main_diange"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:background="#0000"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="20sp"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_diange_btn"
-                        android:scaleType="fitXY"
+                        android:background="#0000"
+                        android:src="@drawable/btn_diange_selector"
+                        android:scaleType="centerInside"
 
                         />
                     <View
