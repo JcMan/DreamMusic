@@ -107,26 +107,40 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.btn_search_fragment){
-            String query = mEdit.getText().toString();
-            if(query.length()<1)
-                ToastUtil.showMessage(getActivity(),"输入内容不能为空");
-            else{
-                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                intent.putExtra("query",mEdit.getText().toString());
-                getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
-            }
+            searchNetMusic();
         }else if(v.getId()==R.id.view_local_music){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    transaction.replace(R.id.fragment_main,new FragmentLocalMusic())
-                            .addToBackStack(null).commit();
-                }
-            }).start();
-
+            openLocalMusicFragment();
+        }else if(v.getId()==R.id.view_download_manager){
+            openDownloadFragment();
         }else
             mClickListener.click(v.getId());
+    }
+
+    private void openDownloadFragment() {
+        transaction.replace(R.id.fragment_main,new FragmentDownload())
+                .addToBackStack(null).commit();
+    }
+
+    private void openLocalMusicFragment() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                transaction.replace(R.id.fragment_main,new FragmentLocalMusic())
+                        .addToBackStack(null).commit();
+            }
+        }).start();
+    }
+
+    private void searchNetMusic() {
+        String query = mEdit.getText().toString();
+        if(query.length()<1)
+            ToastUtil.showMessage(getActivity(), "输入内容不能为空");
+        else{
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
+            intent.putExtra("query",mEdit.getText().toString());
+            getActivity().startActivity(intent);
+            getActivity().overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+        }
     }
 
     public interface FragmentClickListener{

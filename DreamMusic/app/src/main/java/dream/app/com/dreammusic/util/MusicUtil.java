@@ -109,6 +109,25 @@ public class MusicUtil  {
         return _S;
     }
 
+    /**
+     * 查询指定文件夹的歌曲
+     * @param context
+     * @param folder
+     * @return
+     */
+    public static List<Music> getMusicListByFolder(Context context,String folder){
+        List<Music> _List = queryLocalMusic(context);
+        List<Music> list = new ArrayList<Music>();
+        for(int i=0;i<_List.size();i++){
+            Music music = _List.get(i);
+            String _Folder = music.folder+"/";
+            if(_Folder.equals(folder)) {
+                list.add(music);
+            }
+        }
+        return list;
+    }
+
     public static Bitmap getMusicBitemp(Context context, long songid,long albumid)
     {
         Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");

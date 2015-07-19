@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 
 import java.io.File;
 
+import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
@@ -31,7 +32,6 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN,3000);
         initDirs();
         startService();
-
     }
 
     private void startService() {
@@ -64,12 +64,12 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     @Override
     protected void onPause() {
         super.onPause();
-        //JPushInterface.onPause(this);
+        JPushInterface.onPause(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //JPushInterface.onResume(this);
+        JPushInterface.onResume(this);
     }
 }
