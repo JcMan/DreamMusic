@@ -55,8 +55,7 @@ public class FragmentSuiBianTing extends Fragment implements AdapterView.OnItemC
         mListView = (ListView) view.findViewById(R.id.listview_suibianting);
         mListView.setOnItemClickListener(this);
         _List = MusicUtil.queryLocalMusic(getActivity());
-        if(mList==null)
-            initList();
+        initList();
         init(view);
         adapter = new SuiBianTingAdapter();
         mListView.setAdapter(adapter);

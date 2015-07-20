@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/ic_main_bg"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="#33000000"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/d_top_height">
+        <ImageButton
+            android:id="@+id/ib_lrc_top_back"
+            android:layout_width="@dimen/d_top_height"
+            android:layout_height="@dimen/d_top_height"
+            android:background="@drawable/top_btn_selector"
+            android:src="@drawable/ic_top_back"
+            />
+        <RelativeLayout
+            android:layout_toRightOf="@+id/ib_lrc_top_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_lrc_top_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="微博控"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_sss"
+                android:paddingTop="3dp"
+                />
+            <TextView
+                android:layout_alignParentBottom="true"
+                android:id="@+id/tv_lrc_top_singer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="许嵩"
+                android:textColor="@color/color_white"
+                android:textSize="@dimen/text_size_s"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                />
+        </RelativeLayout>
+        <ImageButton
+            android:layout_width="@dimen/d_top_height"
+            android:layout_height="@dimen/d_top_height"
+            android:src="@drawable/ic_btn_favorite_default"
+            android:background="#0000"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="0dp">
+        <android.support.v4.view.ViewPager
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            >
+
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_play_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="35dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="horizontal" >
+        <ImageButton
+            android:id="@+id/ib_play_pre"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:src="@drawable/player_btn_pre_normal" />
+        <ImageButton
+            android:id="@+id/ib_play_start"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/player_btn_play_normal" />
+        <ImageButton
+            android:id="@+id/ib_play_next"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:src="@drawable/player_btn_next_normal" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -42,6 +42,7 @@ import dream.app.com.dreammusic.service.AlarmTimerService;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.activity.AlarmTimerActivity;
 import dream.app.com.dreammusic.ui.activity.ChangeBgActivity;
+import dream.app.com.dreammusic.ui.activity.LrcActivity;
 import dream.app.com.dreammusic.ui.activity.MessageActivity;
 import dream.app.com.dreammusic.ui.activity.MusicStoreActivity;
 import dream.app.com.dreammusic.ui.activity.SettingActivity;
@@ -63,6 +64,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit,mMessage;
     private TextView mMusicName,mSinger;
     private ImageButton mRightLogo,mLeftBack,mNext,mStart,mPause;
+    private ImageView mBottomSinger;
     private ImageView mSingerImg;
     private Handler mHandler;
     private android.app.Fragment mFragment;
@@ -71,7 +73,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private View view_main;
     private SeekBar mSeekBar;
 
-    AlarmTimerReceiver receiver_alarm;
+    private AlarmTimerReceiver receiver_alarm;
 
     private MusicService mMusicService;
     private ServiceConnection conn;
@@ -183,6 +185,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mNext = (ImageButton) findViewById(R.id.ib_bottom_next);
         mPause = (ImageButton) findViewById(R.id.ib_bottom_pause);
         mStart = (ImageButton) findViewById(R.id.ib_bottom_start);
+        mBottomSinger = (ImageView) findViewById(R.id.iv_bottom_singer);
 
         mSeekBar = (SeekBar) findViewById(R.id.probar_bottom);
         mMusicName = (TextView) findViewById(R.id.tv_bottom_title);
@@ -223,6 +226,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mMessage.setOnClickListener(this);
         mExit.setOnClickListener(this);
         mRightLogo.setOnClickListener(this);
+        mBottomSinger.setOnClickListener(this);
 
         mNext.setOnClickListener(this);
         mPause.setOnClickListener(this);
@@ -528,6 +532,9 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 break;
             case R.id.ib_bottom_start:
                 startMusic();
+                break;
+            case R.id.iv_bottom_singer:
+                startNewActivity(LrcActivity.class);
                 break;
             default:
                 break;
