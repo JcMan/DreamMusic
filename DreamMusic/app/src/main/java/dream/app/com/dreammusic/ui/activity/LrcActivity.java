@@ -23,21 +23,16 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
-
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.adapter.SeekBarChangeListenerAdapter;
@@ -61,7 +56,7 @@ import dream.app.com.dreammusic.util.ToastUtil;
 import dream.app.com.dreammusic.util.lrc.GetLrc;
 
 /**
- * Created by Administrator on 2015/7/20.
+ * Created by JcMan on 2015/7/20.
  */
 public class LrcActivity extends Activity implements View.OnClickListener,MusicService.IMusicCompletionListener{
 
@@ -110,7 +105,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         bindService();
         mPlayer = new MediaPlayer();
         loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
-
 
     }
 
@@ -269,8 +263,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         File file = new File(ApplicationConfig.LRC_DIR+songid+".lrc");
         if(!file.exists())
             downloadDefaultLrc();
-        else
-            setLrcPath(mMusicService.getSongId());
+        setLrcPath(mMusicService.getSongId());
     }
 
     private void updateSingerImg(){
@@ -461,7 +454,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             }
         });
     }
-
     private void getPicUrl(String ting_uid){
         MyHttpUtil myHttpUtil = new MyHttpUtil(NetAPIEntry.getSingerInfoUrlByTing_uid(ting_uid));
         myHttpUtil.send(new RequestCallBack<String>() {
@@ -475,13 +467,12 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                     FinalHttp finalHttp = new FinalHttp();
                     finalHttp.download(pic_url,path,new AjaxCallBack<File>() {
                         @Override
-                        public void onSuccess(File file) {
+                        public void onSuccess(File file){
                             super.onSuccess(file);
                             Bitmap bitmap = BitmapFactory.decodeFile(path);
                             Bitmap bmp = ImageTools.scaleBitmap(bitmap,(int)(App.sScreenWidth*0.8));
                             mCDView.setImage(bmp);
                         }
-
                         @Override
                         public void onFailure(Throwable t, int errorNo, String strMsg){
                             super.onFailure(t, errorNo, strMsg);
