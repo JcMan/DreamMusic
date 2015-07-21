@@ -24,6 +24,16 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +45,17 @@ import dream.app.com.dreammusic.anim.PlayPageTransform;
 import dream.app.com.dreammusic.config.App;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.BgEntry;
+import dream.app.com.dreammusic.entry.NetAPIEntry;
+import dream.app.com.dreammusic.entry.NetMusicEntry;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.CDView;
+import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.ui.view.LrcView;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.ImageTools;
 import dream.app.com.dreammusic.util.MusicUtil;
+import dream.app.com.dreammusic.util.MyHttpUtil;
 import dream.app.com.dreammusic.util.PopupWindowUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 import dream.app.com.dreammusic.util.lrc.GetLrc;
@@ -67,6 +81,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     private MyViewPagerAdapter mAdapter;
     private List<View> mViewsList;
     private PopupWindow mPopupWindow;
+    private LoadingDialog loadingDialog;
 
     private String rootPath = ApplicationConfig.ROOT_PATH;
     private String title;
@@ -94,6 +109,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         initListener();
         bindService();
         mPlayer = new MediaPlayer();
+        loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
 
 
     }
@@ -244,7 +260,9 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         updateTitleAndSinger();
         updateStartAndPauseBtn(true);
         mSeekbar.setMax(mMusicService.getMusicDuration());
+        updateSingerImg();
         setLrc();
+        mCDView.start();
     }
 
     private void setLrc() {
@@ -253,6 +271,29 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             downloadDefaultLrc();
         else
             setLrcPath(mMusicService.getSongId());
+    }
+
+    private void updateSingerImg(){
+        updateSingerImg(mMusicService.getSongId());
+    }
+
+    private void updateSingerImg(int songId) {
+        String path = ApplicationConfig.ARTIST_DIR+songId+".jpg";
+        File file = new File(path);
+        Bitmap bitmap = null;
+        if(file.exists()){
+            bitmap = BitmapFactory.decodeFile(path);
+            bitmap = ImageTools.scaleBitmap(bitmap,(int)(App.sScreenWidth*0.8));
+        }else{
+            downloadPhoto();
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_logo);
+            bitmap = ImageTools.scaleBitmap(bitmap,(int)(App.sScreenWidth*0.8));
+        }
+        mCDView.setImage(bitmap);
+    }
+
+    private void downloadPhoto() {
+        downloadPhoto(singer);
     }
 
     private void setLrcPath(int songid) {
@@ -272,6 +313,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     }
 
     private void updateCDView(boolean result){
+
         if(result)
             mCDView.start();
         else
@@ -287,6 +329,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                 mSeekbar.setMax(mMusicService.getMusicDuration());
                 mHandler.sendEmptyMessageDelayed(1, 500);
                 updateCDView(mMusicService.isPlaying());
+                updateSingerImg();
                 updateTitleAndSinger();
                 updateBottomView();
                 setLrcPath();
@@ -367,13 +410,101 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
 
     private void showDloadPhotoDlg() {
         mPopupWindow.dismiss();
-        Dialog dialog = new Dialog(this, R.style.Theme_loading_dialog);
+        final Dialog dialog = new Dialog(this, R.style.Theme_loading_dialog);
         View _View = View.inflate(this, R.layout.dialog_dload_photo, null);
         TextView tv_title_dlg = (TextView) _View.findViewById(R.id.tv_dialog_top_title);
         tv_title_dlg.setText("搜索写真");
+        final EditText edit_singer = (EditText) _View.findViewById(R.id.et_dialog_photo_singer);
+        edit_singer.setText(singer);
+        Button btn_cancel = (Button) _View.findViewById(R.id.btn_dialog_photo_cancel);
+        Button btn_download = (Button) _View.findViewById(R.id.btn_dialog_photo_download);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btn_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadingDialog.show();
+                dialog.dismiss();
+                final String _Singer = edit_singer.getText().toString();
+                downloadPhoto(_Singer);
+            }
+
+        });
         dialog.setContentView(_View);
         DialogUtil.setDialogAttr(dialog, this);
         dialog.show();
+    }
+
+    private void downloadPhoto(String _Singer) {
+        MyHttpUtil myHttpUtil = new MyHttpUtil(NetAPIEntry.getTingUidUrl(_Singer));
+        myHttpUtil.send(new RequestCallBack<String>() {
+            @Override
+            public void onSuccess(ResponseInfo<String> stringResponseInfo) {
+
+                try {
+                    JSONObject object = new JSONObject(stringResponseInfo.result);
+                    JSONObject ob = object.getJSONObject(NetMusicEntry.ARTIST);
+                    String ting_uid = ob.getString("ting_uid");
+                    getPicUrl(ting_uid);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(HttpException e, String s){
+                ToastUtil.showMessage(LrcActivity.this, "搜索失败");
+                loadingDialog.cancel();
+            }
+        });
+    }
+
+    private void getPicUrl(String ting_uid){
+        MyHttpUtil myHttpUtil = new MyHttpUtil(NetAPIEntry.getSingerInfoUrlByTing_uid(ting_uid));
+        myHttpUtil.send(new RequestCallBack<String>() {
+            @Override
+            public void onSuccess(ResponseInfo<String> stringResponseInfo){
+                loadingDialog.cancel();
+                try {
+                    final String path = ApplicationConfig.ARTIST_DIR+songid+".jpg";
+                    JSONObject object = new JSONObject(stringResponseInfo.result);
+                    String pic_url = object.getString(NetMusicEntry.AVATAR_BIG);
+                    FinalHttp finalHttp = new FinalHttp();
+                    finalHttp.download(pic_url,path,new AjaxCallBack<File>() {
+                        @Override
+                        public void onSuccess(File file) {
+                            super.onSuccess(file);
+                            Bitmap bitmap = BitmapFactory.decodeFile(path);
+                            Bitmap bmp = ImageTools.scaleBitmap(bitmap,(int)(App.sScreenWidth*0.8));
+                            mCDView.setImage(bmp);
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t, int errorNo, String strMsg){
+                            super.onFailure(t, errorNo, strMsg);
+                            ToastUtil.showMessage(LrcActivity.this,"写真下载失败,请重试");
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(HttpException e, String s) {
+                loadingDialog.cancel();
+            }
+        });
+    }
+
+    private void openPicActivity(String result) {
+        Intent intent = new Intent(this,PicActivity.class);
+        intent.putExtra("pic_json",result);
+        startActivity(intent);
+        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     private void showDloadLrcDlg(){
@@ -382,8 +513,8 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         View _View = View.inflate(this, R.layout.dialog_dload_lrc, null);
         TextView tv_title_dlg = (TextView) _View.findViewById(R.id.tv_dialog_top_title);
         tv_title_dlg.setText("搜索歌词");
-        EditText edit_title = (EditText) _View.findViewById(R.id.et_dialog_lrc_title);
-        EditText edit_singer = (EditText) _View.findViewById(R.id.et_dialog_lrc_singer);
+        final EditText edit_title = (EditText) _View.findViewById(R.id.et_dialog_lrc_title);
+        final EditText edit_singer = (EditText) _View.findViewById(R.id.et_dialog_lrc_singer);
         edit_title.setText(title);
         edit_singer.setText(singer);
         Button btn_cancel = (Button) _View.findViewById(R.id.btn_dialog_lrc_cancel);
@@ -398,7 +529,9 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                downloadLrc();
+                final String _Title = edit_title.getText().toString();
+                final String _Singer = edit_singer.getText().toString();
+                downloadLrc(_Title, _Singer);
             }
 
         });
@@ -407,20 +540,20 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         dialog.show();
     }
 
-    private void downloadLrc() {
+    private void downloadLrc(final String _Title, final String _Singer) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final List<String> lrcList = GetLrc.getLrc(title, singer);
+                final List<String> lrcList = GetLrc.getLrc(_Title, _Singer);
                 if(lrcList==null||lrcList.size()<10){
                     LrcActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ToastUtil.showMessage(LrcActivity.this,"歌词下载失败");
+                            ToastUtil.showMessage(LrcActivity.this, "歌词下载失败");
                         }
                     });
                 }else{
-                    LrcActivity.this.runOnUiThread(new Runnable(){
+                    LrcActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             MusicUtil.saveLrcFile(lrcList, songid + "");

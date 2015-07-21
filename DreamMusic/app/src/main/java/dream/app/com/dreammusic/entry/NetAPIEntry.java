@@ -1,5 +1,8 @@
 package dream.app.com.dreammusic.entry;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Created by Administrator on 2015/7/3.
  */
@@ -33,6 +36,10 @@ public class NetAPIEntry {
             "from=qianqian&version=2.1.0&method=baidu.ting.radio.getChannelSong&format=json&pn=0&rn=100&channelname=";
 
     public static final String SEARCHURL = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.search.common&format=json&query=JcMan&page_no=1&page_size=100";
+
+    public static final String PIC_URL = "http://image.baidu.com/i?tn=baiduimagejson&ie=utf-8&ic=0&rn=20&pn=1&width=200&height=200&word=";
+
+    public static final String TING_UID_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.search.common&format=json&query=JcMan&page_no=1&page_size=30";
 
 
     public static String getNewMusicUrl(){
@@ -72,5 +79,22 @@ public class NetAPIEntry {
         return SEARCHURL.replace("JcMan",query);
     }
 
+    public static String getPicUrlBySinger(String singer){
+        try {
+            return PIC_URL+ URLEncoder.encode(singer,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String getTingUidUrl(String singer){
+        try {
+            return TING_UID_URL.replace("JcMan",URLEncoder.encode(singer,"utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }
 

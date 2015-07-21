@@ -55,6 +55,7 @@
         <activity android:name=".ui.activity.ChangeBgActivity"></activity>
         <activity android:name=".ui.activity.AboutActivity"></activity>
         <activity android:name=".ui.activity.LrcActivity"></activity>
+        <activity android:name=".ui.activity.PicActivity"></activity>
 
         <!-- 自定义Service-->
         <service android:name=".service.AlarmTimerService"></service>

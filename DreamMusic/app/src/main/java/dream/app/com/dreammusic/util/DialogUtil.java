@@ -30,7 +30,7 @@ public class DialogUtil {
             public void run(){
                 dialog.cancel();
             }
-        },1000*10);
+        },1000*60);
         return dialog;
     }
 

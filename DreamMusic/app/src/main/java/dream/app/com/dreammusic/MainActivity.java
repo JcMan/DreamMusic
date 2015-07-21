@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +26,7 @@ import com.app.tool.logger.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 
@@ -448,6 +451,25 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             mHandler.sendEmptyMessageDelayed(0,500);
             updateNameAndSingerAndImg();
             updatePlayerView(state);
+            updateSingerView();
+        }
+    }
+
+    private void updateSingerView() {
+        updateSingerView(mMusicService.getSongId());
+    }
+
+    private void updateSingerView(int songId) {
+        String path = ApplicationConfig.ARTIST_DIR+songId+".jpg";
+        File file = new File(path);
+        Bitmap bitmap = null;
+        if (file.exists()){
+            bitmap = BitmapFactory.decodeFile(path);
+//            bitmap = ImageTools.scaleBitmap(bitmap, (int)(App.sScreenWidth*0.8));
+            mSingerImg.setImageBitmap(bitmap);
+        }else{
+            bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);
+            mSingerImg.setImageBitmap(bitmap);
         }
     }
 
