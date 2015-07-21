@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.model.Music;
 
 
@@ -68,6 +69,7 @@ public class MusicUtil  {
                     .getColumnIndex(MediaStore.Audio.Media.DURATION));
             music.songId = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Audio.Media._ID));
+
             music.albumId = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
             music.musicName = cursor.getString(cursor
@@ -126,6 +128,10 @@ public class MusicUtil  {
             }
         }
         return list;
+    }
+
+    public static String getLrcPath(int songid){
+        return ApplicationConfig.LRC_DIR+songid+".lrc";
     }
 
     public static Bitmap getMusicBitemp(Context context, long songid,long albumid)

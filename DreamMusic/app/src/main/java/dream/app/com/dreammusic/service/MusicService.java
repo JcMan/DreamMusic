@@ -107,10 +107,19 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     public boolean isStop(){
         return mState==STATE_STOP;
     }
+    public boolean isPlaying(){
+        return mState == STATE_PALYING;
+    }
 
     public void next(){
         if(mCurrentPosition+1<mMusicList.size()){
             play(++mCurrentPosition);
+        }
+    }
+
+    public void pre(){
+        if(mCurrentPosition-1>=0){
+            play(--mCurrentPosition);
         }
     }
 
@@ -159,6 +168,10 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
             return _S[0].trim();
         }
         return music.artist.trim();
+    }
+
+    public int getSongId(){
+       return getMusic(mCurrentPosition).songId;
     }
 
     public Bitmap getLocalSingerBitmap(){

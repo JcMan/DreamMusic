@@ -118,9 +118,17 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     protected void onResume(){
         super.onResume();
         isForeground = true;
+        setMusicCompletionListener();
         updateLoginView();
         updatePlayView();
         updateBg();
+    }
+
+
+    private void setMusicCompletionListener() {
+        if(mMusicService!=null){
+            mMusicService.setOnMusicCompletion(this);
+        }
     }
 
     @Override
@@ -534,11 +542,22 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 startMusic();
                 break;
             case R.id.iv_bottom_singer:
-                startNewActivity(LrcActivity.class);
+                openLrcActivity();
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 打开LrcActivity
+     */
+    private void openLrcActivity(){
+        Intent intent = new Intent();
+        intent.putExtra("title",mMusicName.getText().toString());
+        intent.putExtra("singer",mSinger.getText().toString());
+        intent.putExtra("songid",mMusicService.getSongId());
+        startNewActivityWithAnim(LrcActivity.class, intent);
     }
 
     public class MessageReceiver extends BroadcastReceiver {

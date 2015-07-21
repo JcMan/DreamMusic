@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lrc_bg_layout"
     android:background="@drawable/ic_main_bg"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="许嵩"
                 android:textColor="@color/color_white"
-                android:textSize="@dimen/text_size_s"
+                android:textSize="13sp"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 />
@@ -54,12 +55,51 @@
         android:orientation="vertical"
         android:layout_height="0dp">
         <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_lrc"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            >
+            android:layout_height="fill_parent"/>
 
-        </android.support.v4.view.ViewPager>
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_music_currentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
+            android:text="00:00"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            />
+        <SeekBar
+            android:layout_toRightOf="@+id/tv_music_currentTime"
+            android:layout_toLeftOf="@+id/tv_music_endTime"
+            android:layout_centerInParent="true"
+            android:id="@+id/sb_play_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="10dp"
+            android:max="100"
+            android:maxHeight="2dp"
+            android:progressDrawable="@drawable/play_progressbar"
+            android:thumb="@drawable/progress_thumb_1"
+            android:thumbOffset="6dp" />
+        <TextView
+            android:id="@+id/tv_music_endTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_white"
+            android:text="03:45"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            />
+
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/ll_play_controller"
         android:layout_width="match_parent"
@@ -73,23 +113,37 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="fitXY"
-            android:background="@android:color/transparent"
+            android:background="@drawable/btn_lrc_selector"
             android:src="@drawable/player_btn_pre_normal" />
-        <ImageButton
-            android:id="@+id/ib_play_start"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:scaleType="fitXY"
+        <RelativeLayout
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/player_btn_play_normal" />
+            android:layout_width="55dp"
+            android:layout_height="55dp">
+            <ImageButton
+                android:id="@+id/ib_play_start"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/btn_lrc_selector"
+                android:src="@drawable/player_btn_play_normal"
+                android:visibility="gone"
+                />
+            <ImageButton
+                android:id="@+id/ib_play_pause"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/btn_lrc_selector"
+                android:src="@drawable/player_btn_pause_normal" />
+        </RelativeLayout>
+
         <ImageButton
             android:id="@+id/ib_play_next"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:scaleType="fitXY"
-            android:background="@android:color/transparent"
+            android:background="@drawable/btn_lrc_selector"
             android:src="@drawable/player_btn_next_normal" />
     </LinearLayout>
 

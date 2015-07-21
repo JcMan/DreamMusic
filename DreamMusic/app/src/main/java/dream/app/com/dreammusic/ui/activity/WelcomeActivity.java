@@ -40,11 +40,13 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
     }
 
     private void initDirs() {
-        File file = new File(ApplicationConfig.DOWNLOADDIE);
-        if(!file.exists()){
-            file.mkdirs();
-
+        File file_download = new File(ApplicationConfig.DOWNLOADDIE);
+        if(!file_download.exists()){
+            file_download.mkdirs();
         }
+        File file_lrc = new File(ApplicationConfig.LRC_DIR);
+        if(!file_lrc.exists())
+            file_lrc.mkdirs();
     }
 
     @Override
