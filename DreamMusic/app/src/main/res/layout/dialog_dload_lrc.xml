@@ -19,6 +19,7 @@
             android:text="歌曲："
             />
         <EditText
+            android:id="@+id/et_dialog_lrc_title"
             android:singleLine="true"
             android:layout_toRightOf="@+id/tv_dialog_lrc_title_label"
             android:layout_marginRight="16dp"
@@ -39,6 +40,7 @@
             android:text="歌手："
             />
         <EditText
+            android:id="@+id/et_dialog_lrc_singer"
             android:layout_toRightOf="@+id/tv_dialog_lrc_singer_label"
             android:layout_marginRight="16dp"
             android:layout_width="fill_parent"
@@ -51,6 +53,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <Button
+            android:id="@+id/btn_dialog_lrc_cancel"
             style="?android:attr/actionButtonStyle"
             android:text="取消"
             android:layout_weight="1"
@@ -62,6 +65,7 @@
             android:background="@color/color_gray"
             />
         <Button
+            android:id="@+id/btn_dialog_lrc_download"
             style="?android:attr/actionButtonStyle"
             android:text="下载"
             android:layout_weight="1"

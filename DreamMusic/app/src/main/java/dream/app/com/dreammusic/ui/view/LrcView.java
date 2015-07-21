@@ -49,13 +49,10 @@ public class LrcView extends View {
     private float mDividerHeight; // 行间距
 
     private Rect mTextBounds;
-    private String charsetName = "GBK";
-
+    private String charsetName = "utf-8";
     private Paint mNormalPaint; // 常规的字体
     private Paint mCurrentPaint; // 当前歌词的大小
-
     private Bitmap mBackground;
-
     private Scroller mScroller;
 
     public LrcView(Context context, AttributeSet attrs) {
@@ -263,7 +260,6 @@ public class LrcView extends View {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),charsetName));
-
             String line = "";
             String[] arr;
             while (null != (line = reader.readLine())){
@@ -275,7 +271,6 @@ public class LrcView extends View {
                     mLrcs.add(last + arr[0]);
                     continue;
                 }
-
                 mTimes.add(Long.parseLong(arr[0]));
                 mLrcs.add(arr[1]);
             }

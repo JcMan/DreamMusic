@@ -17,11 +17,14 @@ import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +43,8 @@ import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.ImageTools;
 import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.PopupWindowUtil;
+import dream.app.com.dreammusic.util.ToastUtil;
+import dream.app.com.dreammusic.util.lrc.GetLrc;
 
 /**
  * Created by Administrator on 2015/7/20.
@@ -72,8 +77,8 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         public void handleMessage(android.os.Message msg) {
             if(mMusicService!=null){
                 mSeekbar.setProgress(mMusicService.getPlayerPosition());
-                mLrcView_1.changeCurrent(mPlayer.getCurrentPosition());
-                mLrcView_9.changeCurrent(mPlayer.getCurrentPosition());
+                mLrcView_1.changeCurrent(mMusicService.getPlayerPosition());
+                mLrcView_9.changeCurrent(mMusicService.getPlayerPosition());
                 updateTimeView();
             }
             mHandler.sendEmptyMessageDelayed(1, 500);
@@ -226,7 +231,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         updateCDView(true);
     }
 
-    private void pause() {
+    private void pause(){
         mMusicService.pause();
         updateStartAndPauseBtn(false);
         updateCDView(false);
@@ -235,10 +240,19 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     private void play(){
         title = mMusicService.getMusicName();
         singer = mMusicService.getSinger();
+        songid = mMusicService.getSongId();
         updateTitleAndSinger();
         updateStartAndPauseBtn(true);
         mSeekbar.setMax(mMusicService.getMusicDuration());
-        setLrcPath(mMusicService.getSongId());
+        setLrc();
+    }
+
+    private void setLrc() {
+        File file = new File(ApplicationConfig.LRC_DIR+songid+".lrc");
+        if(!file.exists())
+            downloadDefaultLrc();
+        else
+            setLrcPath(mMusicService.getSongId());
     }
 
     private void setLrcPath(int songid) {
@@ -246,7 +260,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         mLrcView_9.setLrcPath(MusicUtil.getLrcPath(songid));
     }
 
-    public void getDataFromIntent() {
+    public void getDataFromIntent(){
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
         singer = intent.getStringExtra("singer");
@@ -362,15 +376,78 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         dialog.show();
     }
 
-    private void showDloadLrcDlg() {
+    private void showDloadLrcDlg(){
         mPopupWindow.dismiss();
-        Dialog dialog = new Dialog(this, R.style.Theme_loading_dialog);
+        final Dialog dialog = new Dialog(this, R.style.Theme_loading_dialog);
         View _View = View.inflate(this, R.layout.dialog_dload_lrc, null);
         TextView tv_title_dlg = (TextView) _View.findViewById(R.id.tv_dialog_top_title);
         tv_title_dlg.setText("搜索歌词");
+        EditText edit_title = (EditText) _View.findViewById(R.id.et_dialog_lrc_title);
+        EditText edit_singer = (EditText) _View.findViewById(R.id.et_dialog_lrc_singer);
+        edit_title.setText(title);
+        edit_singer.setText(singer);
+        Button btn_cancel = (Button) _View.findViewById(R.id.btn_dialog_lrc_cancel);
+        Button btn_download = (Button) _View.findViewById(R.id.btn_dialog_lrc_download);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btn_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                downloadLrc();
+            }
+
+        });
         dialog.setContentView(_View);
         DialogUtil.setDialogAttr(dialog, this);
         dialog.show();
+    }
+
+    private void downloadLrc() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<String> lrcList = GetLrc.getLrc(title, singer);
+                if(lrcList==null||lrcList.size()<10){
+                    LrcActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtil.showMessage(LrcActivity.this,"歌词下载失败");
+                        }
+                    });
+                }else{
+                    LrcActivity.this.runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            MusicUtil.saveLrcFile(lrcList, songid + "");
+                            setLrcPath();
+                            ToastUtil.showMessage(LrcActivity.this, "歌词下载完成");
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+    private void downloadDefaultLrc(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<String> lrcList = GetLrc.getLrc(title, singer);
+                if(lrcList!=null&&lrcList.size()>10)
+                    LrcActivity.this.runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            MusicUtil.saveLrcFile(lrcList, songid + "");
+                            setLrcPath();
+                        }
+                    });
+                }
+        }).start();
     }
     /**
      * 播放完成播放下一首
