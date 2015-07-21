@@ -47,6 +47,9 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         File file_lrc = new File(ApplicationConfig.LRC_DIR);
         if(!file_lrc.exists())
             file_lrc.mkdirs();
+        File file_artist = new File(ApplicationConfig.ARTIST_DIR);
+        if(!file_artist.exists())
+            file_artist.mkdirs();
     }
 
     @Override

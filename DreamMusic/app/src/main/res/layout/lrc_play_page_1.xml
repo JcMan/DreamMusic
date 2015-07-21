@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             lrc:textSize="15sp"
             lrc:normalTextColor="@android:color/white"
-            lrc:currentTextColor="#00ff00"
+            lrc:currentTextColor="@color/color_current_lrc_text"
             lrc:dividerHeight="20dp"
             lrc:rows="1" />
         </RelativeLayout>

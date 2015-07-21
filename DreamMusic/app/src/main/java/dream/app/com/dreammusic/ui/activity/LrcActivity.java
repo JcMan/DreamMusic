@@ -1,6 +1,7 @@
 package dream.app.com.dreammusic.ui.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +14,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -32,8 +36,10 @@ import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.CDView;
 import dream.app.com.dreammusic.ui.view.LrcView;
 import dream.app.com.dreammusic.util.AnimUtil;
+import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.ImageTools;
 import dream.app.com.dreammusic.util.MusicUtil;
+import dream.app.com.dreammusic.util.PopupWindowUtil;
 
 /**
  * Created by Administrator on 2015/7/20.
@@ -55,6 +61,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     private ViewPager mViewPager;
     private MyViewPagerAdapter mAdapter;
     private List<View> mViewsList;
+    private PopupWindow mPopupWindow;
 
     private String rootPath = ApplicationConfig.ROOT_PATH;
     private String title;
@@ -311,6 +318,60 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         }
     };
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_MENU&&event.getAction()==KeyEvent.ACTION_DOWN){
+            mPopupWindow = PopupWindowUtil.createPopupWindow(this,R.layout.popw_lrc_bottom);
+            mPopupWindow.showAtLocation(this.getWindow().getDecorView(),
+                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            setPopwListener();
+            return false;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
+    private void setPopwListener() {
+        View view_lrc = mPopupWindow.getContentView().findViewById(R.id.view_popw_lrc);
+        View view_photo = mPopupWindow.getContentView().findViewById(R.id.view_popw_photo);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 switch (v.getId()){
+                     case R.id.view_popw_lrc:
+                         showDloadLrcDlg();
+                         break;
+                     case R.id.view_popw_photo:
+                         showDloadPhotoDlg();
+                         break;
+                 }
+            }
+        };
+
+        view_lrc.setOnClickListener(listener);
+        view_photo.setOnClickListener(listener);
+    }
+
+    private void showDloadPhotoDlg() {
+        mPopupWindow.dismiss();
+        Dialog dialog = new Dialog(this, R.style.Theme_loading_dialog);
+        View _View = View.inflate(this, R.layout.dialog_dload_photo, null);
+        TextView tv_title_dlg = (TextView) _View.findViewById(R.id.tv_dialog_top_title);
+        tv_title_dlg.setText("搜索写真");
+        dialog.setContentView(_View);
+        DialogUtil.setDialogAttr(dialog, this);
+        dialog.show();
+    }
+
+    private void showDloadLrcDlg() {
+        mPopupWindow.dismiss();
+        Dialog dialog = new Dialog(this, R.style.Theme_loading_dialog);
+        View _View = View.inflate(this, R.layout.dialog_dload_lrc, null);
+        TextView tv_title_dlg = (TextView) _View.findViewById(R.id.tv_dialog_top_title);
+        tv_title_dlg.setText("搜索歌词");
+        dialog.setContentView(_View);
+        DialogUtil.setDialogAttr(dialog, this);
+        dialog.show();
+    }
     /**
      * 播放完成播放下一首
      */

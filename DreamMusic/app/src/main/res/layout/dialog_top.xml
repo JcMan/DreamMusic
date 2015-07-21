@@ -7,6 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp">
         <TextView
+            android:id="@+id/tv_dialog_top_title"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="45dp"

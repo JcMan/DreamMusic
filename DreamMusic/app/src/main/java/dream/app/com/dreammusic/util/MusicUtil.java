@@ -16,6 +16,8 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,6 +134,26 @@ public class MusicUtil  {
 
     public static String getLrcPath(int songid){
         return ApplicationConfig.LRC_DIR+songid+".lrc";
+    }
+    public static boolean saveLrcFile(List<String> pList ,String musicName){
+        if(pList.size()<20)
+            return false;
+        try {
+            FileWriter fw = new FileWriter(ApplicationConfig.LRC_DIR+musicName+".lrc");
+            for(int i=0;i<pList.size();i++){
+                fw.write(pList.get(i));
+                fw.write("\n");
+            }
+            fw.close();
+            return true;
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return false;
+    }
+    public static void clearList(List pList){
+        if(pList!=null&&pList.size()>0)
+            pList.clear();
     }
 
     public static Bitmap getMusicBitemp(Context context, long songid,long albumid)

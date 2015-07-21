@@ -3,9 +3,6 @@ package dream.app.com.dreammusic.util;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
-
-import com.app.tool.logger.Logger;
 
 import java.io.File;
 
@@ -23,7 +20,9 @@ public class DownLoadUtil {
     private Uri mMusicUri;
     private Uri mFileUri;
     private File mFile;
+    private Uri mPicUri;
     private String mDownloadDir = ApplicationConfig.DOWNLOADDIE;
+    private NetMusicEntry mEntry;
 
     public DownLoadUtil(Context context,String music_url,String title,String author){
         mTitle = title;
@@ -35,12 +34,16 @@ public class DownLoadUtil {
     }
 
     public DownLoadUtil(Context context,NetMusicEntry entry){
+        mEntry = entry;
         mTitle = entry.getTitle();
         mDesc = entry.getAuthor();
         mFile = new File(mDownloadDir+"/"+mDesc+" - "+mTitle+".mp3");
         mFileUri = Uri.fromFile(mFile);
         mMusicUri = Uri.parse(entry.getFile_link());
         manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        try{
+            mPicUri = Uri.parse(entry.getPic_big());
+        }catch(Exception e){}
     }
 
    /* public DownloadUtil(Context context){

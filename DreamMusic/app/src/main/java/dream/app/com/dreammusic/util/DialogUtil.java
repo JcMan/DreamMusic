@@ -1,8 +1,13 @@
 package dream.app.com.dreammusic.util;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 
@@ -32,5 +37,16 @@ public class DialogUtil {
     public static Dialog createFeiMengDialog(Context context,int style){
         Dialog dialog = new Dialog(context,style);
         return  dialog;
+    }
+
+    public static void setDialogAttr(Dialog dialog,Activity activity) {
+        Window dialogWindow = dialog.getWindow();
+        WindowManager manager = activity.getWindowManager();
+        Display d = manager.getDefaultDisplay();
+        WindowManager.LayoutParams params = dialogWindow.getAttributes();
+        dialogWindow.setGravity(Gravity.CENTER);
+        params.width = (int)(d.getWidth()*0.8);
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialogWindow.setAttributes(params);
     }
 }
