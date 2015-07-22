@@ -308,10 +308,10 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                 mSeekbar.setMax(mMusicService.getMusicDuration());
                 mHandler.sendEmptyMessageDelayed(1, 500);
                 updateCDView(mMusicService.isPlaying());
-//                updateSingerImg();
+                updateSingerImg();
                 updateTitleAndSinger();
                 updateBottomView();
-//                setLrc();
+                setLrc();
             }
 
             @Override
