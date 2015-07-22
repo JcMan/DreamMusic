@@ -58,7 +58,6 @@
             android:id="@+id/viewpager_lrc"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
-
     </LinearLayout>
     <RelativeLayout
         android:layout_width="fill_parent"

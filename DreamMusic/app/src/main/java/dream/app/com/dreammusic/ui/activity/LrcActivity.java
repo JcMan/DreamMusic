@@ -9,7 +9,6 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,16 +22,21 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
+
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.adapter.SeekBarChangeListenerAdapter;
@@ -71,14 +75,12 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     private CDView mCDView;
     private LrcView mLrcView_1;
     private LrcView mLrcView_9;
-    private MediaPlayer mPlayer;
+
     private ViewPager mViewPager;
     private MyViewPagerAdapter mAdapter;
     private List<View> mViewsList;
     private PopupWindow mPopupWindow;
     private LoadingDialog loadingDialog;
-
-    private String rootPath = ApplicationConfig.ROOT_PATH;
     private String title;
     private String singer;
     private int songid;
@@ -98,13 +100,13 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lrc);
+
         getDataFromIntent();
         initVariable();
         initView();
         initListener();
         bindService();
-        mPlayer = new MediaPlayer();
-        loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
+
 
     }
 
@@ -113,13 +115,10 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         bindService(intent,conn, Context.BIND_AUTO_CREATE);
     }
 
-    private void updateView() {
-
-    }
-
     private void initVariable() {
         initConn();
         mViewsList = new ArrayList<View>();
+        loadingDialog = DialogUtil.createLoadingDialog(this,"加载中···");
     }
 
 
@@ -150,6 +149,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         tv_bottom_end_time = (TextView) findViewById(R.id.tv_music_endTime);
 
         initPagerViews();
+
         mAdapter = new MyViewPagerAdapter(this,mViewsList);
         mViewPager.setPageTransformer(true,new PlayPageTransform());
         mViewPager.setAdapter(mAdapter);
@@ -161,29 +161,15 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         mCDView = (CDView) pager_view_1.findViewById(R.id.cdview);
         mLrcView_1 = (LrcView) pager_view_1.findViewById(R.id.play_first_lrc);
         mLrcView_9 = (LrcView) pager_view_2.findViewById(R.id.play_second_lrc);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_cd_singer_200);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo);
         mCDView.setImage(ImageTools.scaleBitmap(bm, (int) (App.sScreenWidth * 0.8)));
         mCDView.start();
         mViewsList.add(pager_view_1);
         mViewsList.add(pager_view_2);
     }
 
-    private void setLrc(String lrc) {
-        mLrcView_1.setLrcPath(rootPath+lrc);
-        mLrcView_9.setLrcPath(rootPath+lrc);
-    }
-
     private void setBackground(){
         view_bg.setBackground(new BitmapDrawable(BgEntry.getDefaultBg(this)));
-    }
-
-    private void setMusic(String music) {
-        mPlayer.reset();
-        try {
-            mPlayer.setDataSource(rootPath+music);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (Exception e) {}
     }
 
     @Override
@@ -316,16 +302,16 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     private void initConn() {
         conn = new ServiceConnection(){
             @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
+            public void onServiceConnected(ComponentName name, IBinder service){
                 mMusicService = ((MusicService.MusicBinder)service).getService();
                 mMusicService.setOnMusicCompletion(LrcActivity.this);
                 mSeekbar.setMax(mMusicService.getMusicDuration());
                 mHandler.sendEmptyMessageDelayed(1, 500);
                 updateCDView(mMusicService.isPlaying());
-                updateSingerImg();
+//                updateSingerImg();
                 updateTitleAndSinger();
                 updateBottomView();
-                setLrc();
+//                setLrc();
             }
 
             @Override
@@ -489,13 +475,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                 loadingDialog.cancel();
             }
         });
-    }
-
-    private void openPicActivity(String result) {
-        Intent intent = new Intent(this,PicActivity.class);
-        intent.putExtra("pic_json",result);
-        startActivity(intent);
-        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 
     private void showDloadLrcDlg(){

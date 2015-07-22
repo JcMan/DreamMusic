@@ -178,7 +178,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
-        initJPush();
+//        initJPush();
     }
     public void initView(){
         mSlideMenu = (DrawerLayout) findViewById(R.id.slidemenu);
