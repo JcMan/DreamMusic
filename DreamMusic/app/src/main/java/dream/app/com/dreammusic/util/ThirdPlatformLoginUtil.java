@@ -1,14 +1,10 @@
 package dream.app.com.dreammusic.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
 
-import com.app.tool.logger.Logger;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -20,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
-import java.util.logging.Handler;
 
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.UserEntry;
@@ -85,9 +80,11 @@ public class ThirdPlatformLoginUtil {
             try {
                 String name = (String) arg1.get("screen_name");
                 String url = (String) arg1.get("profile_image_url");
+                String uid = (String) (arg1.get("uid")+"");
                 object.put("UserName",name);
                 object.put("HeadImage",url);
-                saveUserInfo(name, url);
+                object.put("uid",uid);
+                saveUserInfo(name, url,uid);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -100,10 +97,11 @@ public class ThirdPlatformLoginUtil {
          * @param name
          * @param url
          */
-        private void saveUserInfo(String name, String url){
+        private void saveUserInfo(String name, String url,String uid){
             SharedPreferences.Editor editor = SharedPreferencesUtil.getEditor(ApplicationConfig.USER);
             editor.putString(UserEntry.USERNAME,name);
             editor.putString(UserEntry.HEADIMAGE,url);
+            editor.putString(UserEntry.UID,uid);
             editor.putBoolean(UserEntry.LOGIN,true);
             editor.commit();
         }

@@ -163,4 +163,9 @@
         <item name="android:textSize">@dimen/text_size_sss</item>
     </style>
 
+    <style name="text_style_uid" >
+        <item name="android:textColor">#ff666666</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

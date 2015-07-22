@@ -88,6 +88,10 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         }
     }
 
+    public Music getMusic(){
+        return getMusic(mCurrentPosition);
+    }
+
     public void play(int position){
         if(position>-1&&position<mMusicList.size()){
             Uri uri = Uri.parse(getMusic(position).data);

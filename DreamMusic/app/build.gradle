@@ -36,4 +36,5 @@ dependencies {
     compile files('libs/library.jar')
     compile files('libs/libjpush175.jar')
     compile files('libs/nineoldandroids-2.4.0.jar')
+    compile files('libs/Bmob_Push_V0.6beta_20150408.jar')
 }

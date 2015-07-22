@@ -8,6 +8,7 @@ import android.os.Environment;
 public class ApplicationConfig {
 
     public static final String RECEIVER_ALARM = "dream.app.com.alarm";
+    public static String BMOB_APP_ID = "1bd683a9d67cefbd483b4f08b1f4cb15";
 
 
 

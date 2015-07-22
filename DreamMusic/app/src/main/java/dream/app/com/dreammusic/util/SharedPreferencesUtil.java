@@ -30,6 +30,11 @@ public class SharedPreferencesUtil {
         return mPreference;
     }
 
+    public static String getUid(){
+        mPreference = mContext.getSharedPreferences(ApplicationConfig.USER,Context.MODE_PRIVATE);
+        return mPreference.getString(UserEntry.UID,"");
+    }
+
     /**
      * 根据名称得到Editor对象
      * @param name

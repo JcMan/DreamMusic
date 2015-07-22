@@ -30,10 +30,15 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.BgEntry;
+import dream.app.com.dreammusic.entry.UserBean;
 import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.fragment.FragmentMain;
 import dream.app.com.dreammusic.fragment.FragmentMenuLogin;
@@ -56,6 +61,7 @@ import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
+import dream.app.com.dreammusic.util.ToastUtil;
 
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
         FragmentMenuLogin.LoginListener,View.OnClickListener,
@@ -81,6 +87,9 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private MusicService mMusicService;
     private ServiceConnection conn;
 
+    private String mLoginId,mUserName;
+    private int loginCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -94,8 +103,29 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         registerReceiver();
         bindService();
 
+//        query();
+
     }
 
+    /*private void query() {
+        BmobQuery<BMusicInfo> query = new BmobQuery<BMusicInfo>();
+        mLoginId = UserEntry.getUid();
+        query.addWhereEqualTo(UserBean.LOGINID,mLoginId);
+        query.findObjects(this,new FindListener<BMusicInfo>(){
+            @Override
+            public void onSuccess(List<BMusicInfo> bMusicInfos) {
+                if(bMusicInfos!=null&&bMusicInfos.size()>0){
+                    for(int i=0;i<bMusicInfos.size();i++){
+                        Logger.e(bMusicInfos.get(i).toString());
+                    }
+                }
+            }
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
+    }*/
 
     private void initVariable() {
         initConn();
@@ -179,7 +209,13 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
 //        initJPush();
+//        initBmob();
     }
+
+    private void initBmob() {
+        Bmob.initialize(this,ApplicationConfig.BMOB_APP_ID);
+    }
+
     public void initView(){
         mSlideMenu = (DrawerLayout) findViewById(R.id.slidemenu);
         mSearchMusic = (TextView) findViewById(R.id.tv_search_music);
@@ -280,6 +316,23 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private void play(int position){
         mMusicService.play(position);
         updatePlayView();
+        /*mLoginId = UserEntry.getUid();
+        if(mLoginId!=null&&mLoginId.length()>1){
+            Logger.e("保存");
+            BMusicInfo bMusicInfo = new BMusicInfo();
+            bMusicInfo.setInfo(mMusicService.getMusic());
+            bMusicInfo.setLoginId(mLoginId);
+            bMusicInfo.save(this,new SaveListener(){
+                @Override
+                public void onSuccess() {
+                    ToastUtil.showMessage(MainActivity.this,"歌曲保存成功");
+                }
+                @Override
+                public void onFailure(int i, String s) {
+                    ToastUtil.showMessage(MainActivity.this,"歌曲保存失败");
+                }
+            });
+        }*/
     }
 
     private void pauseMusic() {
@@ -319,14 +372,63 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     @Override
     public void loginSuccess(JSONObject object) {
         try {
-            String name = object.getString(UserEntry.USERNAME);
+            mUserName = object.getString(UserEntry.USERNAME);
             String headimageurl = object.getString(UserEntry.HEADIMAGE);
-            mFragment = new FragmentMenuUser(name,headimageurl);
-            getFragmentManager().beginTransaction().replace(R.id.fr_login_layout,mFragment).commit();
-            showMessage("登录成功");
+            mLoginId = object.getString(UserEntry.UID);
+            mFragment = new FragmentMenuUser(mUserName,headimageurl);
+            loginBmobAccount();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loginBmobAccount() {
+        BmobQuery<UserBean> userQuery = new BmobQuery<UserBean>();
+        userQuery.addWhereEqualTo(UserBean.LOGINID,mLoginId);
+        userQuery.findObjects(this, new FindListener<UserBean>() {
+            @Override
+            public void onSuccess(List<UserBean> userBeans) {
+                if (userBeans != null && userBeans.size() > 0) {
+                    getFragmentManager().beginTransaction().replace(R.id.fr_login_layout, mFragment).commit();
+                    ToastUtil.showMessage(MainActivity.this, "登录成功");
+                    Logger.e(mLoginId);
+                    Logger.e("登录成功");
+                } else {
+                    loginCount++;
+                    Logger.e("登录失败" + loginCount);
+                    if (loginCount == 2) {
+                        ToastUtil.showMessage(MainActivity.this, "登录失败");
+                        loginCount = 0;
+                    } else {
+                        registerBmobAccount();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+            }
+        });
+    }
+
+    private void registerBmobAccount() {
+        UserBean userBean = new UserBean();
+        userBean.setLoginId(mLoginId);
+        userBean.setPassword(ApplicationConfig.BMOB_APP_ID);
+        userBean.setUserName(mUserName);
+        userBean.save(this,new SaveListener() {
+            @Override
+            public void onSuccess() {
+                Logger.e("注册成功");
+                loginBmobAccount();
+
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                Logger.e("注册失败");
+            }
+        });
     }
 
     @Override

@@ -58,27 +58,6 @@
             </RelativeLayout>
             <RelativeLayout
                 style="@style/setting_item_layout"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_sss"
-                    android:textColor="@color/color_black"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/activity_vertical_margin"
-                    android:text="问题反馈"
-                    />
-                <ImageView
-                    style="@style/array_right"
-                    />
-
-                <TextView
-                    style="@style/split_line"
-                    android:layout_alignParentBottom="true"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                style="@style/setting_item_layout"
                 android:id="@+id/view_setting_about"
                 >
                 <TextView
@@ -93,7 +72,6 @@
                 <ImageView
                     style="@style/array_right"
                     />
-
                 <View
                     style="@style/split_line"
                     android:layout_alignParentBottom="true"
@@ -119,10 +97,7 @@
                 <View
                     style="@style/split_line"
                     />
-
                 </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
