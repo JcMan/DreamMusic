@@ -14,13 +14,9 @@ public class GetLrc {
     public static List<String> getLrc(String title, String artist){
 
         sentList = new ArrayList<String>();
-
         String string = LrcGet.query(title, artist);
-
         if (null == string) {
-
             return null;
-
         }
 
         ByteArrayInputStream input = new ByteArrayInputStream(string.getBytes());

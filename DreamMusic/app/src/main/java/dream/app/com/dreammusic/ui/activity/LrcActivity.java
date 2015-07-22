@@ -314,7 +314,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     }
 
     private void initConn() {
-        conn = new ServiceConnection() {
+        conn = new ServiceConnection(){
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 mMusicService = ((MusicService.MusicBinder)service).getService();
@@ -325,7 +325,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                 updateSingerImg();
                 updateTitleAndSinger();
                 updateBottomView();
-                setLrcPath();
+                setLrc();
             }
 
             @Override

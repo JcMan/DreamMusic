@@ -93,7 +93,9 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mHandler = new Handler(this);
         registerReceiver();
         bindService();
+
     }
+
 
     private void initVariable() {
         initConn();
@@ -176,7 +178,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
-//        initJPush();
+        initJPush();
     }
     public void initView(){
         mSlideMenu = (DrawerLayout) findViewById(R.id.slidemenu);
@@ -357,7 +359,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         JPushInterface.init(getApplicationContext());
         JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);     		// 初始化 JPush
-        //registerMessageReceiver();
+        registerMessageReceiver();
     }
 
     /**
@@ -465,7 +467,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Bitmap bitmap = null;
         if (file.exists()){
             bitmap = BitmapFactory.decodeFile(path);
-//            bitmap = ImageTools.scaleBitmap(bitmap, (int)(App.sScreenWidth*0.8));
             mSingerImg.setImageBitmap(bitmap);
         }else{
             bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);

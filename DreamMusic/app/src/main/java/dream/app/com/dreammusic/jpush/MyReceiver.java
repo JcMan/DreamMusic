@@ -1,14 +1,17 @@
 package dream.app.com.dreammusic.jpush;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.jpush.android.api.JPushInterface;
 import dream.app.com.dreammusic.MainActivity;
+import dream.app.com.dreammusic.ui.activity.ShareActivity;
 
 /**
  * 自定义接收器
@@ -42,7 +45,7 @@ public class MyReceiver extends BroadcastReceiver{
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
             //打开自定义的Activity
-            Intent i = new Intent(context, MainActivity.class);
+            Intent i = new Intent(context, ShareActivity.class);
             i.putExtras(bundle);
             i.putExtra("msg", printBundle(bundle));
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

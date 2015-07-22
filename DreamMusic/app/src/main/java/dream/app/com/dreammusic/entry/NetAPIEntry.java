@@ -41,6 +41,8 @@ public class NetAPIEntry {
 
     public static final String TING_UID_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.search.common&format=json&query=JcMan&page_no=1&page_size=30";
 
+    public static final String ALBUM_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.album.getAlbumInfo&format=json&album_id=";
+
 
     public static String getNewMusicUrl(){
         return NETNEWMUSCIURL;
@@ -95,6 +97,10 @@ public class NetAPIEntry {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static String getAlbumInfoUrl(String albumid){
+        return ALBUM_URL+albumid;
     }
 }
 

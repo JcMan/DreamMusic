@@ -1,5 +1,4 @@
 package dream.app.com.dreammusic.ui.view;
-import java.util.List;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -19,6 +18,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.List;
 
 import dream.app.com.dreammusic.R;
 
@@ -47,7 +48,7 @@ public class ViewPagerIndicator extends LinearLayout
     /**
      * 三角形的宽度为单个Tab的1/6
      */
-    private static final float RADIO_TRIANGEL = 1.0f / 4;
+    private static final float RADIO_TRIANGEL = 1.0f / 6;
     /**
      * 三角形的最大宽度
      */

@@ -1,6 +1,5 @@
 package dream.app.com.dreammusic.entry;
 
-import com.app.tool.logger.Logger;
 import com.lidroid.xutils.http.ResponseInfo;
 
 import org.json.JSONArray;
@@ -8,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -378,5 +378,23 @@ public class NetMusicEntry implements Serializable{
             e.printStackTrace();
         }
         return file_url;
+    }
+
+    public static String getFileSize(String json){
+        String file_size = "";
+        try {
+            JSONObject object = new JSONObject(json);
+            JSONObject object1 = object.getJSONObject("songurl");
+            JSONArray array = object1.getJSONArray("url");
+            if(array.length()>1)
+                file_size = array.getJSONObject(0).getString("file_size");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        double size = Integer.parseInt(file_size);
+        size = (size/1024.0/1024.0);
+        DecimalFormat format = new DecimalFormat("0.00");
+        return format.format(size)+"M";
     }
 }
