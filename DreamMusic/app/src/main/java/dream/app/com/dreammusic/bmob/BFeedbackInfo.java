@@ -1,5 +1,8 @@
 package dream.app.com.dreammusic.bmob;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 
 /**
@@ -90,6 +93,17 @@ public class BFeedbackInfo extends BmobObject{
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public static void reverseList(List<BFeedbackInfo> list){
+        List<BFeedbackInfo> _List = new ArrayList<BFeedbackInfo>();
+        for(int i=0;i<list.size();i++){
+            _List.add(list.get(list.size()-1-i));
+        }
+        list.clear();
+        for(int i=0;i<_List.size();i++){
+            list.add(_List.get(i));
+        }
     }
 
 

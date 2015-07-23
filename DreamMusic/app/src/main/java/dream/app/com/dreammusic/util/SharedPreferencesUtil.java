@@ -51,6 +51,11 @@ public class SharedPreferencesUtil {
         return mPreference.getString(SettingEntry.UPDATEINFO,"");
     }
 
+    public static boolean getIsLogin(){
+        mPreference = getSharedPreferences(ApplicationConfig.USER);
+        return mPreference.getBoolean(UserEntry.LOGIN,false);
+    }
+
     public static String getHeadImageUrl(){
         mPreference = getSharedPreferences(ApplicationConfig.USER);
         return mPreference.getString(UserEntry.HEADIMAGE,"");

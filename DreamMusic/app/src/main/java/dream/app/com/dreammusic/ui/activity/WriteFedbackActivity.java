@@ -71,7 +71,7 @@ public class WriteFedbackActivity extends BaseActivity {
             DialogUtil.showMessageDialog(this,"反馈内容不能为空");
             return;
         }
-        if(qq.length()<1||phone.length()<1){
+        if(qq.length()<1&&phone.length()<1){
             loadingDialog.cancel();
             DialogUtil.showMessageDialog(this,"QQ和手机号请至少填一个");
             return;
