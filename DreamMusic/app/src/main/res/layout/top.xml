@@ -42,6 +42,16 @@
         android:scaleType="centerInside"
         android:visibility="gone"
         />
+    <ImageButton
+        android:id="@+id/ib_top_right"
+        android:layout_width="@dimen/d_top_height"
+        android:layout_height="@dimen/d_top_height"
+        android:src="@drawable/ic_feedback_edit"
+        android:background="@drawable/top_btn_selector"
+        android:layout_alignParentRight="true"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        />
 
 
 </RelativeLayout>

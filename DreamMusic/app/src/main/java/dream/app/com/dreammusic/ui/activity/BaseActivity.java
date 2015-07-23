@@ -15,7 +15,7 @@ import dream.app.com.dreammusic.util.AnimUtil;
  * Created by Administrator on 2015/6/26.
  */
 public class BaseActivity extends Activity implements View.OnClickListener{
-    private ImageButton mTopBack,mTopRightLogo,mTopToggle;
+    private ImageButton mTopBack,mTopRightLogo,mTopToggle,mTopRight;
     private TextView mTopTitle;
 
     @Override
@@ -34,6 +34,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
         mTopBack.setOnClickListener(this);
         mTopRightLogo.setOnClickListener(this);
         mTopToggle.setOnClickListener(this);
+        mTopRight.setOnClickListener(this);
     }
 
     /**
@@ -44,6 +45,15 @@ public class BaseActivity extends Activity implements View.OnClickListener{
         mTopRightLogo = (ImageButton) findViewById(R.id.ib_top_logo_right);
         mTopTitle = (TextView) findViewById(R.id.tv_top_title);
         mTopToggle = (ImageButton) findViewById(R.id.ib_top_toggle);
+        mTopRight = (ImageButton) findViewById(R.id.ib_top_right);
+    }
+
+    protected void setTopRightVisible(){
+        mTopRight.setVisibility(View.VISIBLE);
+    }
+
+    protected void setTopRightImg(int resId){
+        mTopRight.setImageResource(resId);
     }
 
     /**
@@ -146,9 +156,16 @@ public class BaseActivity extends Activity implements View.OnClickListener{
             case R.id.ib_top_toggle:
                 clickOnToggle();
                 break;
+            case R.id.ib_top_right:
+                clickOnTopRight();
+                break;
             default:
                 break;
         }
+    }
+
+    protected void clickOnTopRight() {
+
     }
 
     @Override

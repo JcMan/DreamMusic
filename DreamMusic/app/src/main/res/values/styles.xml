@@ -38,6 +38,12 @@
         <item name="android:background">@color/color_split_line</item>
     </style>
 
+    <style name="Dialog_Splitline_H">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/color_gray</item>
+    </style>
+
     <style name="array_right">
         <item name="android:src">@drawable/ic_arrow_toward_right</item>
         <item name="android:layout_width">wrap_content</item>

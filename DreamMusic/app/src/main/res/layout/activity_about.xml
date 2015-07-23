@@ -17,6 +17,7 @@
             android:src="@drawable/ic_logo"
             />
         <TextView
+            android:id="@+id/tv_about_version"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="版本：1.0"
@@ -27,6 +28,7 @@
             />
     </LinearLayout>
     <RelativeLayout
+        android:id="@+id/view_about_updateversion"
         android:layout_marginTop="10dp"
         style="@style/setting_item_layout"
         >
@@ -63,6 +65,27 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
             android:text="问题反馈"
+            />
+        <ImageView
+            style="@style/array_right"
+            />
+        <TextView
+            style="@style/split_line"
+            android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/view_about_developer"
+        style="@style/setting_item_layout"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_sss"
+            android:textColor="@color/color_black"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:text="开发者"
             />
         <ImageView
             style="@style/array_right"

@@ -46,9 +46,19 @@ public class SharedPreferencesUtil {
         return mEditor;
     }
 
+    public static String getUpdateInfo(){
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
+        return mPreference.getString(SettingEntry.UPDATEINFO,"");
+    }
+
     public static String getHeadImageUrl(){
         mPreference = getSharedPreferences(ApplicationConfig.USER);
         return mPreference.getString(UserEntry.HEADIMAGE,"");
+    }
+
+    public static String getUserName(){
+        mPreference = getSharedPreferences(ApplicationConfig.USER);
+        return mPreference.getString(UserEntry.USERNAME,"");
     }
 
     public static boolean getIsSetSleep(){
@@ -59,6 +69,13 @@ public class SharedPreferencesUtil {
     public static void setIsSetSleep(boolean result){
         mEditor = getEditor(ApplicationConfig.SETTING);
         mEditor.putBoolean(SettingEntry.SETSLEEP,result);
+        mEditor.commit();
+    }
+
+    public static void setUpdateInfo(String url){
+        mEditor = getEditor(ApplicationConfig.SETTING);
+        mEditor.putString(SettingEntry.UPDATEINFO,url);
+        mEditor.commit();
     }
 
     public static String getDefaultBgPath(){

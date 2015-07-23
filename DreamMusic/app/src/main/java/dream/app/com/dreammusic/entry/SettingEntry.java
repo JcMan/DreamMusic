@@ -6,4 +6,5 @@ package dream.app.com.dreammusic.entry;
 public class SettingEntry {
     public static final String SETSLEEP = "setsleep";
     public static final String BG = "bg";
+    public static final String UPDATEINFO = "UpdateInfo";
 }

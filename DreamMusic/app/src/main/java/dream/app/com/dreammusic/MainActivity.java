@@ -103,29 +103,12 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         registerReceiver();
         bindService();
 
-//        query();
+
+
+
 
     }
 
-    /*private void query() {
-        BmobQuery<BMusicInfo> query = new BmobQuery<BMusicInfo>();
-        mLoginId = UserEntry.getUid();
-        query.addWhereEqualTo(UserBean.LOGINID,mLoginId);
-        query.findObjects(this,new FindListener<BMusicInfo>(){
-            @Override
-            public void onSuccess(List<BMusicInfo> bMusicInfos) {
-                if(bMusicInfos!=null&&bMusicInfos.size()>0){
-                    for(int i=0;i<bMusicInfos.size();i++){
-                        Logger.e(bMusicInfos.get(i).toString());
-                    }
-                }
-            }
-            @Override
-            public void onError(int i, String s) {
-
-            }
-        });
-    }*/
 
     private void initVariable() {
         initConn();
@@ -208,8 +191,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
-//        initJPush();
-//        initBmob();
+        initJPush();
+        initBmob();
     }
 
     private void initBmob() {
@@ -697,6 +680,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 if (!ExampleUtil.isEmpty(extras)) {
                     showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
                 }
+                Logger.e(messge);
+               SharedPreferencesUtil.setUpdateInfo(messge);
             }
         }
     }
