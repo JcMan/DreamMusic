@@ -13,6 +13,7 @@ import cn.bmob.v3.listener.FindListener;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.bmob.BUpdateInfo;
 import dream.app.com.dreammusic.config.App;
+import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.DownLoadUtil;
@@ -67,7 +68,10 @@ public class AboutActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()){
             case R.id.view_about_feedback:
-                startNewActivityWithAnim(FeedbackActivity.class);
+                if(UserEntry.getIsLogin()){
+                    startNewActivityWithAnim(FeedbackActivity.class);
+                }else
+                    DialogUtil.showMessageDialog(this,"您还没有登录，请登录后反馈意见");
                 break;
             case R.id.view_about_updateversion:
                 checkUpdateInfo();

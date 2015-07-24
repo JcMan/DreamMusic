@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Message;
 
+import com.app.tool.logger.Logger;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -21,7 +22,7 @@ import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.UserEntry;
 
 /**
- * Created by Administrator on 2015/6/26.
+ * Created by JcMan on 2015/6/26.
  */
 public class ThirdPlatformLoginUtil {
     private static Activity mActivity;
@@ -84,6 +85,7 @@ public class ThirdPlatformLoginUtil {
                 object.put("UserName",name);
                 object.put("HeadImage",url);
                 object.put("uid",uid);
+                Logger.e(arg1.toString());
                 saveUserInfo(name, url,uid);
             } catch (JSONException e) {
                 e.printStackTrace();
