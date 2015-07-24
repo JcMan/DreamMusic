@@ -140,6 +140,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         updateLoginView();
         updatePlayView();
         updateBg();
+        closeSlideMenu();
     }
 
 
@@ -274,12 +275,23 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * 打开或关闭侧滑菜单
      */
     protected void clickOnRightLogo(){
+        toggle();
+    }
+
+    private void toggle() {
         boolean isOpen = mSlideMenu.isDrawerOpen(mDrawerView);
         if(isOpen)
             mSlideMenu.closeDrawer(mDrawerView);
         else
             mSlideMenu.openDrawer(mDrawerView);
     }
+
+    private void closeSlideMenu(){
+        boolean isOpen = mSlideMenu.isDrawerOpen(mDrawerView);
+        if(isOpen)
+            mSlideMenu.closeDrawer(mDrawerView);
+    }
+
     @Override
     public boolean handleMessage(Message msg){
         if(mMusicService!=null){

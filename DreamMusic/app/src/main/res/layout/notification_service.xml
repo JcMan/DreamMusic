@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+    <RelativeLayout
+        android:layout_width="70dp"
+        android:layout_height="fill_parent">
+        <ImageView
+            android:layout_centerInParent="true"
+            android:id="@+id/iv_notification_singer"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/singer"
+            android:scaleType="fitXY"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <TextView
+            android:id="@+id/tv_notification_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/probar_bottom"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/text_size_ss"
+            android:singleLine="true"
+            android:text="微博控"
+            />
+        <TextView
+            android:id="@+id/tv_notification_singer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="许嵩"
+            android:textSize="13sp"
+            android:textColor="@color/color_white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

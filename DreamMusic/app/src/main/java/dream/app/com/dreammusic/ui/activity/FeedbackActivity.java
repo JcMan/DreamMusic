@@ -1,7 +1,9 @@
 package dream.app.com.dreammusic.ui.activity;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +12,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import net.tsz.afinal.FinalBitmap;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 import dream.app.com.dreammusic.R;
@@ -22,18 +29,23 @@ import dream.app.com.dreammusic.entry.UserBean;
 import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.ui.view.ViewPagerIndicator;
+import dream.app.com.dreammusic.ui.view.xlistview.XListView;
 import dream.app.com.dreammusic.util.DialogUtil;
+import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.StringUtil;
+import dream.app.com.dreammusic.util.ToastUtil;
 
 /**
  * Created by JcMan on 2015/7/23.
  */
-public class FeedbackActivity extends BaseActivity{
+public class FeedbackActivity extends BaseActivity implements XListView.IXListViewListener{
 
     private ViewPagerIndicator mIndicator;
     private ViewPager mViewPager;
     private List<View> mViewsList;
-    private ListView mAllListView,mMyListView;
+    private ListView mMyListView;
+    private XListView mAllListView;
+    private FeedbackListAdapter mAllAdapter;
     private List<BFeedbackInfo> mAllFeedbackList,mMyFeedbackInfoList;
     private FinalBitmap finalBitmap;
     private Bitmap loadingBitmap;
@@ -45,9 +57,10 @@ public class FeedbackActivity extends BaseActivity{
         initVariable();
         initView();
         initListener();
+        setTitle("意见反馈区");
     }
     @Override
-    public void initView() {
+    public void initView(){
         super.initView();
         mIndicator = (ViewPagerIndicator) findViewById(R.id.indicator_feedback);
         mViewPager = (ViewPager) findViewById(R.id.viewpager_feedbackactivity);
@@ -64,7 +77,8 @@ public class FeedbackActivity extends BaseActivity{
     private void initPagerViews() {
         View v_all = View.inflate(this,R.layout.view_feedback_all,null);
         View v_my = View.inflate(this,R.layout.view_feedback_my,null);
-        mAllListView = (ListView) v_all.findViewById(R.id.listview_feedback_all);
+        mAllListView = (XListView) v_all.findViewById(R.id.listview_feedback_all);
+        mAllListView.setPullLoadEnable(true);
         mMyListView = (ListView) v_my.findViewById(R.id.listview_feedback_my);
         initAllList();
         initMyList();
@@ -81,19 +95,24 @@ public class FeedbackActivity extends BaseActivity{
             @Override
             public void onSuccess(List<BFeedbackInfo> bFeedbackInfos) {
                 loadingDialog.cancel();
-                if (bFeedbackInfos != null && bFeedbackInfos.size() > 0) {
+                if (bFeedbackInfos != null && bFeedbackInfos.size() > 0){
                     BFeedbackInfo.reverseList(bFeedbackInfos);
                     mMyFeedbackInfoList = bFeedbackInfos;
                     mMyListView.setAdapter(new FeedbackListAdapter(mMyFeedbackInfoList));
                 }
             }
-
             @Override
             public void onError(int i, String s) {
                 loadingDialog.cancel();
                 DialogUtil.showMessageDialog(FeedbackActivity.this, "Error");
             }
         });
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        mAllListView.setXListViewListener(this);
     }
 
     private void initAllList() {
@@ -106,7 +125,8 @@ public class FeedbackActivity extends BaseActivity{
                 if(bFeedbackInfos!=null&&bFeedbackInfos.size()>0){
                     BFeedbackInfo.reverseList(bFeedbackInfos);
                     mAllFeedbackList = bFeedbackInfos;
-                    mAllListView.setAdapter(new FeedbackListAdapter(mAllFeedbackList));
+                    mAllAdapter = new FeedbackListAdapter(mAllFeedbackList);
+                    mAllListView.setAdapter(mAllAdapter);
                 }
             }
             @Override
@@ -131,6 +151,56 @@ public class FeedbackActivity extends BaseActivity{
         startNewActivityWithAnim(WriteFedbackActivity.class);
 
     }
+
+    private void onLoad(){
+        mAllListView.stopRefresh();
+        mAllListView.stopLoadMore();
+        String lastRefreshTime = SharedPreferencesUtil.getFeedbackAllRefreshTime();
+        mAllListView.setRefreshTime(" "+lastRefreshTime);
+    }
+
+    @Override
+    public void onRefresh() {
+        SharedPreferencesUtil.setFeedbackAllRefreshTime(getRefresgTime());
+        BmobQuery<BFeedbackInfo> bmobQuery = new BmobQuery<BFeedbackInfo>();
+        bmobQuery.findObjects(this,new FindListener<BFeedbackInfo>() {
+            @Override
+            public void onSuccess(List<BFeedbackInfo> bFeedbackInfos){
+                int i;
+                for(i=0;i<bFeedbackInfos.size();i++){
+                    if(mAllFeedbackList.get(0).getTime()==bFeedbackInfos.get(i).getTime())
+                        break;
+                }
+                for(i=i+1;i<bFeedbackInfos.size();i++){
+                    mAllFeedbackList.add(0,bFeedbackInfos.get(i));
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mAllAdapter.notifyDataSetChanged();
+                        onLoad();
+                        ToastUtil.showMessage(FeedbackActivity.this,"更新完毕");
+                    }
+                },1500);
+
+            }
+            @Override
+            public void onError(int i, String s) {
+            }
+        });
+    }
+
+    private String getRefresgTime() {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("M-d H:m.s");
+        return format.format(date);
+    }
+
+    @Override
+    public void onLoadMore() {
+
+    }
+
     class FeedbackListAdapter extends BaseAdapter{
         private List<BFeedbackInfo> _List;
         public FeedbackListAdapter(List<BFeedbackInfo> list){

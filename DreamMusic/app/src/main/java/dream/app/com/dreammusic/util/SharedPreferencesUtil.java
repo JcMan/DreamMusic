@@ -94,4 +94,15 @@ public class SharedPreferencesUtil {
         mEditor.putString(SettingEntry.BG,path);
         mEditor.commit();
     }
+
+    public static void setFeedbackAllRefreshTime(String time){
+        mEditor = SharedPreferencesUtil.getEditor(ApplicationConfig.SETTING);
+        mEditor.putString(SettingEntry.FEEDBACK_ALL_REFRESH_TIME,time);
+        mEditor.commit();
+    }
+
+    public static String getFeedbackAllRefreshTime(){
+        mPreference = SharedPreferencesUtil.getSharedPreferences(ApplicationConfig.SETTING);
+        return mPreference.getString(SettingEntry.FEEDBACK_ALL_REFRESH_TIME,"刚刚");
+    }
 }

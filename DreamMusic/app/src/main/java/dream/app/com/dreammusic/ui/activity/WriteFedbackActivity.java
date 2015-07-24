@@ -30,7 +30,7 @@ public class WriteFedbackActivity extends BaseActivity {
         initVariable();
         initView();
         initListener();
-        setTitle("意见反馈区");
+        setTitle("反馈意见");
 
     }
 
