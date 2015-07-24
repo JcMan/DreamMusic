@@ -1,9 +1,13 @@
 package dream.app.com.dreammusic.service;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -31,6 +35,10 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     public static final int TYPE_MUSIC_DOWNLOAD = 1;
     public static final int TYPE_MUSIC_SUIBIANTING = 2;
 
+    private static final String SERVICE_NOTIFICATION_NEXT_MUSIC = "service_notification_next_music";
+    private static final String SERVICE_NOTIFICATION_PRE_MUSIC = "service_notification_pre_music";
+    private static final String SERVICE_NOTIFICATION_PAUSE_START_MUSIC = "service_notification_pause_start_music";
+
     public static final int STATE_PALYING  = 0;
     public static final int STATE_PAUSE  = 1;
     public static final int STATE_STOP  = 2;
@@ -41,6 +49,46 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     private int mListType = TYPE_MUSIC_LOCAL;
     private int mCurrentPosition = -1;
     private Notification notification;
+    private NotificationManager manager ;
+    private BroadcastReceiver receiver_next = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(SERVICE_NOTIFICATION_NEXT_MUSIC)) {
+                next();
+            }
+        }
+    };
+
+    private BroadcastReceiver receiver_pre = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(SERVICE_NOTIFICATION_PRE_MUSIC)) {
+                pre();
+            }
+        }
+    };
+    private BroadcastReceiver receiver_start_pause = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(SERVICE_NOTIFICATION_PAUSE_START_MUSIC)) {
+                if(mState==STATE_PAUSE)
+                    start();
+                else
+                    pause();
+
+            }
+        }
+    };
+
+    private void updateStartPauseImg() {
+        if(mState==STATE_PAUSE) {
+            notification.contentView.setImageViewResource(R.id.ib_notification_start_pause,R.drawable.ic_fm_item_play_play);
+        }else{
+            notification.contentView.setImageViewResource(R.id.ib_notification_start_pause,R.drawable.ic_fm_item_play_pause);
+        }
+        manager.notify(1,notification);
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         return new MusicBinder();
@@ -58,16 +106,36 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         mPlayer = new MediaPlayer();
         mPlayer.setOnCompletionListener(this);
         notification = new Notification(R.drawable.ic_launcher,
-                "有通知到来", System.currentTimeMillis());
+                "飞梦音乐", System.currentTimeMillis());
         RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.notification_service);
         notification.contentView = remoteViews;
         notification.contentIntent = PendingIntent.getActivities(this,0, new Intent[]{new Intent(this, MainActivity.class)},PendingIntent.FLAG_UPDATE_CURRENT);
-       /* downloadNotification = new Notification(R.drawable.downnoti,apkname+“下载…”,System.currentTimeMillis());
-        downloadNotification.contentView = newRemoteViews(getPackageName(),R.layout.notification);
-        //设置进度条的最大进度和初始进度
-        downloadNotification.contentView.setProgressBar(R.id.pb, 100,0, false);
-        downloadNM.notify(downNotiID, downloadNotification);*/
+        initButtomClickListener(notification.contentView);
+        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         startForeground(1, notification);
+    }
+
+    private void initButtomClickListener(RemoteViews remoteViews) {
+        IntentFilter filter_next = new IntentFilter();
+        filter_next.addAction(SERVICE_NOTIFICATION_NEXT_MUSIC);
+        registerReceiver(receiver_next, filter_next);
+        Intent Intent_next = new Intent(SERVICE_NOTIFICATION_NEXT_MUSIC);
+        PendingIntent pendIntent_next = PendingIntent.getBroadcast(this, 0, Intent_next, 0);
+        remoteViews.setOnClickPendingIntent(R.id.ib_notification_next,pendIntent_next);
+
+        IntentFilter filter_pre = new IntentFilter();
+        filter_pre.addAction(SERVICE_NOTIFICATION_PRE_MUSIC);
+        registerReceiver(receiver_pre, filter_pre);
+        Intent Intent_pre = new Intent(SERVICE_NOTIFICATION_PRE_MUSIC);
+        PendingIntent pendIntent_pre = PendingIntent.getBroadcast(this, 0, Intent_pre, 0);
+        remoteViews.setOnClickPendingIntent(R.id.ib_notification_pre,pendIntent_pre);
+
+        IntentFilter filter_start_pause = new IntentFilter();
+        filter_start_pause.addAction(SERVICE_NOTIFICATION_PAUSE_START_MUSIC);
+        registerReceiver(receiver_start_pause, filter_start_pause);
+        Intent Intent_start_pause = new Intent(SERVICE_NOTIFICATION_PAUSE_START_MUSIC);
+        PendingIntent pendIntent_pause = PendingIntent.getBroadcast(this, 0, Intent_start_pause, 0);
+        remoteViews.setOnClickPendingIntent(R.id.ib_notification_start_pause,pendIntent_pause);
     }
 
     public void setMusicList(List<Music> list){
@@ -105,7 +173,9 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         if(mState==STATE_PAUSE){
             mPlayer.start();
             mState=STATE_PALYING;
+            updateStartPauseImg();
         }
+
     }
 
     public Music getMusic(){
@@ -135,10 +205,12 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
             bitmap = BitmapFactory.decodeFile(path);
         }else
             bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher);
-        notification.contentView.setImageViewBitmap(R.id.iv_notification_singer,bitmap);
+        notification.contentView.setImageViewBitmap(R.id.iv_notification_singer, bitmap);
         notification.contentView.setTextViewText(R.id.tv_notification_title,getMusicName());
-        notification.contentView.setTextViewText(R.id.tv_notification_singer,getSinger());
-        startForeground(1, notification);
+        notification.contentView.setTextViewText(R.id.tv_notification_singer, getSinger());
+//        startForeground(1, notification);
+        updateStartPauseImg();
+        manager.notify(1,notification);
     }
     public boolean isStop(){
         return mState==STATE_STOP;
@@ -152,7 +224,6 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
             play(++mCurrentPosition);
         }
     }
-
     public void pre(){
         if(mCurrentPosition-1>=0){
             play(--mCurrentPosition);
@@ -163,6 +234,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         if(mState==STATE_PALYING){
             mPlayer.pause();
             mState = STATE_PAUSE;
+            updateStartPauseImg();
         }
     }
 
@@ -255,4 +327,5 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     }
 
 
-}
+
+    }

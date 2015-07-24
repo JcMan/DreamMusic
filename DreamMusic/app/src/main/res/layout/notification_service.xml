@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/ic_mine_top_bg"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
+    android:layout_height="60dp">
     <RelativeLayout
-        android:layout_width="70dp"
+        android:layout_width="60dp"
         android:layout_height="fill_parent">
         <ImageView
             android:layout_centerInParent="true"
@@ -13,10 +14,9 @@
             android:src="@drawable/singer"
             android:scaleType="fitXY"
             />
-    </RelativeLayout>
+</RelativeLayout>
     <RelativeLayout
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingBottom="3dp"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <TextView
@@ -28,6 +28,7 @@
             android:textColor="@color/color_white"
             android:textSize="@dimen/text_size_ss"
             android:singleLine="true"
+            android:layout_marginTop="10dp"
             android:text="微博控"
             />
         <TextView
@@ -39,9 +40,57 @@
             android:textSize="13sp"
             android:textColor="@color/color_white"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             />
-
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <ImageButton
+                android:id="@+id/ib_notification_next"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="35dp"
+                android:layout_width="@dimen/d_notification_btn"
+                android:layout_height="@dimen/d_notification_btn"
+                android:background="@drawable/top_btn_selector"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_fm_btn_play_next_nor"
+                android:padding="5dp"
+                />
+            <ImageButton
+                android:id="@+id/ib_notification_start_pause"
+                android:layout_marginRight="20dp"
+                android:layout_toLeftOf="@id/ib_notification_next"
+                android:layout_alignParentBottom="true"
+                android:layout_width="@dimen/d_notification_btn"
+                android:layout_height="@dimen/d_notification_btn"
+                android:background="@drawable/top_btn_selector"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_fm_item_play_play"
+                android:padding="5dp"
+                />
+            <ImageButton
+                android:id="@+id/ib_notification_pre"
+                android:layout_toLeftOf="@+id/ib_notification_start_pause"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:layout_width="@dimen/d_notification_btn"
+                android:layout_height="@dimen/d_notification_btn"
+                android:background="@drawable/top_btn_selector"
+                android:src="@drawable/ic_fm_btn_play_prev_nor"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                />
+        </RelativeLayout>
+        <ImageButton
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="centerInside"
+            android:background="@drawable/top_btn_selector"
+            android:src="@drawable/ic_common_title_bar_close"
+            />
     </RelativeLayout>
 
 </LinearLayout>

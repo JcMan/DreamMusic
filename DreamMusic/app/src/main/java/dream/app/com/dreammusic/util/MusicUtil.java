@@ -85,7 +85,7 @@ public class MusicUtil  {
                     filePath.lastIndexOf(File.separator));
             music.folder = folderPath;
             double fileSize = StringUtil.getFileSizeDouble(music.data);
-            if(fileSize>0.3)
+            if(fileSize>0.3&&music.duration > FILTER_DURATION)
                 musicList.add(music);
         }
         cursor.close();

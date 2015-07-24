@@ -119,7 +119,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      */
     private void bindService() {
         Intent intent = new Intent(this,MusicService.class);
-        bindService(intent,conn,0);
+        bindService(intent,conn,Context.BIND_AUTO_CREATE);
     }
 
     private void registerReceiver() {
@@ -192,7 +192,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
-        initJPush();
+//        initJPush();
         initBmob();
     }
 

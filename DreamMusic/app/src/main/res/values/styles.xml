@@ -108,10 +108,10 @@
     </style>
     <style name="item_menu_music_store">
         <item name="android:gravity">center</item>
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
         <item name="android:textSize">@dimen/text_size_sss</item>
-        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textColor">@color/color_top_bg</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:background">@drawable/slidemenu_item_selector</item>

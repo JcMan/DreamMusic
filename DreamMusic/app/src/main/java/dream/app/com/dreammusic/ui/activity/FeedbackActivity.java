@@ -91,7 +91,7 @@ public class FeedbackActivity extends BaseActivity implements XListView.IXListVi
         loadingDialog.show();
         BmobQuery<BFeedbackInfo> query = new BmobQuery<BFeedbackInfo>();
         query.addWhereEqualTo(UserBean.LOGINID, UserEntry.getUid());
-        query.findObjects(this, new FindListener<BFeedbackInfo>() {
+        query.findObjects(this, new FindListener<BFeedbackInfo>(){
             @Override
             public void onSuccess(List<BFeedbackInfo> bFeedbackInfos) {
                 loadingDialog.cancel();

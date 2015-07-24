@@ -9,14 +9,13 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
-        versionName "1.01"
+        versionName "1.04"
     }
     android{
         packagingOptions{
            exclude 'META-INF/LICENSE.txt'
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false

@@ -15,6 +15,8 @@
     <dimen name="d_viewpagerindicator_height">45dp</dimen>
     <dimen name="d_musicstore_progress_size">70dp</dimen>
 
+    <dimen name="d_notification_btn">35dp</dimen>
+
     <dimen name="text_size_s">15sp</dimen>
     <dimen name="text_size_ss">16sp</dimen>
     <dimen name="text_size_sss">17sp</dimen>

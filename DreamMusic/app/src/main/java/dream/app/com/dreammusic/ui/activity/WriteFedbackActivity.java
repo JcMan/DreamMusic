@@ -87,6 +87,7 @@ public class WriteFedbackActivity extends BaseActivity {
             public void onSuccess() {
                 loadingDialog.cancel();
                 ToastUtil.showMessage(WriteFedbackActivity.this, "发送成功");
+                onBackPressed();
             }
             @Override
             public void onFailure(int i, String s) {
