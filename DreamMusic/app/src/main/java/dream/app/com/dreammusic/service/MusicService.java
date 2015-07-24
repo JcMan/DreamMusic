@@ -174,6 +174,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
             mPlayer.start();
             mState=STATE_PALYING;
             updateStartPauseImg();
+            listener.onMusicStart();
         }
 
     }
@@ -193,6 +194,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
                 mState = STATE_PALYING;
                 mCurrentPosition = position;
                 updateRemoteViews();
+                listener.onMusicPlay();
             } catch (IOException e) {}
         }
     }
@@ -235,6 +237,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
             mPlayer.pause();
             mState = STATE_PAUSE;
             updateStartPauseImg();
+            listener.onMusicPause();
         }
     }
 
@@ -242,6 +245,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         if(mState!=STATE_STOP){
             mPlayer.stop();
             mState = STATE_STOP;
+            listener.onMusicStop();
         }
     }
 
@@ -293,7 +297,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         super.onDestroy();
     }
 
-    private IMusicCompletionListener listener;
+    private IMusicServiceListener listener;
     /**
      * 歌曲播放完成，自动播放下一首
      * @param mp
@@ -312,12 +316,16 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         mListType = type;
     }
 
-    public void setOnMusicCompletion(IMusicCompletionListener listener){
+    public void setOnMusicCompletion(IMusicServiceListener listener){
         this.listener = listener;
     }
 
-    public interface IMusicCompletionListener{
+    public interface IMusicServiceListener{
         public void onMusicCompletion();
+        public void onMusicPlay();
+        public void onMusicPause();
+        public void onMusicStop();
+        public void onMusicStart();
     }
 
     public class MusicBinder extends Binder{

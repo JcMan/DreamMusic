@@ -62,7 +62,7 @@ import dream.app.com.dreammusic.util.lrc.GetLrc;
 /**
  * Created by JcMan on 2015/7/20.
  */
-public class LrcActivity extends Activity implements View.OnClickListener,MusicService.IMusicCompletionListener{
+public class LrcActivity extends Activity implements View.OnClickListener,MusicService.IMusicServiceListener{
 
     private MusicService mMusicService;
     private ServiceConnection conn;
@@ -210,12 +210,10 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                 break;
         }
     }
-
     private void next() {
         mMusicService.next();
         play();
     }
-
     private void pre() {
         mMusicService.pre();
         play();
@@ -223,26 +221,35 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
 
     private void start() {
         mMusicService.start();
-        updateStartAndPauseBtn(true);
-        updateCDView(true);
     }
 
     private void pause(){
         mMusicService.pause();
-        updateStartAndPauseBtn(false);
-        updateCDView(false);
     }
 
     private void play(){
         title = mMusicService.getMusicName();
         singer = mMusicService.getSinger();
         songid = mMusicService.getSongId();
-        updateTitleAndSinger();
-        updateStartAndPauseBtn(true);
         mSeekbar.setMax(mMusicService.getMusicDuration());
-        updateSingerImg();
         setLrc();
         mCDView.start();
+        updateUI();
+    }
+
+    private void updateUI(){
+        updateTitleAndSinger();
+        updateStartAndPauseBtn();
+        updateSingerImg();
+        updateCDView();
+    }
+
+    private void updateCDView(){
+        updateCDView(mMusicService.isPlaying());
+    }
+
+    private void updateStartAndPauseBtn(){
+        updateStartAndPauseBtn(mMusicService.isPlaying());
     }
 
     private void setLrc() {
@@ -435,7 +442,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             }
             @Override
             public void onFailure(HttpException e, String s){
-                ToastUtil.showMessage(LrcActivity.this, "搜索失败");
+                ToastUtil.showMessage(LrcActivity.this, "写真下载失败");
                 loadingDialog.cancel();
             }
         });
@@ -469,7 +476,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onFailure(HttpException e, String s) {
                 loadingDialog.cancel();
@@ -552,11 +558,33 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                 }
         }).start();
     }
+    /************************************************************/
     /**
-     * 播放完成播放下一首
+     * IMusicService的接口方法
      */
     @Override
     public void onMusicCompletion() {
         play();
     }
+
+    @Override
+    public void onMusicPlay() {
+        play();
+    }
+
+    @Override
+    public void onMusicPause() {
+          updateUI();
+    }
+
+    @Override
+    public void onMusicStop() {
+        updateUI();
+    }
+
+    @Override
+    public void onMusicStart() {
+        updateUI();
+    }
+    /*****************************************************************/
 }

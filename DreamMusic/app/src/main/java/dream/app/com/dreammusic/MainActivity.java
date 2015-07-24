@@ -66,7 +66,7 @@ import dream.app.com.dreammusic.util.ToastUtil;
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
         FragmentMenuLogin.LoginListener,View.OnClickListener,
         FragmentMain.FragmentClickListener,SeekBar.OnSeekBarChangeListener,
-        MusicService.IMusicCompletionListener,FragmentPlayMusicListener {
+        MusicService.IMusicServiceListener,FragmentPlayMusicListener {
 
     public static boolean isForeground = false;
     private DrawerLayout mSlideMenu;
@@ -311,23 +311,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     private void play(int position){
         mMusicService.play(position);
         updatePlayView();
-        /*mLoginId = UserEntry.getUid();
-        if(mLoginId!=null&&mLoginId.length()>1){
-            Logger.e("保存");
-            BMusicInfo bMusicInfo = new BMusicInfo();
-            bMusicInfo.setInfo(mMusicService.getMusic());
-            bMusicInfo.setLoginId(mLoginId);
-            bMusicInfo.save(this,new SaveListener(){
-                @Override
-                public void onSuccess() {
-                    ToastUtil.showMessage(MainActivity.this,"歌曲保存成功");
-                }
-                @Override
-                public void onFailure(int i, String s) {
-                    ToastUtil.showMessage(MainActivity.this,"歌曲保存失败");
-                }
-            });
-        }*/
     }
 
     private void pauseMusic() {
@@ -587,15 +570,35 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             mStart.setVisibility(View.VISIBLE);
         }
     }
-
-    /**
-     * 歌曲播放完成播放下一曲
-     */
-    @Override
-    public void onMusicCompletion() {
-        updatePlayView();
-    }
-
+    /********************************************************************/
+    /**                                                                  /
+     * IMusciServiceListener的接口方法                                    /**/
+                                                                         /**/
+    @Override                                                            /**/
+    public void onMusicCompletion() {                                    /**/
+        updatePlayView();                                                /**/
+    }                                                                    /**/
+                                                                         /**/
+    @Override                                                            /**/
+    public void onMusicPlay() {                                          /**/
+        updatePlayView();                                                /**/
+    }                                                                    /**/
+                                                                         /**/
+    @Override                                                            /**/
+    public void onMusicPause() {                                         /**/
+        updatePlayView();                                                /**/
+    }                                                                    /**/
+                                                                         /**/
+    @Override                                                            /**/
+    public void onMusicStop() {                                          /**/
+        updatePlayView();                                                /**/
+    }                                                                    /**/
+                                                                         /**/
+    @Override                                                            /**/
+    public void onMusicStart() {                                         /**/
+        updatePlayView();                                                /**/
+    }                                                                    /**/
+    /********************************************************************/
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
     }
