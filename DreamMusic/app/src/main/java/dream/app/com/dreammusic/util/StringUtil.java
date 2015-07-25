@@ -2,6 +2,7 @@ package dream.app.com.dreammusic.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 /**
@@ -23,14 +24,16 @@ public class StringUtil {
     }
 
     public static double getFileSizeDouble(String path){
-        FileInputStream in = null;
+        File file = new File(path);
         double size = 0;
-        try {
-            in = new FileInputStream(new File(path));
-            size = in.available()/(1024*1024*1.0);
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(file.isFile()&&file.exists()){
+            FileInputStream in = null;
+            try {
+                in = new FileInputStream(file);
+                size = in.available()/(1024*1024*1.0);
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return size;
     }

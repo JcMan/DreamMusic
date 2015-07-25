@@ -29,6 +29,7 @@
                     android:text="摇一摇切歌"
                     />
                 <dream.app.com.dreammusic.ui.view.SwitchButton
+                    android:id="@+id/sbtn_shake_enable"
                     style="@style/setting_switchbutton"
                     />
                 <View
@@ -49,6 +50,7 @@
                     android:text="接收推送消息"
                     />
                 <dream.app.com.dreammusic.ui.view.SwitchButton
+                    android:id="@+id/sbtn_accept_tuisong"
                     style="@style/setting_switchbutton"
                     />
                 <View

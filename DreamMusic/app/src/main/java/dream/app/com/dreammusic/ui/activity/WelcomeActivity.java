@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 
+import com.app.tool.logger.Logger;
+
 import java.io.File;
 
 import cn.jpush.android.api.JPushInterface;
@@ -14,6 +16,8 @@ import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.service.AlarmTimerService;
 import dream.app.com.dreammusic.service.MusicService;
+import dream.app.com.dreammusic.util.SharedPreferencesUtil;
+import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 
 /**
  * Created by JcMan on 2015/6/29.
@@ -30,8 +34,16 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         setContentView(R.layout.activity_welcome);
         mHandler = new Handler(this);
         mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN,3000);
+        initUtil();
         initDirs();
         startService();
+//        JPushInterface.init(this);
+    }
+
+    private void initUtil(){
+        Logger.init("dream").hideThreadInfo();
+        ThirdPlatformLoginUtil.init(this);
+        SharedPreferencesUtil.init(this);
     }
 
     private void startService() {

@@ -13,7 +13,9 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.widget.RemoteViews;
 
 import java.io.File;
@@ -24,7 +26,9 @@ import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.model.Music;
+import dream.app.com.dreammusic.sensor.SensorManagerHelper;
 import dream.app.com.dreammusic.util.MusicUtil;
+import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 
 /**
  * Created by Administrator on 2015/7/18.
@@ -50,6 +54,8 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     private int mCurrentPosition = -1;
     private Notification notification;
     private NotificationManager manager ;
+    private SensorManagerHelper sensorManagerHelper;
+    private Vibrator mVibrator;
     private BroadcastReceiver receiver_next = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -112,7 +118,36 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         notification.contentIntent = PendingIntent.getActivities(this,0, new Intent[]{new Intent(this, MainActivity.class)},PendingIntent.FLAG_UPDATE_CURRENT);
         initButtomClickListener(notification.contentView);
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        initSensor();
         startForeground(1, notification);
+    }
+
+    private void initSensor(){
+        boolean isEnable = SharedPreferencesUtil.getShakeEnable();
+        if(isEnable){
+            sensorManagerHelper = new SensorManagerHelper(this);
+            sensorManagerHelper.setOnShakeListener(new SensorManagerHelper.OnShakeListener() {
+                @Override
+                public void onShake() {
+                    mVibrator.vibrate(new long[]{500, 200}, -1);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            next();
+                        }
+                    }, 500);
+                }
+            });
+        }
+    }
+
+    public void setShakeEnable(){
+        sensorManagerHelper.start();
+    }
+
+    public void setShakeUnable(){
+        sensorManagerHelper.stop();
     }
 
     private void initButtomClickListener(RemoteViews remoteViews) {
@@ -295,6 +330,8 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(sensorManagerHelper!=null)
+            sensorManagerHelper.stop();
     }
 
     private IMusicServiceListener listener;

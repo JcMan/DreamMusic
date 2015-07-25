@@ -261,10 +261,10 @@ public class SwitchButton extends View {
                     invalidate();
                     if (listener != null) {
                         if (state == STATE_SWITCH_OFF2) {
-                            listener.toggleToOn();
+                            listener.toggleToOn(this);
                         }
                         else if (state == STATE_SWITCH_ON2) {
-                            listener.toggleToOff();
+                            listener.toggleToOff(this);
                         }
                     }
                     break;
@@ -324,18 +324,18 @@ public class SwitchButton extends View {
     }
 
     public interface OnStateChangedListener{
-        void toggleToOn();
+        void toggleToOn(View v);
 
-        void toggleToOff();
+        void toggleToOff(View v);
     }
 
     private OnStateChangedListener listener = new OnStateChangedListener() {
 
-        @Override public void toggleToOn() {
+        @Override public void toggleToOn(View v) {
             toggleSwitch(STATE_SWITCH_ON);
         }
 
-        @Override public void toggleToOff() {
+        @Override public void toggleToOff(View v) {
             toggleSwitch(STATE_SWITCH_OFF);
         }
     };

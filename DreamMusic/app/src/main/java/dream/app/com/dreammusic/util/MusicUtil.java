@@ -69,24 +69,25 @@ public class MusicUtil  {
             Music music = new Music();
             music.duration = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.Audio.Media.DURATION));
-            music.songId = cursor.getInt(cursor
-                    .getColumnIndex(MediaStore.Audio.Media._ID));
+            if(music.duration > FILTER_DURATION){
+                music.songId = cursor.getInt(cursor
+                        .getColumnIndex(MediaStore.Audio.Media._ID));
 
-            music.albumId = cursor.getInt(cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
-            music.musicName = cursor.getString(cursor
-                    .getColumnIndex(MediaStore.Audio.Media.TITLE));
-            music.artist = cursor.getString(cursor
-                    .getColumnIndex(MediaStore.Audio.Media.ARTIST));
-            String filePath = cursor.getString(cursor
-                    .getColumnIndex(MediaStore.Audio.Media.DATA));
-            music.data = filePath;
-            String folderPath = filePath.substring(0,
-                    filePath.lastIndexOf(File.separator));
-            music.folder = folderPath;
-            double fileSize = StringUtil.getFileSizeDouble(music.data);
-            if(fileSize>0.3&&music.duration > FILTER_DURATION)
+                music.albumId = cursor.getInt(cursor
+                        .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                music.musicName = cursor.getString(cursor
+                        .getColumnIndex(MediaStore.Audio.Media.TITLE));
+                music.artist = cursor.getString(cursor
+                        .getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                String filePath = cursor.getString(cursor
+                        .getColumnIndex(MediaStore.Audio.Media.DATA));
+                music.data = filePath;
+                String folderPath = filePath.substring(0,
+                        filePath.lastIndexOf(File.separator));
+                music.folder = folderPath;
+
                 musicList.add(music);
+            }
         }
         cursor.close();
         return musicList;

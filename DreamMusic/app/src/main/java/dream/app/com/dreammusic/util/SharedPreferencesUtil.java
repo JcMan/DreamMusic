@@ -96,13 +96,35 @@ public class SharedPreferencesUtil {
     }
 
     public static void setFeedbackAllRefreshTime(String time){
-        mEditor = SharedPreferencesUtil.getEditor(ApplicationConfig.SETTING);
+        mEditor = getEditor(ApplicationConfig.SETTING);
         mEditor.putString(SettingEntry.FEEDBACK_ALL_REFRESH_TIME,time);
         mEditor.commit();
     }
 
     public static String getFeedbackAllRefreshTime(){
-        mPreference = SharedPreferencesUtil.getSharedPreferences(ApplicationConfig.SETTING);
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
         return mPreference.getString(SettingEntry.FEEDBACK_ALL_REFRESH_TIME,"刚刚");
+    }
+
+    public static boolean getAcceptTuiSong(){
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
+        return mPreference.getBoolean(SettingEntry.ACCEPT_TUISONG,true);
+    }
+
+    public static void setAcceptTuiSong(boolean result){
+        mEditor = getEditor(ApplicationConfig.SETTING);
+        mEditor.putBoolean(SettingEntry.ACCEPT_TUISONG,result);
+        mEditor.commit();
+    }
+
+    public static void setShakeEnable(boolean isEnable){
+        mEditor = getEditor(ApplicationConfig.SETTING);
+        mEditor.putBoolean(SettingEntry.SHAKE_ENABLE,isEnable);
+        mEditor.commit();
+    }
+
+    public static boolean getShakeEnable(){
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
+        return mPreference.getBoolean(SettingEntry.SHAKE_ENABLE,true);
     }
 }

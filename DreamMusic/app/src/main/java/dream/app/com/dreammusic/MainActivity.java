@@ -1,4 +1,5 @@
 package dream.app.com.dreammusic;
+
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -107,6 +108,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
 
 
+
     }
 
 
@@ -192,7 +194,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);
-//        initJPush();
+        initJPush();
         initBmob();
     }
 
@@ -434,12 +436,13 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         overridePendingTransition(inStyle, outStyle);
     }
 
-
     private void initJPush(){
-        JPushInterface.init(getApplicationContext());
-        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);     		// 初始化 JPush
-        registerMessageReceiver();
+        if(SharedPreferencesUtil.getAcceptTuiSong()){
+            JPushInterface.init(getApplicationContext());
+            JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+            JPushInterface.init(this);     		// 初始化 JPush
+            registerMessageReceiver();
+        }
     }
 
     /**

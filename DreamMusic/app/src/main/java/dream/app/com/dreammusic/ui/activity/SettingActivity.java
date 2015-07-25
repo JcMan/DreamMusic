@@ -4,25 +4,32 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.app.tool.logger.Logger;
+
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.UserEntry;
+import dream.app.com.dreammusic.ui.view.SwitchButton;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 
 /**
  * Created by JcMan on 2015/6/28.
  */
-public class SettingActivity extends BaseActivity{
+public class SettingActivity extends BaseActivity implements SwitchButton.OnStateChangedListener{
 
     private Button mExitBtn;
     private View mExitLayout;
     private View mAbout;
+    private SwitchButton mAcceptTSBtn,mShakeBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         initView();
         initListener();
+        toggleAcceptTuiSongButtn();
+        toggleShakeButtn();
     }
 
     @Override
@@ -32,6 +39,8 @@ public class SettingActivity extends BaseActivity{
         mExitLayout = findViewById(R.id.view_setting_exit);
         mExitBtn = (Button) findViewById(R.id.btn_setting_exit);
         mAbout = findViewById(R.id.view_setting_about);
+        mAcceptTSBtn = (SwitchButton) findViewById(R.id.sbtn_accept_tuisong);
+        mShakeBtn = (SwitchButton) findViewById(R.id.sbtn_shake_enable);
     }
 
     @Override
@@ -40,6 +49,8 @@ public class SettingActivity extends BaseActivity{
         mExitBtn.setOnClickListener(this);
         mExitLayout.setOnClickListener(this);
         mAbout.setOnClickListener(this);
+        mAcceptTSBtn.setOnStateChangedListener(this);
+        mShakeBtn.setOnStateChangedListener(this);
     }
 
     @Override
@@ -50,7 +61,11 @@ public class SettingActivity extends BaseActivity{
         if(!login){
             mExitLayout.setVisibility(View.GONE);
         }
+
     }
+
+
+
     /**
      * 退出当前账号
      */
@@ -79,5 +94,41 @@ public class SettingActivity extends BaseActivity{
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.base_slide_remain,R.anim.base_slide_right_out);
+    }
+
+    @Override
+    public void toggleToOn(View v){
+        if(v.getId()==R.id.sbtn_accept_tuisong){
+            Logger.e("推送打开");
+            mAcceptTSBtn.toggleSwitch(true);
+            SharedPreferencesUtil.setAcceptTuiSong(true);
+        }else if(v.getId()==R.id.sbtn_shake_enable){
+            Logger.e("摇晃打开");
+            mShakeBtn.toggleSwitch(true);
+            SharedPreferencesUtil.setShakeEnable(true);
+        }
+    }
+
+    @Override
+    public void toggleToOff(View v){
+        if(v.getId()==R.id.sbtn_accept_tuisong){
+            Logger.e("推送关闭");
+            mAcceptTSBtn.toggleSwitch(false);
+            SharedPreferencesUtil.setAcceptTuiSong(false);
+        }else if(v.getId()==R.id.sbtn_shake_enable){
+            Logger.e("摇晃关闭");
+            mShakeBtn.toggleSwitch(false);
+            SharedPreferencesUtil.setShakeEnable(false);
+        }
+    }
+
+    private void toggleAcceptTuiSongButtn(){
+        boolean accept = SharedPreferencesUtil.getAcceptTuiSong();
+        mAcceptTSBtn.toggleSwitch(accept);
+    }
+
+    private void toggleShakeButtn() {
+        boolean enable = SharedPreferencesUtil.getShakeEnable();
+        mShakeBtn.toggleSwitch(enable);
     }
 }
