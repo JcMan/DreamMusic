@@ -1,5 +1,6 @@
 package dream.app.com.dreammusic.service;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -18,8 +19,11 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.widget.RemoteViews;
 
+import com.app.tool.logger.Logger;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dream.app.com.dreammusic.MainActivity;
@@ -42,6 +46,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     private static final String SERVICE_NOTIFICATION_NEXT_MUSIC = "service_notification_next_music";
     private static final String SERVICE_NOTIFICATION_PRE_MUSIC = "service_notification_pre_music";
     private static final String SERVICE_NOTIFICATION_PAUSE_START_MUSIC = "service_notification_pause_start_music";
+    private static final String SERVICE_NOTIFICATION_EXIT_MUSIC = "service_notification_exit_music";
 
     public static final int STATE_PALYING  = 0;
     public static final int STATE_PAUSE  = 1;
@@ -56,6 +61,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     private NotificationManager manager ;
     private SensorManagerHelper sensorManagerHelper;
     private Vibrator mVibrator;
+    private static List<Activity> mActivityList;
     private BroadcastReceiver receiver_next = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -65,11 +71,23 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         }
     };
 
+
+
     private BroadcastReceiver receiver_pre = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(SERVICE_NOTIFICATION_PRE_MUSIC)) {
                 pre();
+            }
+        }
+    };
+    private BroadcastReceiver receiver_exit = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(SERVICE_NOTIFICATION_EXIT_MUSIC)) {
+                Logger.e("exot");
+                stopSelf();
+                exit();
             }
         }
     };
@@ -119,8 +137,26 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         initButtomClickListener(notification.contentView);
         manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mActivityList = new ArrayList<Activity>();
         initSensor();
         startForeground(1, notification);
+    }
+
+    public static void addActivity(Activity activity){
+        mActivityList.add(activity);
+    }
+
+    public void exit() {    //遍历List，退出每一个Activity
+        try {
+            for (Activity activity : mActivityList) {
+                if (activity != null)
+                    activity.finish();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            System.exit(0);
+        }
     }
 
     private void initSensor(){
@@ -171,6 +207,13 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         Intent Intent_start_pause = new Intent(SERVICE_NOTIFICATION_PAUSE_START_MUSIC);
         PendingIntent pendIntent_pause = PendingIntent.getBroadcast(this, 0, Intent_start_pause, 0);
         remoteViews.setOnClickPendingIntent(R.id.ib_notification_start_pause,pendIntent_pause);
+
+        IntentFilter filter_exit = new IntentFilter();
+        filter_exit.addAction(SERVICE_NOTIFICATION_EXIT_MUSIC);
+        registerReceiver(receiver_exit, filter_exit);
+        Intent Intent_exit = new Intent(SERVICE_NOTIFICATION_EXIT_MUSIC);
+        PendingIntent pendIntent_Exit = PendingIntent.getBroadcast(this, 0, Intent_exit, 0);
+        remoteViews.setOnClickPendingIntent(R.id.ib_notification_exit,pendIntent_Exit);
     }
 
     public void setMusicList(List<Music> list){
@@ -245,7 +288,6 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         notification.contentView.setImageViewBitmap(R.id.iv_notification_singer, bitmap);
         notification.contentView.setTextViewText(R.id.tv_notification_title,getMusicName());
         notification.contentView.setTextViewText(R.id.tv_notification_singer, getSinger());
-//        startForeground(1, notification);
         updateStartPauseImg();
         manager.notify(1,notification);
     }
@@ -363,6 +405,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         public void onMusicPause();
         public void onMusicStop();
         public void onMusicStart();
+        public void onMusicExit();
     }
 
     public class MusicBinder extends Binder{

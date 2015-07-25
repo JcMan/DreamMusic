@@ -8,6 +8,7 @@ import android.widget.EditText;
 import cn.bmob.v3.listener.SaveListener;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.bmob.BFeedbackInfo;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
@@ -27,6 +28,7 @@ public class WriteFedbackActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writefeedback);
+        MusicService.addActivity(this);
         initVariable();
         initView();
         initListener();

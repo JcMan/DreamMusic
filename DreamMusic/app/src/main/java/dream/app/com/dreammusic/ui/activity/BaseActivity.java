@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.config.App;
 import dream.app.com.dreammusic.util.AnimUtil;
 
 /**

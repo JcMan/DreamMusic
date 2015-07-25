@@ -27,6 +27,7 @@ import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.bmob.BFeedbackInfo;
 import dream.app.com.dreammusic.entry.UserBean;
 import dream.app.com.dreammusic.entry.UserEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.ui.view.ViewPagerIndicator;
 import dream.app.com.dreammusic.ui.view.xlistview.XListView;
@@ -54,6 +55,7 @@ public class FeedbackActivity extends BaseActivity implements XListView.IXListVi
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+        MusicService.addActivity(this);
         initVariable();
         initView();
         initListener();

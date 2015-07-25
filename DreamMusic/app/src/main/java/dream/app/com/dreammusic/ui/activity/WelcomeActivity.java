@@ -34,13 +34,12 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         setContentView(R.layout.activity_welcome);
         mHandler = new Handler(this);
         mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN,3000);
-        initUtil();
         initDirs();
         startService();
-//        JPushInterface.init(this);
+        initUtil();
     }
 
-    private void initUtil(){
+    private void initUtil() {
         Logger.init("dream").hideThreadInfo();
         ThirdPlatformLoginUtil.init(this);
         SharedPreferencesUtil.init(this);

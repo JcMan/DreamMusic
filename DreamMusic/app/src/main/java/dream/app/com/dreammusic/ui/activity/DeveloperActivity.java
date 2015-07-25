@@ -15,6 +15,7 @@ import cn.bmob.v3.listener.SaveListener;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.bmob.BUpdateInfo;
 import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 
@@ -29,6 +30,7 @@ public class DeveloperActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_developer);
+        MusicService.addActivity(this);
         initView();
         initListener();
         setTitle("开发者");

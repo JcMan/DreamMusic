@@ -1,7 +1,6 @@
 package dream.app.com.dreammusic.ui.activity;
 
 import android.os.Bundle;
-import android.util.Xml;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.app.tool.logger.Logger;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
@@ -30,6 +28,7 @@ import java.util.List;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.entry.NetAPIEntry;
 import dream.app.com.dreammusic.entry.NetMusicEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
@@ -52,6 +51,7 @@ public class SearchActivity extends BaseActivity implements AdapterView.OnItemCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        MusicService.addActivity(this);
         initVariable();
         initView();
         initListener();

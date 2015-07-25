@@ -19,6 +19,7 @@ import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.NetMusicAdapter;
 import dream.app.com.dreammusic.entry.NetAPIEntry;
 import dream.app.com.dreammusic.entry.NetMusicEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.DownLoadUtil;
@@ -39,6 +40,7 @@ public class RadioActivity extends BaseActivity implements AdapterView.OnItemCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radio);
+        MusicService.addActivity(this);
         initVariable();
         getDataFromIntent();
         initView();

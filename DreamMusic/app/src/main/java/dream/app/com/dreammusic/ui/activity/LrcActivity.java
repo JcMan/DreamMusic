@@ -100,7 +100,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lrc);
-
+        MusicService.addActivity(this);
         getDataFromIntent();
         initVariable();
         initView();
@@ -585,6 +585,11 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     @Override
     public void onMusicStart() {
         updateUI();
+    }
+
+    @Override
+    public void onMusicExit() {
+
     }
     /*****************************************************************/
 }

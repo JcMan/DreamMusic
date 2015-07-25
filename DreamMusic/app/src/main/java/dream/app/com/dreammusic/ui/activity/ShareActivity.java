@@ -28,6 +28,7 @@ import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.entry.NetAPIEntry;
 import dream.app.com.dreammusic.entry.NetMusicEntry;
 import dream.app.com.dreammusic.entry.ShareEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.ui.view.ViewPagerIndicator;
 import dream.app.com.dreammusic.util.DialogUtil;
@@ -63,6 +64,7 @@ public class ShareActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
+        MusicService.addActivity(this);
         initVariable();
         initView();
         initListener();

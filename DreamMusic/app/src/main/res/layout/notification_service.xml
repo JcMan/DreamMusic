@@ -71,7 +71,7 @@
                 />
             <ImageButton
                 android:id="@+id/ib_notification_pre"
-                android:layout_toLeftOf="@+id/ib_notification_start_pause"
+                android:layout_toLeftOf="@id/ib_notification_start_pause"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="20dp"
                 android:layout_width="@dimen/d_notification_btn"
@@ -83,6 +83,7 @@
                 />
         </RelativeLayout>
         <ImageButton
+            android:id="@+id/ib_notification_exit"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_width="35dp"

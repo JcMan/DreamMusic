@@ -1,7 +1,6 @@
 package dream.app.com.dreammusic.ui.activity;
 
 import android.os.Bundle;
-import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -23,6 +22,7 @@ import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.MessageAdapter;
 import dream.app.com.dreammusic.entry.MessageEntry;
 import dream.app.com.dreammusic.entry.TuLingApiEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.util.MyHttpUtil;
 
 /**
@@ -40,6 +40,7 @@ public class MessageActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+        MusicService.addActivity(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         initVariable();
         initView();

@@ -61,7 +61,6 @@ import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
-import dream.app.com.dreammusic.util.ThirdPlatformLoginUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 
 public class MainActivity extends InstrumentedActivity implements Handler.Callback,
@@ -95,6 +94,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MusicService.addActivity(this);
         initUtil();
         initVariable();
         initView();
@@ -103,12 +103,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mHandler = new Handler(this);
         registerReceiver();
         bindService();
-
-
-
-
-
-
     }
 
 
@@ -191,9 +185,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * 初始化工具类
      */
     private void initUtil() {
-        Logger.init("dream").hideThreadInfo();
-        ThirdPlatformLoginUtil.init(this);
-        SharedPreferencesUtil.init(this);
+
         initJPush();
         initBmob();
     }
@@ -601,6 +593,12 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
     public void onMusicStart() {                                         /**/
         updatePlayView();                                                /**/
     }                                                                    /**/
+                                                                         /**/
+    @Override                                                            /**/
+    public void onMusicExit() {                                          /**/
+          exit();                                                        /**/
+    }                                                                    /**/
+                                                                         /**/
     /********************************************************************/
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

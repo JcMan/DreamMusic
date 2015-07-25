@@ -14,6 +14,7 @@ import dream.app.com.dreammusic.fragment.FragmentNetKtvMusic;
 import dream.app.com.dreammusic.fragment.FragmentNetNewMusic;
 import dream.app.com.dreammusic.fragment.FragmentNetRadioList;
 import dream.app.com.dreammusic.fragment.FragmentNetSingerList;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 
@@ -29,6 +30,7 @@ public class MusicStoreActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_musicstore);
+        MusicService.addActivity(this);
         initView();
         initListener();
         setTitle(gettitleFromIntent());

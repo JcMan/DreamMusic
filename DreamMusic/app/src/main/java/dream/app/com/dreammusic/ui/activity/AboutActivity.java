@@ -14,6 +14,7 @@ import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.bmob.BUpdateInfo;
 import dream.app.com.dreammusic.config.App;
 import dream.app.com.dreammusic.entry.UserEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.DownLoadUtil;
@@ -31,6 +32,7 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        MusicService.addActivity(this);
         initViriable();
         initView();
         initListener();

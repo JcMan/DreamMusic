@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.app.tool.logger.Logger;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ import java.util.List;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.GridBgAdapter;
 import dream.app.com.dreammusic.entry.BgEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 
 /**
@@ -34,6 +33,7 @@ public class ChangeBgActivity extends BaseActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_bg);
+        MusicService.addActivity(this);
         getData();
         initView();
         initListener();

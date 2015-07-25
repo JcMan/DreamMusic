@@ -10,6 +10,7 @@ import com.app.tool.logger.Logger;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.UserEntry;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.SwitchButton;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 
@@ -26,6 +27,7 @@ public class SettingActivity extends BaseActivity implements SwitchButton.OnStat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        MusicService.addActivity(this);
         initView();
         initListener();
         toggleAcceptTuiSongButtn();

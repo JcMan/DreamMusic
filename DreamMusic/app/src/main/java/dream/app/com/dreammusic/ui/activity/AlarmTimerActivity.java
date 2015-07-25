@@ -12,6 +12,7 @@ import android.widget.Button;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.service.AlarmTimerService;
+import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.CircleTimerView;
 import dream.app.com.dreammusic.util.AnimUtil;
 
@@ -30,6 +31,7 @@ public class AlarmTimerActivity extends BaseActivity implements CircleTimerView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarmtimer);
+        MusicService.addActivity(this);
         initView();
         initListener();
 
