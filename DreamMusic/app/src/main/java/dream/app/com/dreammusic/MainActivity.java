@@ -359,8 +359,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         userQuery.addWhereEqualTo(UserBean.LOGINID,mLoginId);
         userQuery.findObjects(this, new FindListener<UserBean>() {
             @Override
-            public void onSuccess(List<UserBean> userBeans) {
-                if (userBeans != null && userBeans.size() > 0) {
+            public void onSuccess(List<UserBean> userBeans){
+                if (userBeans != null && userBeans.size() > 0){
                     getFragmentManager().beginTransaction().replace(R.id.fr_login_layout, mFragment).commit();
                     ToastUtil.showMessage(MainActivity.this, "登录成功");
                     Logger.e(mLoginId);
@@ -376,7 +376,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                     }
                 }
             }
-
             @Override
             public void onError(int i, String s) {
             }

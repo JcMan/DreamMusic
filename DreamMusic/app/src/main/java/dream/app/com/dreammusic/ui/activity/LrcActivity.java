@@ -37,15 +37,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.adapter.SeekBarChangeListenerAdapter;
 import dream.app.com.dreammusic.anim.PlayPageTransform;
+import dream.app.com.dreammusic.bmob.BDownloadMusicInfo;
 import dream.app.com.dreammusic.config.App;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.BgEntry;
 import dream.app.com.dreammusic.entry.NetAPIEntry;
 import dream.app.com.dreammusic.entry.NetMusicEntry;
+import dream.app.com.dreammusic.entry.UserEntry;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.CDView;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
@@ -69,7 +74,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
 
 
     private View view_bg;
-    private ImageButton mBackBtn,mPreBtn,mStartBtn,mPauseBtn,mNextBtn;
+    private ImageButton mBackBtn,mPreBtn,mStartBtn,mPauseBtn,mNextBtn,mShareBtn;
     private SeekBar mSeekbar;
     private TextView tv_top_title,tv_top_singer,tv_bottom_end_time,tv_bottom_current_time;
     private CDView mCDView;
@@ -129,6 +134,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         mPreBtn.setOnClickListener(this);
         mStartBtn.setOnClickListener(this);
         mNextBtn.setOnClickListener(this);
+        mShareBtn.setOnClickListener(this);
         mSeekbar.setOnSeekBarChangeListener(mSeekBarChangeListener);
     }
 
@@ -145,6 +151,8 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         mStartBtn = (ImageButton) findViewById(R.id.ib_play_start);
         mPauseBtn = (ImageButton) findViewById(R.id.ib_play_pause);
         mNextBtn = (ImageButton) findViewById(R.id.ib_play_next);
+        mShareBtn = (ImageButton) findViewById(R.id.ib_lrc_share);
+
         tv_bottom_current_time = (TextView) findViewById(R.id.tv_music_currentTime);
         tv_bottom_end_time = (TextView) findViewById(R.id.tv_music_endTime);
 
@@ -208,8 +216,75 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             case R.id.ib_play_next:
                 next();
                 break;
+            case R.id.ib_lrc_share:
+                BmobQuery<BDownloadMusicInfo> query = new BmobQuery<BDownloadMusicInfo>();
+                query.addWhereEqualTo(BDownloadMusicInfo.LOGINID, UserEntry.getUid());
+                query.addWhereEqualTo(BDownloadMusicInfo.TITLE,title);
+                query.findObjects(this,new FindListener<BDownloadMusicInfo>(){
+                    @Override
+                    public void onSuccess(final List<BDownloadMusicInfo> bDownloadMusicInfos) {
+                        if(bDownloadMusicInfos!=null&&bDownloadMusicInfos.size()>0){
+                            if(!bDownloadMusicInfos.get(0).isShare()){
+                                showShareDialog(bDownloadMusicInfos);
+                            }else{
+                                DialogUtil.showMessageDialog(LrcActivity.this,"该歌曲您已经分享过了");
+                            }
+                        }else{
+                            DialogUtil.showMessageDialog(LrcActivity.this,"只有下载的歌曲才可以分享");
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+                });
+                break;
         }
     }
+
+    private void showShareDialog(final List<BDownloadMusicInfo> bDownloadMusicInfos) {
+        final Dialog dialog = new Dialog(this, R.style.Theme_loading_dialog);
+        View _View = View.inflate(this,R.layout.dialog_share_music,null);
+        TextView tv_name = (TextView) _View.findViewById(R.id.tv_dialog_share_name);
+        TextView top_title = (TextView) _View.findViewById(R.id.tv_dialog_top_title);
+        final EditText edit = (EditText) _View.findViewById(R.id.et_share_content);
+        top_title.setText("歌曲分享");
+        tv_name.setText(singer+" - "+title);
+        Button btn_cancel = (Button) _View.findViewById(R.id.btn_dialog_share_cancel);
+        Button btn_ok = (Button) _View.findViewById(R.id.btn_dialog_share_ok);
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                BDownloadMusicInfo info = bDownloadMusicInfos.get(0);
+                String objectId = info.getObjectId();
+                info = new BDownloadMusicInfo();
+                info.setShare(true);
+                info.setDesc(edit.getText().toString());
+                info.update(LrcActivity.this,objectId,new UpdateListener() {
+                    @Override
+                    public void onSuccess() {
+                        DialogUtil.showMessageDialog(LrcActivity.this, "分享成功");
+                    }
+                    @Override
+                    public void onFailure(int i, String s) {
+                        DialogUtil.showMessageDialog(LrcActivity.this,"分享失败");
+                    }
+                });
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(_View);
+        DialogUtil.setDialogAttr(dialog, LrcActivity.this);
+        dialog.show();
+    }
+
     private void next() {
         mMusicService.next();
         play();

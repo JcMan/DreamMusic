@@ -17,4 +17,7 @@ public class UserEntry {
     public static boolean getIsLogin(){
         return SharedPreferencesUtil.getIsLogin();
     }
+    public static String getUserName(){
+        return SharedPreferencesUtil.getUserName();
+    }
 }

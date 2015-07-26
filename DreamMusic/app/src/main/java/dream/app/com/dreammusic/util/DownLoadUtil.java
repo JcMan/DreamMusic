@@ -7,11 +7,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 
+import com.app.tool.logger.Logger;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import cn.bmob.v3.listener.SaveListener;
+import dream.app.com.dreammusic.bmob.BDownloadMusicInfo;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.NetMusicEntry;
+import dream.app.com.dreammusic.entry.UserEntry;
 
 /**
  * Created by Administrator on 2015/7/5.
@@ -50,6 +55,27 @@ public class DownLoadUtil {
         try{
             mPicUri = Uri.parse(entry.getPic_big());
         }catch(Exception e){}
+        if(UserEntry.getIsLogin()){
+            String loginId = UserEntry.getUid();
+            String username = UserEntry.getUserName();
+            String title = entry.getTitle();
+            String singer = entry.getAuthor();
+            String file_url = entry.getFile_link();
+            String pic_big = entry.getPic_big()+"";
+            String downloadtime = (System.currentTimeMillis()/1000)+"";
+            BDownloadMusicInfo info = new BDownloadMusicInfo(loginId,username,title,singer,file_url,pic_big,downloadtime);
+            info.save(context,new SaveListener() {
+                @Override
+                public void onSuccess() {
+                    Logger.e("上传完成");
+                }
+
+                @Override
+                public void onFailure(int i, String s){
+                    Logger.e("上传失败");
+                }
+            });
+        }
     }
 
    /* public DownloadUtil(Context context){

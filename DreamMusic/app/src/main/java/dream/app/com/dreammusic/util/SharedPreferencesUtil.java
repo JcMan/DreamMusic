@@ -35,6 +35,8 @@ public class SharedPreferencesUtil {
         return mPreference.getString(UserEntry.UID,"");
     }
 
+
+
     /**
      * 根据名称得到Editor对象
      * @param name

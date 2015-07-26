@@ -42,12 +42,22 @@
                 />
         </RelativeLayout>
         <ImageButton
+            android:id="@+id/ib_lrc_share"
+            android:layout_width="@dimen/d_top_height"
+            android:layout_height="@dimen/d_top_height"
+            android:src="@drawable/ic_btn_share"
+            android:background="@drawable/top_btn_selector"
+            android:layout_alignParentRight="true"
+            />
+        <ImageButton
+            android:id="@+id/ib_lrc_favorite"
+            android:layout_toLeftOf="@+id/ib_lrc_share"
             android:layout_width="@dimen/d_top_height"
             android:layout_height="@dimen/d_top_height"
             android:src="@drawable/ic_btn_favorite_default"
             android:background="#0000"
-            android:layout_alignParentRight="true"
             />
+
     </RelativeLayout>
     <LinearLayout
         android:layout_weight="1"
