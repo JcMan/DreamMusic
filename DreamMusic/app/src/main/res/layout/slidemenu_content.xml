@@ -63,6 +63,15 @@
         style="@style/SplitLine"
         />
     <TextView
+        android:id="@+id/tv_dynamic"
+        style="@style/slidemenu_item"
+        android:text="动态"
+        android:drawableLeft="@drawable/is_star"
+        />
+    <TextView
+        style="@style/SplitLine"
+        />
+    <TextView
         android:id="@+id/tv_setting"
         style="@style/slidemenu_item"
         android:text="设置"

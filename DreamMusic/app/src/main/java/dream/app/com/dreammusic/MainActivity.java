@@ -51,6 +51,7 @@ import dream.app.com.dreammusic.service.AlarmTimerService;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.activity.AlarmTimerActivity;
 import dream.app.com.dreammusic.ui.activity.ChangeBgActivity;
+import dream.app.com.dreammusic.ui.activity.DynamicActivity;
 import dream.app.com.dreammusic.ui.activity.LrcActivity;
 import dream.app.com.dreammusic.ui.activity.MessageActivity;
 import dream.app.com.dreammusic.ui.activity.MusicStoreActivity;
@@ -70,7 +71,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     public static boolean isForeground = false;
     private DrawerLayout mSlideMenu;
-    private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit,mMessage;
+    private TextView mSearchMusic,mChangeMainBg,mSleepTime,mSetting,mExit,mMessage,mDynamic;
     private TextView mMusicName,mSinger;
     private ImageButton mRightLogo,mLeftBack,mNext,mStart,mPause;
     private ImageView mBottomSinger;
@@ -203,6 +204,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mSleepTime = (TextView) findViewById(R.id.tv_set_sleep_time);
         mExit = (TextView) findViewById(R.id.tv_exit);
         mRightLogo = (ImageButton) findViewById(R.id.ib_top_logo_right);
+        mDynamic = (TextView) findViewById(R.id.tv_dynamic);
         mLeftBack  = (ImageButton) findViewById(R.id.ib_top_back);
         mLeftBack.setVisibility(View.GONE);
         mRightLogo.setVisibility(View.VISIBLE);
@@ -251,6 +253,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mSleepTime.setOnClickListener(this);
         mSetting.setOnClickListener(this);
         mMessage.setOnClickListener(this);
+        mDynamic.setOnClickListener(this);
         mExit.setOnClickListener(this);
         mRightLogo.setOnClickListener(this);
         mBottomSinger.setOnClickListener(this);
@@ -651,6 +654,9 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 break;
             case R.id.tv_change_mainbg:
                 startNewActivity(ChangeBgActivity.class);
+                break;
+            case R.id.tv_dynamic:
+                startNewActivity(DynamicActivity.class);
                 break;
             case R.id.tv_exit:
                 exit();

@@ -57,6 +57,7 @@
         <activity android:name=".ui.activity.WriteFedbackActivity"></activity>
         <activity android:name=".ui.activity.FeedbackActivity"></activity>
         <activity android:name=".ui.activity.DeveloperActivity"></activity>
+        <activity android:name=".ui.activity.DynamicActivity"></activity>
 
         <!-- 自定义Service-->
         <service android:name=".service.AlarmTimerService"></service>
