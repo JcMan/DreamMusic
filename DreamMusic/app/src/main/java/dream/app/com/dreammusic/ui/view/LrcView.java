@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -114,6 +115,22 @@ public class LrcView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+
+        //绘制阴影效果
+        /*int height = mLrcHeight;
+        int width  = mViewWidth;
+        for (int i = height; i >0;i--) {
+            Paint bottomP = new Paint();
+            bottomP.setARGB(33, 0,0,0);
+            RectF f = new RectF();
+            f.left = 0;
+            f.right = width;
+            f.bottom = i;
+            f.top = f.bottom - 1;
+            canvas.drawRect(f, bottomP);
+        }*/
+
+
         if (mBackground != null) {
             canvas.drawBitmap(Bitmap.createScaledBitmap(mBackground, mViewWidth, mLrcHeight, true),
                     new Matrix(), null);

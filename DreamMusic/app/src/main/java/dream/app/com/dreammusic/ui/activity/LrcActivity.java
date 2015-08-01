@@ -23,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.app.tool.logger.Logger;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
@@ -32,10 +33,19 @@ import net.tsz.afinal.http.AjaxCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -55,6 +65,7 @@ import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.CDView;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.ui.view.LrcView;
+import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.ImageTools;
@@ -159,7 +170,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         initPagerViews();
 
         mAdapter = new MyViewPagerAdapter(this,mViewsList);
-        mViewPager.setPageTransformer(true,new PlayPageTransform());
+        mViewPager.setPageTransformer(true, new PlayPageTransform());
         mViewPager.setAdapter(mAdapter);
     }
 
@@ -177,11 +188,17 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     }
 
     private void setBackground(){
-        view_bg.setBackground(new BitmapDrawable(BgEntry.getDefaultBg(this)));
+        String path = ApplicationConfig.ARTIST_DIR + singer + ".jpg";
+        File file = new File(path);
+        if(file.exists()){
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            view_bg.setBackground(new BitmapDrawable(bitmap));
+        }else
+            view_bg.setBackground(new BitmapDrawable(BgEntry.getDefaultBg(this)));
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume(){
         super.onResume();
         setBackground();
     }
@@ -195,7 +212,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(AnimUtil.BASE_SLIDE_REMAIN,AnimUtil.BASE_SLIDE_RIGHT_OUT);
+        overridePendingTransition(AnimUtil.BASE_SLIDE_REMAIN, AnimUtil.BASE_SLIDE_RIGHT_OUT);
     }
 
     @Override
@@ -310,6 +327,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         setLrc();
         mCDView.start();
         updateUI();
+        setBackground();
     }
 
     private void updateUI(){
@@ -490,8 +508,29 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             public void onClick(View v) {
                 loadingDialog.show();
                 dialog.dismiss();
-                final String _Singer = edit_singer.getText().toString();
-                downloadPhoto(_Singer);
+                downloadPhoto(edit_singer.getText().toString());
+
+                MyHttpUtil myHttpUtil = new MyHttpUtil(NetAPIEntry.getSingerImageUrl(edit_singer.getText().toString()));
+                myHttpUtil.send(new RequestCallBack<String>() {
+                    @Override
+                    public void onSuccess(ResponseInfo<String> responseInfo) {
+                        loadingDialog.cancel();
+                        Intent intent = new Intent(LrcActivity.this,SingerImageActivity.class);
+                        intent.putExtra("xml",responseInfo.result);
+                        intent.putExtra("singer",singer);
+                        startActivity(intent);
+                        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
+
+                    }
+
+                    @Override
+                    public void onFailure(HttpException e, String s) {
+                        Logger.e("failuere");
+                        loadingDialog.cancel();
+                    }
+                });
+
+
             }
 
         });
@@ -500,7 +539,7 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         dialog.show();
     }
 
-    private void downloadPhoto(String _Singer) {
+    private void downloadPhoto(String _Singer){
         MyHttpUtil myHttpUtil = new MyHttpUtil(NetAPIEntry.getTingUidUrl(_Singer));
         myHttpUtil.send(new RequestCallBack<String>() {
             @Override
@@ -518,7 +557,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             @Override
             public void onFailure(HttpException e, String s){
                 ToastUtil.showMessage(LrcActivity.this, "写真下载失败");
-                loadingDialog.cancel();
             }
         });
     }
@@ -527,7 +565,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         myHttpUtil.send(new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> stringResponseInfo){
-                loadingDialog.cancel();
                 try {
                     final String path = ApplicationConfig.ARTIST_DIR+songid+".jpg";
                     JSONObject object = new JSONObject(stringResponseInfo.result);
@@ -544,7 +581,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                         @Override
                         public void onFailure(Throwable t, int errorNo, String strMsg){
                             super.onFailure(t, errorNo, strMsg);
-                            ToastUtil.showMessage(LrcActivity.this,"写真下载失败,请重试");
                         }
                     });
                 } catch (JSONException e) {

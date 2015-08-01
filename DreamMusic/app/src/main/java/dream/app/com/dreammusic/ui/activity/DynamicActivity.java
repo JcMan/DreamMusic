@@ -17,9 +17,8 @@ import dream.app.com.dreammusic.R;
 public class DynamicActivity extends BaseActivity{
 
     private ListView mListView;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic);
         initView();

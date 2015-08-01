@@ -43,6 +43,8 @@ public class NetAPIEntry {
 
     public static final String ALBUM_URL = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=qianqian&version=2.1.0&method=baidu.ting.album.getAlbumInfo&format=json&album_id=";
 
+    public static final String SINGER_IMAGE_URL = "http://360web.shoujiduoduo.com/wallpaper/wplist.php?user=000000000000000&prod=WallpaperDuoduo2.2.3.0&isrc=WallpaperDuoduo2.2.3.0_360ch.apk&type=search&keyword=JcMan&src=hot_keyword&pg=0&pc=20&mac=08002750e6e8&dev=generic%253Evbox86p%253ESamsung%2BGalaxy%2BS2%2B-%2B4.1.1%2B-%2BAPI%2B16%2B-%2B480x800&vc=2230";
+
 
     public static String getNewMusicUrl(){
         return NETNEWMUSCIURL;
@@ -101,6 +103,15 @@ public class NetAPIEntry {
 
     public static String getAlbumInfoUrl(String albumid){
         return ALBUM_URL+albumid;
+    }
+
+    public static String getSingerImageUrl(String singer){
+        try {
+            singer = URLEncoder.encode(singer,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return SINGER_IMAGE_URL.replace("JcMan",singer);
     }
 }
 

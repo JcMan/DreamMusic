@@ -70,9 +70,5 @@
             android:layout_height="wrap_content"
             android:text="分享"
             />
-
-
     </LinearLayout>
-
-
 </LinearLayout>
