@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_weight="7"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp">
+        <dream.app.com.dreammusic.ui.view.CDView
+        android:layout_centerInParent="true"
+        android:id="@+id/cdview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp">
+        <dream.app.com.dreammusic.ui.view.LrcView
+            android:layout_centerInParent="true"
+            xmlns:lrc="http://schemas.android.com/apk/res/dream.app.com.dreammusic"
+            android:id="@+id/play_first_lrc"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            lrc:textSize="15sp"
+            lrc:normalTextColor="@android:color/white"
+            lrc:currentTextColor="@color/color_current_lrc_text"
+            lrc:dividerHeight="20dp"
+            lrc:rows="1" />
+        </RelativeLayout>
+
+</LinearLayout>

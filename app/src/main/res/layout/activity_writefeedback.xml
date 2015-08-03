@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/top" />
+    <EditText
+        android:id="@+id/et_writefeedback_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_uid"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:gravity="top|left"
+        android:inputType="textMultiLine"
+        android:hint="请输入反馈内容（65字以内）"
+        android:maxLength="65"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:textSize="14sp" />
+    <TextView
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_dark_gray"
+        android:text="联系方式：QQ和手机号请至少填一项"
+        android:textSize="@dimen/text_size_ss"
+        />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/splash_box_bg"
+        android:paddingBottom="15dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="5dp" >
+    <TextView
+        android:id="@+id/login_text_uid"
+        style="@style/text_style_uid"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_uid"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="QQ号码" />
+    <EditText
+        android:id="@+id/et_writefeedback_qq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/login_text_uid"
+        android:layout_alignLeft="@+id/login_text_uid"
+        android:layout_alignRight="@+id/login_text_uid"
+        android:layout_alignTop="@+id/login_text_uid"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingLeft="70dp"
+        android:textSize="14sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/splash_box_bg"
+        android:paddingBottom="15dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <TextView
+            android:id="@+id/login_text_phone"
+            style="@style/text_style_uid"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_uid"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="手机号码" />
+        <EditText
+            android:id="@+id/et_writefeedback_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/login_text_phone"
+            android:layout_alignLeft="@+id/login_text_phone"
+            android:layout_alignRight="@+id/login_text_phone"
+            android:layout_alignTop="@+id/login_text_phone"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="70dp"
+            android:textSize="14sp" />
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btn_writefeedback_send"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_download"
+        android:text="发送"
+        android:textColor="@color/color_white"
+        android:layout_margin="16dp"
+        />
+</LinearLayout>

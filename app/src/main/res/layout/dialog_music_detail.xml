@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/color_white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <include layout="@layout/dialog_top" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_dark_gray"
+        android:textSize="@dimen/text_size_sss"
+        android:text="文件路径："
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        />
+    <TextView
+        android:id="@+id/tv_content_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="文件路径："
+        android:textSize="@dimen/text_size_ss"
+        android:paddingBottom="3dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:textColor="@color/color_dark_gray"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_dark_gray"
+        android:textSize="@dimen/text_size_sss"
+        android:text="文件大小："
+        android:paddingLeft="20dp"
+        />
+    <TextView
+        android:id="@+id/tv_content_filesize"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="文件大小："
+        android:textSize="@dimen/text_size_ss"
+        android:paddingBottom="10dp"
+        android:paddingLeft="40dp"
+        android:textColor="@color/color_dark_gray"
+        />
+
+</LinearLayout>
