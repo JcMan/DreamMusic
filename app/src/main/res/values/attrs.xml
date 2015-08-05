@@ -34,4 +34,16 @@
         <attr name="dividerHeight" format="dimension" />
         <attr name="rows" format="integer" />
     </declare-styleable>
+
+
+    <declare-styleable name="MyViewPagerIndicator">
+        <!-- 标题正常时候的颜色-->
+        <attr name="title_normal_color" format="color|reference" />
+        <!--标题被选中时候的颜色-->
+        <attr name="title_select_color" format="color|reference" />
+        <!--指示器的颜色-->
+        <attr name="indicator_color" format="color|reference" />
+        <!--指示器的高度-->
+        <attr name="indicator_height" format="dimension|reference" />
+    </declare-styleable>
 </resources>

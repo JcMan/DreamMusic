@@ -19,13 +19,14 @@
         android:text="重命名"
         />
     <View
+        android:visibility="gone"
         style="@style/SplitLine"
         />
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_dialogitem_delete"
         style="@style/text_dailog_music"
         android:text="删除"
-
         />
     <View
         style="@style/SplitLine"

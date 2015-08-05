@@ -91,7 +91,7 @@ public class SingerImageActivity extends Activity implements View.OnClickListene
         mViewPager.setAdapter(new MyViewPagerAdapter(this,mViewsList));
     }
 
-    private void initPagerViews() {
+    private void initPagerViews(){
         FinalBitmap finalBitmap = FinalBitmap.create(this);
         Bitmap bitmap_loading = BitmapFactory.decodeResource(getResources(), R.drawable.ic_singer_loading);
         Bitmap bitmap_failure =BitmapFactory.decodeResource(getResources(),R.drawable.ic_singer_loading_failure);

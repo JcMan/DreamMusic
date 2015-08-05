@@ -59,6 +59,7 @@
         <activity android:name=".ui.activity.DeveloperActivity"></activity>
         <activity android:name=".ui.activity.DynamicActivity"></activity>
         <activity android:name=".ui.activity.SingerImageActivity"></activity>
+        <activity android:name=".ui.activity.MVActivity"></activity>
 
         <!-- 自定义Service-->
         <service android:name=".service.AlarmTimerService"></service>

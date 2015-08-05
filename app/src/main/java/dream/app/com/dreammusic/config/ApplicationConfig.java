@@ -18,6 +18,7 @@ public class ApplicationConfig {
     public static final String ROOT_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static final String APPDIR = ROOT_PATH+"/DreamMusic";
     public static final String DOWNLOADDIE = APPDIR+"/"+"download/";
+    public static final String MVDIE = APPDIR+"/"+"mv/";
     public static final String LRC_DIR = APPDIR+"/"+"lrc/";
     public static final String ARTIST_DIR = APPDIR+"/"+"artist/";
 

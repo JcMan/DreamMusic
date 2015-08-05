@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 
 import com.app.tool.logger.Logger;
@@ -144,6 +145,15 @@ public class DownLoadUtil {
         };
         mContext.registerReceiver(receiver, filter);
 
+    }
+
+    public void downloadMV(String url,String name){
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setTitle(name.substring(0,name.length()-4));
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationUri(Uri.fromFile(new File(ApplicationConfig.MVDIE + name)));
+        IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        manager.enqueue(request);
     }
 
     /**

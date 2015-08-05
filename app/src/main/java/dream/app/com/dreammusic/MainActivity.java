@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -60,6 +61,7 @@ import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.ActivityUtil;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.DialogUtil;
+import dream.app.com.dreammusic.util.DownLoadUtil;
 import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
@@ -104,6 +106,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         mHandler = new Handler(this);
         registerReceiver();
         bindService();
+
     }
 
 
@@ -281,6 +284,11 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
             mSlideMenu.closeDrawer(mDrawerView);
         else
             mSlideMenu.openDrawer(mDrawerView);
+
+        /*String url = "http://storagemv2.mobile.kugou.com/201508051446/4b92f450e847fe32817947d69a697eed/M05/13/39/CgEy51MEJTvoMiclALKemqCK5Uk656.mp4";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url),"video/mp4");
+        startActivity(intent);*/
     }
 
     private void closeSlideMenu(){
@@ -288,7 +296,6 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         if(isOpen)
             mSlideMenu.closeDrawer(mDrawerView);
     }
-
     @Override
     public boolean handleMessage(Message msg){
         if(mMusicService!=null){
@@ -496,13 +503,13 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
      * 连接MusicService
      */
     private void initConn(){
-        conn = new ServiceConnection() {
+        conn = new ServiceConnection(){
             @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
+            public void onServiceConnected(ComponentName name, IBinder service){
                 mMusicService = ((MusicService.MusicBinder)service).getService();
                 mMusicService.setOnMusicCompletion(MainActivity.this);
                 if(mMusicService.isStop()){
-                    play(0);
+                    play(1);
                     pauseMusic();
                 }
                 initPlayView();
@@ -538,7 +545,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         updateSingerView(mMusicService.getSongId());
     }
 
-    private void updateSingerView(int songId) {
+    private void updateSingerView(int songId){
         String path = ApplicationConfig.ARTIST_DIR+songId+".jpg";
         File file = new File(path);
         Bitmap bitmap = null;

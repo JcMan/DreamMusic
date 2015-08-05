@@ -106,7 +106,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
                     <RelativeLayout
-                        android:id="@+id/view_my_love"
+                        android:id="@+id/view_mv"
                         android:background="@drawable/view_main_item_selector"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -114,12 +114,12 @@
                         >
                         <ImageButton
                             style="@style/imagebtn_main_item"
-                            android:src="@drawable/ic_my_love"
+                            android:src="@drawable/ic_mv"
 
                             />
                         <TextView
                             style="@style/textview_main_item"
-                            android:text="我喜欢"
+                            android:text="MV专区"
                             />
                     </RelativeLayout>
                     <RelativeLayout
@@ -167,7 +167,6 @@
                             android:text="最近播放"
                             />
                     </RelativeLayout>
-
                 </LinearLayout>
 
             </LinearLayout>

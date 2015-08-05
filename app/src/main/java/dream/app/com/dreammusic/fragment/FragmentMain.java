@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.ui.activity.MVActivity;
 import dream.app.com.dreammusic.ui.activity.SearchActivity;
 import dream.app.com.dreammusic.util.AnimUtil;
 import dream.app.com.dreammusic.util.MusicUtil;
@@ -26,7 +27,7 @@ import dream.app.com.dreammusic.util.ToastUtil;
  * Created by JcMan on 2015/7/2.
  */
 public class FragmentMain extends Fragment implements View.OnClickListener{
-    private View mLocalMusic,mMyLove,mMyMusicList,
+    private View mLocalMusic,mMv,mMyMusicList,
             mDowdloadManager,mLocalHistory,mMusicStore,
             mCasuallyListen;
     private View view_main;
@@ -51,7 +52,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
         initView(view);
         initListener();
         transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.animator.enter,R.animator.exit,R.animator.pop_enter,R.animator.pop_exit);
+        transaction.setCustomAnimations(R.animator.enter, R.animator.exit, R.animator.pop_enter, R.animator.pop_exit);
         return view;
     }
 
@@ -75,7 +76,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
      */
     private void initListener(){
         mLocalMusic.setOnClickListener(this);
-        mMyLove.setOnClickListener(this);
+        mMv.setOnClickListener(this);
         mMyMusicList.setOnClickListener(this);
         mDowdloadManager.setOnClickListener(this);
         mLocalHistory.setOnClickListener(this);
@@ -91,7 +92,7 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
      */
     private void initView(View v){
         mLocalMusic = v.findViewById(R.id.view_local_music);
-        mMyLove = v.findViewById(R.id.view_my_love);
+        mMv = v.findViewById(R.id.view_mv);
         mMyMusicList = v.findViewById(R.id.view_my_music_list);
         mDowdloadManager  = v.findViewById(R.id.view_download_manager);
         mLocalHistory = v.findViewById(R.id.view_localentry_history);
@@ -116,6 +117,8 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
             openDownloadFragment();
         }else if(v.getId()==R.id.view_casually_listen){
             openSuiBianTingFragment();
+        }else if(v.getId()==R.id.view_mv){
+            startActivity(MVActivity.class);
         }else
             mClickListener.click(v.getId());
     }
@@ -160,5 +163,11 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mClickListener = (FragmentClickListener) activity;
+    }
+
+    private void startActivity(Class cla){
+        Intent intent = new Intent(getActivity(),cla);
+        startActivity(intent);
+        getActivity().overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
     }
 }

@@ -33,10 +33,12 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         mHandler = new Handler(this);
-        mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN,3000);
-        initDirs();
-        startService();
+        mHandler.sendEmptyMessageDelayed(MESSAGE_GOTO_MAIN, 3000);
         initUtil();
+        startService();
+        initDirs();
+
+
     }
 
     private void initUtil() {
@@ -61,6 +63,9 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         File file_artist = new File(ApplicationConfig.ARTIST_DIR);
         if(!file_artist.exists())
             file_artist.mkdirs();
+        File file_mv = new File(ApplicationConfig.MVDIE);
+        if(!file_mv.exists())
+            file_mv.mkdirs();
     }
 
     @Override
