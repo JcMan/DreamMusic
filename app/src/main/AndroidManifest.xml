@@ -60,6 +60,8 @@
         <activity android:name=".ui.activity.DynamicActivity"></activity>
         <activity android:name=".ui.activity.SingerImageActivity"></activity>
         <activity android:name=".ui.activity.MVActivity"></activity>
+        <activity android:name=".ui.activity.UserShareActivity"></activity>
+        <activity android:name=".ui.activity.NovelActivity"></activity>
 
         <!-- 自定义Service-->
         <service android:name=".service.AlarmTimerService"></service>

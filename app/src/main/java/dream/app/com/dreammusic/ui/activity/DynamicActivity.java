@@ -10,55 +10,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.service.MusicService;
 
 /**
  * Created by JcMan on 2015/7/27.
  */
 public class DynamicActivity extends BaseActivity{
 
-    private ListView mListView;
+    private View v_share,v_novel;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic);
+        MusicService.addActivity(this);
         initView();
         initListener();
         setTitle("动态");
-        mListView.setAdapter(new DynamicAdapter());
     }
 
     @Override
-    public void initView() {
-        super.initView();
-        mListView = (ListView) findViewById(R.id.listview_dynamic);
+    protected void initListener() {
+        super.initListener();
+        v_share.setOnClickListener(this);
+        v_novel.setOnClickListener(this);
     }
 
-    class DynamicAdapter extends BaseAdapter{
+    @Override
+    public void initView(){
+        super.initView();
+        v_share = findViewById(R.id.view_music_share);
+        v_novel = findViewById(R.id.view_music_share_novel);
+    }
 
-        private List<String> list = new ArrayList<String>();
-        public DynamicAdapter(){
-            for(int i=0;i<10;i++)
-                list.add(""+i);
-        }
-        @Override
-        public int getCount() {
-            return 10;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = View.inflate(DynamicActivity.this,R.layout.item_list_share_music,null);
-            return convertView;
+    @Override
+    public void onClick(View v){
+        super.onClick(v);
+        switch (v.getId()){
+            case R.id.view_music_share:
+                startNewActivity(UserShareActivity.class);
+                break;
+            case R.id.view_music_share_novel:
+                startNewActivity(NovelActivity.class);
+                break;
         }
     }
 }
