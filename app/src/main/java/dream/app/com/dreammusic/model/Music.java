@@ -86,4 +86,19 @@ public class Music implements Parcelable {
         this.favorite = favorite;
     }
 
+
+    @Override
+    public String toString() {
+        return "Music{" +
+                "_id=" + _id +
+                ", songId=" + songId +
+                ", albumId=" + albumId +
+                ", duration=" + duration +
+                ", musicName='" + musicName + '\'' +
+                ", artist='" + artist + '\'' +
+                ", data='" + data + '\'' +
+                ", folder='" + folder + '\'' +
+                ", favorite=" + favorite +
+                '}';
+    }
 }

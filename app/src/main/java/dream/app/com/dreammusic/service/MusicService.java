@@ -29,6 +29,7 @@ import java.util.List;
 import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.db.PlayHistoryDAO;
 import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.sensor.SensorManagerHelper;
 import dream.app.com.dreammusic.util.MusicUtil;
@@ -273,8 +274,15 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
                 mCurrentPosition = position;
                 updateRemoteViews();
                 listener.onMusicPlay();
+                addToHistory(getMusic());
             } catch (IOException e) {}
         }
+    }
+
+    private void addToHistory(Music music){
+        PlayHistoryDAO playHistoryDAO = new PlayHistoryDAO(this);
+        playHistoryDAO.saveHistory(music,(int)System.currentTimeMillis()/1000);
+
     }
 
     private void updateRemoteViews() {

@@ -16,7 +16,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.app.tool.logger.Logger;
+
+import java.util.List;
+
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.db.PlayHistoryDAO;
+import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.ui.activity.MVActivity;
 import dream.app.com.dreammusic.ui.activity.SearchActivity;
 import dream.app.com.dreammusic.util.AnimUtil;
@@ -119,8 +125,15 @@ public class FragmentMain extends Fragment implements View.OnClickListener{
             openSuiBianTingFragment();
         }else if(v.getId()==R.id.view_mv){
             startActivity(MVActivity.class);
+        }else if(v.getId()==R.id.view_localentry_history){
+            showHistoryFragment();
         }else
             mClickListener.click(v.getId());
+    }
+
+    private void showHistoryFragment(){
+        transaction.replace(R.id.fragment_main,new FragmentHistory())
+                .addToBackStack(null).commit();
     }
 
     private void openSuiBianTingFragment() {

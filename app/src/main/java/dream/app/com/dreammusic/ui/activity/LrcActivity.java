@@ -544,7 +544,6 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
         myHttpUtil.send(new RequestCallBack<String>() {
             @Override
             public void onSuccess(ResponseInfo<String> stringResponseInfo) {
-
                 try {
                     JSONObject object = new JSONObject(stringResponseInfo.result);
                     JSONObject ob = object.getJSONObject(NetMusicEntry.ARTIST);
@@ -556,13 +555,13 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             }
             @Override
             public void onFailure(HttpException e, String s){
-                ToastUtil.showMessage(LrcActivity.this, "写真下载失败");
+//                Logger.e("写真下失败");
             }
         });
     }
     private void getPicUrl(String ting_uid){
         MyHttpUtil myHttpUtil = new MyHttpUtil(NetAPIEntry.getSingerInfoUrlByTing_uid(ting_uid));
-        myHttpUtil.send(new RequestCallBack<String>() {
+        myHttpUtil.send(new RequestCallBack<String>(){
             @Override
             public void onSuccess(ResponseInfo<String> stringResponseInfo){
                 try {
