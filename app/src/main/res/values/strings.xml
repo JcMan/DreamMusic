@@ -34,16 +34,30 @@
         <item>Accordion</item>
     </string-array>
 
-    <string-array name="kind_url_novel">
-        <item>http://xuanhuan.qidian.com/default.aspx</item>
-        <item>http://qihuan.qidian.com/default.aspx</item>
-        <item>http://wuxia.qidian.com/default.aspx</item>
-        <item>http://xianxia.qidian.com/default.aspx</item>
-        <item>http://dushi.qidian.com/default.aspx</item>
-        <item>http://lishi.qidian.com/default.aspx</item>
-        <item>http://youxi.qidian.com/default.aspx</item>
-        <item>http://kehuan.qidian.com/default.aspx</item>
-        <item>http://lingyi.qidian.com/default.aspx</item>
+    <string name="novel_introduction">这里没有魔法，没有斗气，没有武术，却有武魂。唐门创立万年之后的斗罗大陆上，唐门式微。一代天骄横空出世，新一代史莱克七怪能否重振唐门，谱写一曲绝世唐门之歌？ 百万年魂兽，手握日月摘星辰的死灵圣法神，导致唐门衰落的全新魂导器体系。一切的神奇都将一一展现。 唐门暗器能否重振雄风，唐门能否重现辉煌，一切尽在绝世唐门！</string>
+
+    <string name="novel_mainpage_url">http://www.16kxsw.com/</string>
+
+    <string-array name="novel_kind_url">
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=1</item>
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=2</item>
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=3</item>
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=4</item>
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=5</item>
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=6</item>
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=7</item>
+        <item>http://www.16kxsw.com/modules/article/articlelist.php?class=8</item>
+    </string-array>
+    
+    <string-array name="novel_kind_name">
+        <item>玄幻·魔法</item>
+        <item>武侠·仙侠</item>
+        <item>都市·言情</item>
+        <item>历史·军事</item>
+        <item>恐怖·灵异</item>
+        <item>网游·动漫</item>
+        <item>科幻·小说</item>
+        <item>女生·言情</item>
     </string-array>
 
 

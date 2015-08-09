@@ -10,6 +10,9 @@
         android:layout_height="50dp"
         android:id="@+id/indicator_novel"
         />
+    <View
+        style="@style/SplitLine"
+        />
     <android.support.v4.view.ViewPager
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
