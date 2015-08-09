@@ -47,6 +47,7 @@
         <item>http://www.16kxsw.com/modules/article/articlelist.php?class=6</item>
         <item>http://www.16kxsw.com/modules/article/articlelist.php?class=7</item>
         <item>http://www.16kxsw.com/modules/article/articlelist.php?class=8</item>
+        <item>http://www.16kxsw.com/modules/article/index.php?fullflag=1</item>
     </string-array>
     
     <string-array name="novel_kind_name">
@@ -58,6 +59,7 @@
         <item>网游·动漫</item>
         <item>科幻·小说</item>
         <item>女生·言情</item>
+        <item>全本·完结</item>
     </string-array>
 
 

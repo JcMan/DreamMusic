@@ -50,6 +50,9 @@ public class FlowLayout extends ViewGroup
         for (int i = 0; i < cCount; i++)
         {
             View child = getChildAt(i);
+
+            child.setOnClickListener(clickListener);
+
             // 测量子View的宽和高
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
             // 得到LayoutParams
@@ -88,10 +91,6 @@ public class FlowLayout extends ViewGroup
                 height += lineHeight;
             }
         }
-
-        Log.e("TAG", "sizeWidth = " + sizeWidth);
-        Log.e("TAG", "sizeHeight = " + sizeHeight);
-
         setMeasuredDimension(
                 //
                 modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width + getPaddingLeft() + getPaddingRight(),
@@ -208,6 +207,23 @@ public class FlowLayout extends ViewGroup
     public MarginLayoutParams generateLayoutParams(AttributeSet attrs)
     {
         return new MarginLayoutParams(getContext(), attrs);
+    }
+
+    private OnClickListener clickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v){
+            mFlowClickListener.flowClick(v);
+        }
+    };
+
+    public void setFlowClickListener(IFlowClickListener listener){
+        mFlowClickListener = listener;
+    }
+
+    IFlowClickListener mFlowClickListener;
+
+    public interface IFlowClickListener{
+        public void flowClick(View v);
     }
 
 }

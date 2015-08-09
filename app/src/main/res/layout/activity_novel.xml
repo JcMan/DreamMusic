@@ -7,7 +7,7 @@
     <include layout="@layout/top"/>
     <dream.app.com.dreammusic.ui.view.MyViewPagerIndicator
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:id="@+id/indicator_novel"
         />
     <View
