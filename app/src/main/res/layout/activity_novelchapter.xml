@@ -3,8 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include layout="@layout/top"/>
     <ListView
-        android:id="@+id/listview_novel_classes"
+        android:id="@+id/listview_novelchapter"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
     </ListView>

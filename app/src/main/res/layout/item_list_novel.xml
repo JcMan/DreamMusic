@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/color_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
+        android:descendantFocusability="blocksDescendants"
         android:layout_width="fill_parent"
         android:layout_height="100dp">
         <ImageView
@@ -28,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:text="绝世唐门"
                 android:textColor="#D40000"
-                android:textSize="@dimen/text_size_sss"
                 />
             <TextView
                 android:id="@+id/tv_item_novel_author"
@@ -50,10 +49,6 @@
                 android:layout_below="@+id/tv_item_novel_name"
 
                 />
-
-
         </RelativeLayout>
-
     </RelativeLayout>
-
 </LinearLayout>

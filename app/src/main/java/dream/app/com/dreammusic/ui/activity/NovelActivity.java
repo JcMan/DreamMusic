@@ -1,9 +1,8 @@
 package dream.app.com.dreammusic.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -13,15 +12,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.app.tool.logger.Logger;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.adapter.NetNovelAdapter;
+import dream.app.com.dreammusic.adapter.NovelClassesAdapter;
 import dream.app.com.dreammusic.entry.NovelAPI;
 import dream.app.com.dreammusic.entry.NovelEntry;
 import dream.app.com.dreammusic.service.MusicService;
@@ -34,15 +37,13 @@ import dream.app.com.dreammusic.util.ToastUtil;
 /**
  * Created by Administrator on 2015/8/8.
  */
-public class NovelActivity extends BaseActivity implements FlowLayout.IFlowClickListener,AdapterView.OnItemClickListener{
+public class NovelActivity extends BaseActivity implements AdapterView.OnItemClickListener{
 
     private MyViewPagerIndicator mIndicator;
     private ViewPager mViewPager;
     private List<View> mViewsList;
     private ListView mClassesListView;
     private LoadingDialog loadingDialog;
-    private List<NovelEntry> mNetNovelList;
-    private NetNovelAdapter mNetNovelAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -91,57 +92,13 @@ public class NovelActivity extends BaseActivity implements FlowLayout.IFlowClick
      */
     @NonNull
     private View initClassificationView() {
-        View v_classification = View.inflate(this, R.layout.view_novel_classification, null);
-        FlowLayout flowLayout = (FlowLayout) v_classification.findViewById(R.id.flowlayout_novel_classification);
-        flowLayout.setFlowClickListener(this);
-        String[] novel_classes = getResources().getStringArray(R.array.novel_kind_name);
-        for (int i = 0; i <novel_classes.length ; i++){
-            TextView tv_label = new TextView(this);
-            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(4,4,4,4);
-            tv_label.setTextColor(Color.parseColor("#ffffff"));
-            tv_label.setLayoutParams(params);
-            tv_label.setBackgroundResource(R.drawable.tv_novel_classes);
-            tv_label.setText(novel_classes[i]);
-            flowLayout.addView(tv_label);
-        }
-        mClassesListView = (ListView) v_classification.findViewById(R.id.listview_novel_classes);
+        View v_classification = View.inflate(this, R.layout.view_novel_classification,null);
+        mClassesListView= (ListView) v_classification.findViewById(R.id.listview_novel_classes);
+        mClassesListView.setAdapter(new NovelClassesAdapter(this));
         mClassesListView.setOnItemClickListener(this);
-        loadingDialog.show();
-        initClassesListView();
-
         return v_classification;
     }
 
-    /**
-     * 初始化分类界面的ListView并绑定数据
-     */
-    private void initClassesListView(){
-        new Thread(new Runnable(){
-            @Override
-            public void run(){
-                try {
-                    Document doc = Jsoup.connect(NovelAPI.getClassificationUrl(NovelActivity.this, "玄幻·魔法")).get();
-                    mNetNovelList = NovelAPI.getNovelList(doc);
-                    if(mNetNovelList.size()>0){
-                        setClassesListViewAdapter();
-                    }
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-                cancelLoadingDialog();
-            }
-        }).start();
-    }
-
-    @Override
-    public void flowClick(View v){
-        TextView tv_label = (TextView)v;
-        String label = tv_label.getText().toString();
-        String classification_url = NovelAPI.getClassificationUrl(this,label);
-        ToastUtil.showMessage(this, classification_url);
-    }
     private void cancelLoadingDialog(){
         runOnUiThread(new Runnable() {
             @Override
@@ -151,18 +108,42 @@ public class NovelActivity extends BaseActivity implements FlowLayout.IFlowClick
         });
     }
 
-    private void setClassesListViewAdapter(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mNetNovelAdapter = new NetNovelAdapter(NovelActivity.this,mNetNovelList);
-                mClassesListView.setAdapter(mNetNovelAdapter);
-            }
-        });
-    }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+        if(parent.getId()==R.id.listview_novel_classes){
+            getNovelClassContent(position);
+        }
+    }
 
+    /**
+     * 根据类别得到小说列表
+     * @param position
+     */
+    private void getNovelClassContent(int position) {
+        HashMap<String,String> map = (HashMap<String, String>) mClassesListView.getItemAtPosition(position);
+        final String url = map.get("url");
+        final String name = map.get("name");
+        loadingDialog.show();
+        new Thread(new Runnable(){
+            @Override
+            public void run(){
+                try {
+                    Document doc = Jsoup.connect(url).get();
+                    if(doc!=null){
+                        Intent intent = new Intent();
+                        intent.putExtra("name",name);
+                        intent.putExtra("html",doc.toString());
+                        intent.putExtra("url", url);
+                        int pageCount = NovelAPI.getPageCount(doc);
+                        intent.putExtra("pagecount",pageCount);
+                        startNewActivityWithAnim(NovelListActivity.class,intent);
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                cancelLoadingDialog();
+            }
+        }).start();
     }
 }

@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.config.App;
+import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.AnimUtil;
+import dream.app.com.dreammusic.util.DialogUtil;
 
 /**
  * Created by Administrator on 2015/6/26.
@@ -18,10 +20,12 @@ import dream.app.com.dreammusic.util.AnimUtil;
 public class BaseActivity extends Activity implements View.OnClickListener{
     private ImageButton mTopBack,mTopRightLogo,mTopToggle,mTopRight;
     private TextView mTopTitle;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLoadingDialog = DialogUtil.createLoadingDialog(this);
     }
     @Override
     protected void onStart() {
@@ -126,6 +130,7 @@ public class BaseActivity extends Activity implements View.OnClickListener{
     protected void startNewActivityWithAnim(Class pclass ,Intent intent){
         intent.setClass(this,pclass);
         startActivity(intent);
+        overridePendingTransition(AnimUtil.BASE_SLIDE_RIGHT_IN,AnimUtil.BASE_SLIDE_REMAIN);
 
     }
 
@@ -174,6 +179,19 @@ public class BaseActivity extends Activity implements View.OnClickListener{
         super.onBackPressed();
         overridePendingTransition(AnimUtil.BASE_SLIDE_REMAIN,AnimUtil.BASE_SLIDE_RIGHT_OUT);
 
+    }
+
+    protected void showLoadingDlg(){
+        mLoadingDialog.show();
+    }
+
+    protected void cancelLoadingDlg(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mLoadingDialog.cancel();
+            }
+        });
     }
 
 

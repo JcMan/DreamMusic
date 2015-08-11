@@ -54,7 +54,7 @@ public class DialogUtil {
         return  dialog;
     }
 
-    public static void setDialogAttr(Dialog dialog,Activity activity) {
+    public static void setDialogAttr(Dialog dialog,Activity activity){
         Window dialogWindow = dialog.getWindow();
         WindowManager manager = activity.getWindowManager();
         Display d = manager.getDefaultDisplay();

@@ -2,6 +2,9 @@ package dream.app.com.dreammusic.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -23,10 +26,12 @@ public class NetNovelAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<NovelEntry> _List;
+    private Bitmap loadingBitmap;
 
     public NetNovelAdapter(Context context,List<NovelEntry> list){
         mContext = context;
         _List = list;
+
     }
     @Override
     public int getCount() {
@@ -47,21 +52,26 @@ public class NetNovelAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         if(convertView==null){
-            convertView = View.inflate(mContext, R.layout.item_list_novel,null);
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            convertView = inflater.inflate(R.layout.item_list_novel,null);
             holder = new Holder();
             holder.iv_page = (ImageView) convertView.findViewById(R.id.iv_item_list_novel);
             holder.tv_bookname = (TextView) convertView.findViewById(R.id.tv_item_novel_name);
             holder.tv_author = (TextView) convertView.findViewById(R.id.tv_item_novel_author);
             holder.tv_introduction = (TextView) convertView.findViewById(R.id.tv_item_novel_introduction);
-            convertView.setTag(holder);;
+            convertView.setTag(holder);
         }else
-        holder = (Holder) convertView.getTag();
+            holder = (Holder) convertView.getTag();
         NovelEntry entry = _List.get(position);
         FinalBitmap finalBitmap = FinalBitmap.create(mContext);
-        finalBitmap.display(holder.iv_page,entry.getmImgUrl());
+        loadingBitmap = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.ic_loading_novel);
+        finalBitmap.display(holder.iv_page, entry.getmImgUrl(), loadingBitmap, loadingBitmap);
         holder.tv_bookname.setText(entry.getmBookName());
         holder.tv_author.setText(entry.getmAuthor());
-        holder.tv_introduction.setText(entry.getmIntroduction());
+        String intro = entry.getmIntroduction();
+        if(intro.length()<3)
+            intro = "本书暂无简介";
+        holder.tv_introduction.setText(intro);
         return convertView;
     }
 

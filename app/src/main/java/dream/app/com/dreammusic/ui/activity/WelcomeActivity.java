@@ -38,8 +38,6 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         initUtil();
         startService();
         initDirs();
-
-
     }
 
     private void initUtil() {
@@ -67,6 +65,9 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         File file_mv = new File(ApplicationConfig.MVDIE);
         if(!file_mv.exists())
             file_mv.mkdirs();
+        File file_novel = new File(ApplicationConfig.NOVEL_DIR);
+        if(!file_novel.exists())
+            file_novel.mkdirs();
     }
 
     @Override
