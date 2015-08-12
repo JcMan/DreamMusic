@@ -11,6 +11,38 @@ public class NovelEntry {
     private String mImgUrl;
     private String mIntroduction;
 
+    private String mMainPageUrl;
+    private String mBaseUrl;
+    private int mLastChapter;
+
+    public String getmBaseUrl() {
+        return mBaseUrl;
+    }
+
+    public void setmBaseUrl(String mBaseUrl) {
+        this.mBaseUrl = mBaseUrl;
+    }
+
+
+
+    public String getmMainPageUrl() {
+        return mMainPageUrl;
+    }
+
+    public void setmMainPageUrl(String mMainPageUrl) {
+        this.mMainPageUrl = mMainPageUrl;
+    }
+
+    public int getmLastChapter() {
+        return mLastChapter;
+    }
+
+    public void setmLastChapter(int mLastChapter) {
+        this.mLastChapter = mLastChapter;
+    }
+
+
+
     public String getmBookName() {
         return mBookName;
     }
@@ -49,5 +81,19 @@ public class NovelEntry {
 
     public void setmIntroduction(String mIntroduction) {
         this.mIntroduction = mIntroduction;
+    }
+
+    @Override
+    public String toString(){
+        return "NovelEntry{" +
+                "mBookName='" + mBookName + '\'' +
+                ", mAuthor='" + mAuthor + '\'' +
+                ", mBookUrl='" + mBookUrl + '\'' +
+                ", mImgUrl='" + mImgUrl + '\'' +
+                ", mIntroduction='" + mIntroduction + '\'' +
+                ", mMainPageUrl='" + mMainPageUrl + '\'' +
+                ", mBaseUrl='" + mBaseUrl + '\'' +
+                ", mLastChapter=" + mLastChapter +
+                '}';
     }
 }

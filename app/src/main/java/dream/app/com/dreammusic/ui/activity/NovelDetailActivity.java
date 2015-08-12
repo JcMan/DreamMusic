@@ -9,13 +9,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.tool.logger.Logger;
+
 import net.tsz.afinal.FinalBitmap;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
+import java.util.List;
+
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.db.NovelInfoDAO;
+import dream.app.com.dreammusic.entry.ChapterEntry;
 import dream.app.com.dreammusic.entry.NovelAPI;
+import dream.app.com.dreammusic.entry.NovelEntry;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.DialogUtil;
 
@@ -26,7 +34,7 @@ public class NovelDetailActivity extends BaseActivity {
 
     private ImageView mImgView;
     private TextView mNameView,mAuthorView,mStateView,mIntroView;
-    private Button mChapterBtn;
+    private Button mChapterBtn,mAddBookBtn;
 
     private String mBookName;
     private String mAuthor;
@@ -63,12 +71,14 @@ public class NovelDetailActivity extends BaseActivity {
         mAuthorView = (TextView) findViewById(R.id.tv_noveldetail_author);
         mIntroView = (TextView) findViewById(R.id.tv_noveldetail_intro);
         mChapterBtn = (Button) findViewById(R.id.btn_noveldetail_chapter);
+        mAddBookBtn = (Button) findViewById(R.id.btn_add_book_to_shelf);
     }
 
     @Override
     protected void initListener() {
         super.initListener();
         mChapterBtn.setOnClickListener(this);
+        mAddBookBtn.setOnClickListener(this);
     }
 
     @Override
@@ -78,7 +88,59 @@ public class NovelDetailActivity extends BaseActivity {
             case R.id.btn_noveldetail_chapter:
                 getNovelChapters();
                 break;
+            case R.id.btn_add_book_to_shelf:
+                addBookToShelf();
+                break;
         }
+    }
+
+    private void addBookToShelf(){
+        showLoadingDlg();
+        new Thread(new Runnable(){
+            @Override
+            public void run(){
+                try {
+                    Document doc = Jsoup.connect(mBookUrl).get();
+                    NovelInfoDAO dao = new NovelInfoDAO(NovelDetailActivity.this);
+                    NovelEntry entry = new NovelEntry();
+                    int chapter = getFirstChapter(doc);
+                    entry.setmBookName(mBookName);
+                    entry.setmAuthor(mAuthor);
+                    entry.setmImgUrl(mImgUrl);
+                    entry.setmMainPageUrl(mBookUrl);
+                    entry.setmBaseUrl(mBookUrl.replace("index.html", ""));
+                    entry.setmLastChapter(chapter);
+                    if(dao.addNovelInfo(entry)){
+                        runOnUiThread(new Runnable(){
+                            @Override
+                            public void run(){
+                                DialogUtil.showMessageDialog(NovelDetailActivity.this,"添加至书架成功");
+                            }
+                        });
+                    }else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DialogUtil.showMessageDialog(NovelDetailActivity.this,"添加至书架失败");
+                            }
+                        });
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                cancelLoadingDlg();
+            }
+        }).start();
+    }
+
+    private int getFirstChapter(Document doc){
+        List<ChapterEntry> _List = NovelAPI.getNetNovelChapters(doc, mBookUrl.replace("index.html",""));
+        ChapterEntry entry = _List.get(0);
+        String url = entry.getmChapterUrl();
+        int chapter = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1,
+                url.length()).replace(".html", ""));
+        chapter--;
+        return chapter;
     }
 
     private void getNovelChapters() {

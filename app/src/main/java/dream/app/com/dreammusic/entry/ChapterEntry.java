@@ -13,6 +13,14 @@ public class ChapterEntry {
         this.mChapterUrl = mChapterUrl;
     }
 
+    @Override
+    public String toString() {
+        return "ChapterEntry{" +
+                "mChapterName='" + mChapterName + '\'' +
+                ", mChapterUrl='" + mChapterUrl + '\'' +
+                '}';
+    }
+
     public String getmChapterName() {
         return mChapterName;
     }

@@ -94,9 +94,12 @@ public class NovelAPI {
     }
 
     public static int getPageCount(Document doc){
-        Element e = doc.getElementById("pagelink");
-        Element e_a  = e.getElementsByTag("a").last();
-        int count = Integer.parseInt(e_a.text());
+        int count = 0;
+        try{
+            Element e = doc.getElementById("pagelink");
+            Element e_a  = e.getElementsByTag("a").last();
+            count = Integer.parseInt(e_a.text());
+        }catch (Exception e){}
         return count;
     }
 
@@ -149,5 +152,12 @@ public class NovelAPI {
             name  = e.text();
         }catch (Exception e){}
         return name;
+    }
+
+    public int getChapter(String url){
+        int chapter;
+        chapter = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1,
+                url.length()).replace(".html", ""));
+        return chapter;
     }
 }

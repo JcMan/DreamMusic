@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,9 +23,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import dream.app.com.dreammusic.R;
+import dream.app.com.dreammusic.adapter.GridBookShelfAdapter;
 import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.adapter.NetNovelAdapter;
 import dream.app.com.dreammusic.adapter.NovelClassesAdapter;
+import dream.app.com.dreammusic.db.NovelInfoDAO;
+import dream.app.com.dreammusic.db.PlayHistoryDAO;
 import dream.app.com.dreammusic.entry.NovelAPI;
 import dream.app.com.dreammusic.entry.NovelEntry;
 import dream.app.com.dreammusic.service.MusicService;
@@ -32,6 +36,7 @@ import dream.app.com.dreammusic.ui.view.FlowLayout;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.ui.view.MyViewPagerIndicator;
 import dream.app.com.dreammusic.util.DialogUtil;
+import dream.app.com.dreammusic.util.TextUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 
 /**
@@ -42,8 +47,11 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
     private MyViewPagerIndicator mIndicator;
     private ViewPager mViewPager;
     private List<View> mViewsList;
+    private List<NovelEntry> mLocalNovels;
     private ListView mClassesListView;
     private LoadingDialog loadingDialog;
+    private GridView mGridView;
+    private View v_bookshelf;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -53,7 +61,17 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
         initView();
         initListener();
         setTitle("小说中心");
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        NovelInfoDAO dao = new NovelInfoDAO(this);
+        setShelfEmptyOrNot(dao.hasData());
+        if(dao.hasData()){
+            mLocalNovels = dao.getNovels();
+            mGridView.setAdapter(new GridBookShelfAdapter(this,mLocalNovels));
+        }
     }
 
     @Override
@@ -75,15 +93,36 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
 
     private void initPagerViews() {
         mViewsList = new ArrayList<View>();
-        TextView tv = new TextView(this);
-        tv.setText("书架");
+        initBookShelfView();
         View v_classification = initClassificationView();
         TextView tv2 = new TextView(this);
         tv2.setText("搜索");
-        mViewsList.add(tv);
+        mViewsList.add(v_bookshelf);
         mViewsList.add(v_classification);
         mViewsList.add(tv2);
         mViewPager.setAdapter(new MyViewPagerAdapter(this, mViewsList));
+    }
+
+    private void initBookShelfView() {
+        v_bookshelf = View.inflate(this, R.layout.view_bookshelf, null);
+        mGridView = (GridView) v_bookshelf.findViewById(R.id.gridview_bookshelf);
+        mGridView.setOnItemClickListener(this);
+        NovelInfoDAO dao = new NovelInfoDAO(this);
+        setShelfEmptyOrNot(dao.hasData());
+        if(dao.hasData()){
+            mLocalNovels = dao.getNovels();
+            mGridView.setAdapter(new GridBookShelfAdapter(this,mLocalNovels));
+        }
+    }
+
+    private void setShelfEmptyOrNot(boolean b){
+        if(b){
+            mGridView.setVisibility(View.VISIBLE);
+            v_bookshelf.findViewById(R.id.iv_bookshelf_empty).setVisibility(View.GONE);
+        }else{
+            mGridView.setVisibility(View.GONE);
+            v_bookshelf.findViewById(R.id.iv_bookshelf_empty).setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -113,14 +152,41 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id){
         if(parent.getId()==R.id.listview_novel_classes){
             getNovelClassContent(position);
+        }else if(parent.getId()==R.id.gridview_bookshelf){
+            openBook(position);
         }
+    }
+
+    private void openBook(int position){
+        final NovelEntry entry = (NovelEntry) mGridView.getItemAtPosition(position);
+        final String url = entry.getmBaseUrl()+(entry.getmLastChapter()+1)+".html";
+        showLoadingDlg();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    Document doc = Jsoup.connect(url).get();
+                    String chaptername = NovelAPI.getChapterName(doc);
+                    String content = NovelAPI.getChapterContent(doc);
+                    TextUtil.writeNovelContent(chaptername, content);
+                    Intent intent = new Intent();
+                    intent.putExtra("firstpageurl",url);
+                    intent.putExtra("from","local");
+                    intent.putExtra("bookname",entry.getmBookName());
+                    startNewActivityWithAnim(ReadNovelActivity.class, intent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                cancelLoadingDlg();
+            }
+        }).start();
     }
 
     /**
      * 根据类别得到小说列表
      * @param position
      */
-    private void getNovelClassContent(int position) {
+    private void getNovelClassContent(int position){
         HashMap<String,String> map = (HashMap<String, String>) mClassesListView.getItemAtPosition(position);
         final String url = map.get("url");
         final String name = map.get("name");

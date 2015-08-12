@@ -20,6 +20,7 @@ import java.util.List;
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.JazzyAdapter;
 import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.db.NovelInfoDAO;
 import dream.app.com.dreammusic.entry.NovelAPI;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
@@ -39,9 +40,10 @@ public class ReadNovelActivity extends Activity implements ViewPager.OnPageChang
     private boolean mLoadData ;
     private LoadingDialog loadingDialog;
     private BookPageFactory factory;
-
     private String mFirstPageUrl;
     private String mBaseUrl;
+    private String mFrom;
+    private String mBookName;
     private int mCurrentChapter;
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -75,6 +77,8 @@ public class ReadNovelActivity extends Activity implements ViewPager.OnPageChang
         mCurrentChapter = Integer.parseInt(mFirstPageUrl.substring(mFirstPageUrl.lastIndexOf("/") + 1,
                 mFirstPageUrl.length()).replace(".html", ""));
         mBaseUrl = mFirstPageUrl.substring(0, mFirstPageUrl.lastIndexOf("/"))+"/";
+        mFrom = getIntent().getStringExtra("from");
+        mBookName = getIntent().getStringExtra("bookname");
     }
     public void initView(){
         mJazzy = (JazzyViewPager) findViewById(R.id.jazzyviewpager_readnovel);
@@ -90,7 +94,7 @@ public class ReadNovelActivity extends Activity implements ViewPager.OnPageChang
                 @Override
                 public void run() {
                     try {
-                        String nextChapterUrl = mBaseUrl+(++mCurrentChapter)+".html";
+                        String nextChapterUrl = mBaseUrl+(mCurrentChapter+1)+".html";
                         Document document = Jsoup.connect(nextChapterUrl).get();
                         String content = NovelAPI.getChapterContent(document);
                         String name = NovelAPI.getChapterName(document);
@@ -130,6 +134,11 @@ public class ReadNovelActivity extends Activity implements ViewPager.OnPageChang
         public void handleMessage(Message msg){
             super.handleMessage(msg);
             initReadView(factory);
+            mCurrentChapter++;
+            if(mFrom!=null&&mFrom.equals("local")){
+                NovelInfoDAO dao = new NovelInfoDAO(ReadNovelActivity.this);
+                dao.updateChapterByName(mBookName,mCurrentChapter-1);
+            }
         }
     };
 }
