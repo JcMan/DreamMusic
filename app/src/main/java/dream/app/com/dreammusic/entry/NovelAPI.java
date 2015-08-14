@@ -154,7 +154,7 @@ public class NovelAPI {
         return name;
     }
 
-    public int getChapter(String url){
+    public static int getChapter(String url){
         int chapter;
         chapter = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1,
                 url.length()).replace(".html", ""));

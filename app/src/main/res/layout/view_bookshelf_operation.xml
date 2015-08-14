@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/dialog_top" />
+    <TextView
+        android:id="@+id/tv_dialogitem_seechapter"
+        style="@style/text_dailog_music"
+        android:text="查看目录"
+        />
+    <View
+        style="@style/SplitLine"
+        />
+    <TextView
+        android:id="@+id/tv_dialogitem_removebook"
+        style="@style/text_dailog_music"
+        android:text="移出书架"
+        />
+    <View
+        style="@style/SplitLine"
+        />
+
+</LinearLayout>

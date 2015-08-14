@@ -155,6 +155,7 @@ public class NovelDetailActivity extends BaseActivity {
                     Intent intent = new Intent();
                     intent.putExtra("from","net");
                     intent.putExtra("bookurl",mBookUrl);
+                    intent.putExtra("name",mBookName);
                     intent.putExtra("htmlcontent",htmlContent);
                     startNewActivityWithAnim(NovelChapterActivity.class, intent);
                 }catch (Exception e){}

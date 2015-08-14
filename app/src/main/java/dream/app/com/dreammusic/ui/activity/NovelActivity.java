@@ -1,5 +1,6 @@
 package dream.app.com.dreammusic.ui.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ import dream.app.com.dreammusic.util.ToastUtil;
 /**
  * Created by Administrator on 2015/8/8.
  */
-public class NovelActivity extends BaseActivity implements AdapterView.OnItemClickListener{
+public class NovelActivity extends BaseActivity implements AdapterView.OnItemClickListener , AdapterView.OnItemLongClickListener{
 
     private MyViewPagerIndicator mIndicator;
     private ViewPager mViewPager;
@@ -107,11 +108,12 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
         v_bookshelf = View.inflate(this, R.layout.view_bookshelf, null);
         mGridView = (GridView) v_bookshelf.findViewById(R.id.gridview_bookshelf);
         mGridView.setOnItemClickListener(this);
+        mGridView.setOnItemLongClickListener(this);
         NovelInfoDAO dao = new NovelInfoDAO(this);
         setShelfEmptyOrNot(dao.hasData());
         if(dao.hasData()){
             mLocalNovels = dao.getNovels();
-            mGridView.setAdapter(new GridBookShelfAdapter(this,mLocalNovels));
+            mGridView.setAdapter(new GridBookShelfAdapter(this, mLocalNovels));
         }
     }
 
@@ -211,5 +213,55 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
                 cancelLoadingDialog();
             }
         }).start();
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        final Dialog dialog = new Dialog(this,R.style.Theme_loading_dialog);
+        View v = View.inflate(this,R.layout.view_bookshelf_operation,null);
+        initDialogItemListener(position, dialog, v);
+        dialog.setContentView(v);
+        DialogUtil.setDialogAttr(dialog, this);
+        dialog.show();
+        return false;
+    }
+
+    private void initDialogItemListener(int position, final Dialog dialog, View v) {
+        TextView tv_chapter = (TextView) v.findViewById(R.id.tv_dialogitem_seechapter);
+        TextView tv_remove = (TextView) v.findViewById(R.id.tv_dialogitem_removebook);
+        final NovelEntry entry = (NovelEntry) mGridView.getItemAtPosition(position);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                showLoadingDlg();
+                if(v.getId()==R.id.tv_dialogitem_seechapter){
+                    new Thread(new Runnable(){
+                        @Override
+                        public void run() {
+                            String homepage = entry.getmMainPageUrl();
+                            try {
+                                Document document = Jsoup.connect(homepage).get();
+                                String htmlContent = document.toString();
+                                Intent intent = new Intent();
+                                intent.putExtra("htmlcontent",htmlContent);
+                                intent.putExtra("from","local");
+                                intent.putExtra("bookurl",entry.getmMainPageUrl());
+                                intent.putExtra("name",entry.getmBookName());
+                                startNewActivityWithAnim(NovelChapterActivity.class,intent);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            cancelLoadingDlg();
+                        }
+                    }).start();
+
+                }else if(v.getId()==R.id.tv_dialogitem_removebook){
+
+                }
+            }
+        };
+        tv_chapter.setOnClickListener(listener);
+        tv_remove.setOnClickListener(listener);
     }
 }

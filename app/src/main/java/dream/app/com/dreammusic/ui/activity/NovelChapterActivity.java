@@ -16,8 +16,10 @@ import java.util.List;
 
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.ChapterListAdapter;
+import dream.app.com.dreammusic.db.NovelInfoDAO;
 import dream.app.com.dreammusic.entry.ChapterEntry;
 import dream.app.com.dreammusic.entry.NovelAPI;
+import dream.app.com.dreammusic.ui.view.ScrollRelativeLayout;
 import dream.app.com.dreammusic.util.TextUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 
@@ -28,6 +30,7 @@ public class NovelChapterActivity extends BaseActivity implements AdapterView.On
 
     private String mFrom;
     private String mBookUrl;
+    private String mBookName;
     private String mHtmlContent;
     private ListView mListView;
     private List<ChapterEntry> mChapterList;
@@ -40,11 +43,7 @@ public class NovelChapterActivity extends BaseActivity implements AdapterView.On
         initVariable();
         initView();
         initListener();
-        if(mFrom.equals("net")){
-            initNetListView();
-        }else{
-            initLocalListView();
-        }
+        initListView();
         setTitle("目录");
     }
 
@@ -65,7 +64,7 @@ public class NovelChapterActivity extends BaseActivity implements AdapterView.On
 
     }
 
-    private void initNetListView() {
+    private void initListView() {
         try {
             Document doc = Jsoup.parse(mHtmlContent);
             mChapterList = NovelAPI.getNetNovelChapters(doc,mBookUrl.replace("index.html",""));
@@ -83,18 +82,13 @@ public class NovelChapterActivity extends BaseActivity implements AdapterView.On
             }
         });
     }
-
-    private void initLocalListView() {
-
-    }
-
     private void getDataFromIntent(){
         Intent intent = getIntent();
         mFrom = intent.getStringExtra("from");
-        if(mFrom.equals("net")){
-            mBookUrl = intent.getStringExtra("bookurl");
-            mHtmlContent = intent.getStringExtra("htmlcontent");
-        }
+        mBookUrl = intent.getStringExtra("bookurl");
+        mBookName = intent.getStringExtra("name");
+        mHtmlContent = intent.getStringExtra("htmlcontent");
+
     }
 
     @Override
@@ -109,6 +103,11 @@ public class NovelChapterActivity extends BaseActivity implements AdapterView.On
                     String content  = NovelAPI.getChapterContent(doc);
                     String name = entry.getmChapterName();
                     TextUtil.writeNovelContent(name,content);
+                    int chapter = NovelAPI.getChapter(entry.getmChapterUrl());
+                    if(mFrom.equals("local")){
+                        NovelInfoDAO dao = new NovelInfoDAO(NovelChapterActivity.this);
+                        dao.updateChapterByName(mBookName,chapter);
+                    }
                     Intent intent = new Intent();
                     intent.putExtra("firstpageurl",entry.getmChapterUrl());
                     startNewActivityWithAnim(ReadNovelActivity.class,intent);
