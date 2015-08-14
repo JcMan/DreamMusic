@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/color_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_novel_search"
+            android:drawableLeft="@drawable/ic_search"
+            android:paddingLeft="5dp"
+            android:layout_weight="1"
+            android:hint="请输入作者|小说"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_edit"
+            />
+        <Button
+            android:id="@+id/btn_novel_search"
+            android:layout_marginLeft="3dp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_download"
+            android:text="搜索"
+            android:textColor="@color/color_white"
+            />
+    </LinearLayout>
+    <dream.app.com.dreammusic.ui.view.KeywordsFlow
+        android:layout_marginBottom="30dp"
+        android:id="@+id/keywordsflow"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        >
+    </dream.app.com.dreammusic.ui.view.KeywordsFlow>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_novel_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </ScrollView>
+
+</LinearLayout>

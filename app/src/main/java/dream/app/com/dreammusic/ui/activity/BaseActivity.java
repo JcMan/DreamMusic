@@ -165,8 +165,6 @@ public class BaseActivity extends Activity implements View.OnClickListener{
             case R.id.ib_top_right:
                 clickOnTopRight();
                 break;
-            default:
-                break;
         }
     }
 

@@ -9,6 +9,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -159,5 +161,33 @@ public class NovelAPI {
         chapter = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1,
                 url.length()).replace(".html", ""));
         return chapter;
+    }
+
+    public static String getKeyWordsUrl(Context context){
+        return context.getResources().getString(R.string.novel_keywords_url);
+    }
+
+    public static List<String> getKeyWordsList(Document doc){
+        List<String> _List = new ArrayList<String>();
+        try {
+            Element e1 = doc.getElementsByAttributeValue("class","toplistcon").first();
+            Elements es = e1.getElementsByAttributeValue("class","tit");
+            for(Element e:es){
+                String text = e.text();
+               _List.add(text);
+            }
+        }catch (Exception e){}
+        return _List;
+    }
+
+    public static String getSearchUrl(String searchkey){
+        String url = "http://www.16kxsw.com/modules/article/search.php?searchtype=2&searchkey=";
+        try {
+            url+= URLEncoder.encode(searchkey, "gbk");
+        } catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+
+        return url;
     }
 }

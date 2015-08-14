@@ -9,20 +9,34 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 import com.app.tool.logger.Logger;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+
 import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.GridBookShelfAdapter;
 import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
@@ -34,6 +48,7 @@ import dream.app.com.dreammusic.entry.NovelAPI;
 import dream.app.com.dreammusic.entry.NovelEntry;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.FlowLayout;
+import dream.app.com.dreammusic.ui.view.KeywordsFlow;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.ui.view.MyViewPagerIndicator;
 import dream.app.com.dreammusic.util.DialogUtil;
@@ -43,7 +58,8 @@ import dream.app.com.dreammusic.util.ToastUtil;
 /**
  * Created by Administrator on 2015/8/8.
  */
-public class NovelActivity extends BaseActivity implements AdapterView.OnItemClickListener , AdapterView.OnItemLongClickListener{
+public class NovelActivity extends BaseActivity implements AdapterView.OnItemClickListener ,
+        AdapterView.OnItemLongClickListener{
 
     private MyViewPagerIndicator mIndicator;
     private ViewPager mViewPager;
@@ -53,6 +69,11 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
     private LoadingDialog loadingDialog;
     private GridView mGridView;
     private View v_bookshelf;
+    private EditText mSearchEdit;
+    private Button mSearchBtn;
+
+
+    TextView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -96,12 +117,44 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
         mViewsList = new ArrayList<View>();
         initBookShelfView();
         View v_classification = initClassificationView();
-        TextView tv2 = new TextView(this);
-        tv2.setText("搜索");
+        View v_search = initSearchView();
         mViewsList.add(v_bookshelf);
         mViewsList.add(v_classification);
-        mViewsList.add(tv2);
+        mViewsList.add(v_search);
         mViewPager.setAdapter(new MyViewPagerAdapter(this, mViewsList));
+    }
+
+    @NonNull
+    private View initSearchView() {
+        View v_search = View.inflate(this, R.layout.view_novel_search, null);
+        mSearchEdit = (EditText) v_search.findViewById(R.id.et_novel_search);
+        mSearchBtn = (Button) v_search.findViewById(R.id.btn_novel_search);
+        mSearchBtn.setOnClickListener(this);
+
+        tv = (TextView) v_search.findViewById(R.id.tv_novel_search);
+        final KeywordsFlow keywordsFlow = (KeywordsFlow) v_search.findViewById(R.id.keywordsflow);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Document doc = Jsoup.connect(NovelAPI.getKeyWordsUrl(NovelActivity.this)).get();
+                    final List<String> keywords_list = NovelAPI.getKeyWordsList(doc);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(int i=0;i<keywords_list.size();i++){
+                                keywordsFlow.feedKeyword(keywords_list.get(i));
+                            }
+                            keywordsFlow.setOnItemClickListener(NovelActivity.this);
+                            keywordsFlow.setDuration(3001);
+                            keywordsFlow.go2Show(KeywordsFlow.ANIMATION_IN);
+
+                        }
+                    });
+                }catch (Exception e){}
+            }
+        }).start();
+        return v_search;
     }
 
     private void initBookShelfView() {
@@ -263,5 +316,50 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
         };
         tv_chapter.setOnClickListener(listener);
         tv_remove.setOnClickListener(listener);
+    }
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()){
+            case R.id.btn_novel_search:
+                String searchkey = mSearchEdit.getText().toString();
+                searchNovel(searchkey);
+                break;
+            default:
+                TextView tv = (TextView)v;
+                final String keyword = tv.getText().toString();
+                searchNovel(keyword);
+                break;
+        }
+    }
+
+    private void searchNovel(final String keyword){
+        showLoadingDlg();
+        new Thread(new Runnable() {
+            @Override
+            public void run(){
+                try {
+                    Document doc = Jsoup.connect(NovelAPI.getSearchUrl(keyword)).get();
+                    Elements e_tbody = doc.getElementsByTag("tbody");
+                    final StringBuilder sb = new StringBuilder();
+                    if(e_tbody!=null&&e_tbody.size()>0){
+                        sb.append("列表").append("\n");
+                    }else{
+                        sb.append("内容").append("\n");
+                    }
+                    sb.append(doc.toString());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv.setText(sb.toString());
+                        }
+                    });
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                cancelLoadingDlg();
+            }
+        }).start();
     }
 }
