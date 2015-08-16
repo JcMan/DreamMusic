@@ -157,9 +157,10 @@ public class NovelDetailActivity extends BaseActivity {
                     intent.putExtra("bookurl",mBookUrl);
                     intent.putExtra("name",mBookName);
                     intent.putExtra("htmlcontent",htmlContent);
+                    cancelLoadingDialog();
                     startNewActivityWithAnim(NovelChapterActivity.class, intent);
                 }catch (Exception e){}
-                cancelLoadingDialog();
+
             }
         }).start();
 

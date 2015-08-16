@@ -131,7 +131,6 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
         mSearchBtn = (Button) v_search.findViewById(R.id.btn_novel_search);
         mSearchBtn.setOnClickListener(this);
 
-        tv = (TextView) v_search.findViewById(R.id.tv_novel_search);
         final KeywordsFlow keywordsFlow = (KeywordsFlow) v_search.findViewById(R.id.keywordsflow);
         new Thread(new Runnable() {
             @Override
@@ -342,19 +341,14 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
                 try {
                     Document doc = Jsoup.connect(NovelAPI.getSearchUrl(keyword)).get();
                     Elements e_tbody = doc.getElementsByTag("tbody");
-                    final StringBuilder sb = new StringBuilder();
+                    Intent intent = new Intent();
                     if(e_tbody!=null&&e_tbody.size()>0){
-                        sb.append("列表").append("\n");
+                        intent.putExtra("type","tbody");
                     }else{
-                        sb.append("内容").append("\n");
+                        intent.putExtra("type","list");
                     }
-                    sb.append(doc.toString());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv.setText(sb.toString());
-                        }
-                    });
+                    intent.putExtra("htmlcontent",doc.toString());
+                    startNewActivityWithAnim(SearchNovelActivity.class,intent);
                 } catch (IOException e){
                     e.printStackTrace();
                 }

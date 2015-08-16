@@ -190,4 +190,71 @@ public class NovelAPI {
 
         return url;
     }
+
+    public static List<NovelEntry> getSearchNovelList(String type,String htmlContent){
+        List<NovelEntry> _List = new ArrayList<NovelEntry>();
+        if(type.equals("tbody")){
+            _List = getSearchNovelByBody(htmlContent);
+        }else if(type.equals("list")){
+            _List = getSearchNovelByList(htmlContent);
+        }
+        return _List;
+    }
+
+    private static List<NovelEntry> getSearchNovelByBody(String htmlContent){
+        List<NovelEntry> _List = new ArrayList<NovelEntry>();
+        try {
+            Document doc = Jsoup.parse(htmlContent);
+            Elements es_tr = doc.getElementsByTag("tbody").first().getElementsByTag("tr");
+            for (int i=1;i<es_tr.size();i++){
+                Elements e_a = es_tr.get(i).getElementsByTag("a");
+                Element e_1 = e_a.get(0);
+                String bookname = e_1.text();
+                String bookurl = e_1.attr("href");
+                String state = e_a.get(1).text();
+                String author = es_tr.get(i).getElementsByAttributeValue("class","odd").get(1).text();
+                NovelEntry entry = new NovelEntry();
+                entry.setmBookName(bookname);
+                entry.setmBookUrl(bookurl);
+                entry.setmIntroduction(state);
+                entry.setmAuthor(author);
+                _List.add(entry);
+            }
+        }catch (Exception e){}
+        return _List;
+    }
+
+    private static List<NovelEntry> getSearchNovelByList(String htmlContent){
+        List<NovelEntry> _List = new ArrayList<NovelEntry>();
+        try {
+            Document doc = Jsoup.parse(htmlContent);
+            Element e1 = doc.getElementsByAttributeValue("class", "novel").first();
+            String state = e1.getElementsByAttributeValue("class","hotTag").first().text();
+            Element e2 = e1.getElementsByAttributeValue("class", "title").first();
+            String bookname = e2.getElementsByTag("h2").first().text();
+            String author = e2.getElementsByTag("span").first().text().replace("作者：", "");
+            author = author.replace("作者: ","");
+            Element e_img = e1.getElementsByTag("img").first();
+            String img_url = e_img.attr("src");
+            String baseurl = "http://www.16kxsw.com/16k/";
+            String s[] = img_url.split("/");
+            String s1 = s[s.length-3];
+            String s2 = s[s.length-2];
+            String bookurl =baseurl+s1+"/"+s2+"/";
+            NovelEntry entry = new NovelEntry();
+            entry.setmBookName(bookname);
+            entry.setmBookUrl(bookurl);
+            entry.setmIntroduction(state);
+            entry.setmAuthor(author);
+            _List.add(entry);
+        }catch (Exception e){}
+        return _List;
+    }
+
+    public static String getImgUrl(Document doc){
+        String imgurl = "";
+        Element e = doc.getElementsByAttributeValue("class","novel").first();
+        imgurl = e.getElementsByTag("img").first().attr("src");
+        return imgurl;
+    }
 }

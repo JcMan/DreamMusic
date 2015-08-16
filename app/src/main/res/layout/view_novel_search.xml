@@ -15,7 +15,7 @@
             android:drawableLeft="@drawable/ic_search"
             android:paddingLeft="5dp"
             android:layout_weight="1"
-            android:hint="请输入作者|小说"
+            android:hint="请输入小说"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/bg_edit"
@@ -35,18 +35,6 @@
         android:id="@+id/keywordsflow"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="gone"
         >
     </dream.app.com.dreammusic.ui.view.KeywordsFlow>
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_novel_search"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </ScrollView>
-
 </LinearLayout>
