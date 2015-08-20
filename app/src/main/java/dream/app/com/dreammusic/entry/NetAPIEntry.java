@@ -113,5 +113,17 @@ public class NetAPIEntry {
         }
         return SINGER_IMAGE_URL+singer;
     }
+
+    public static String getMVUrl(String key){
+        String s = "http://mapi.yinyuetai.com/search/video.json?D-A=0&offset=0&size=50" +
+                "&deviceinfo=%7B%22aid%22%3A%2210201027%22%2C%22os%22%3A%22Android%22%2C%22ov%22%3A%224.3%22%2C%22rn%22%3A%22480*800%22%2C%22dn%22%3A%22Coolpad%208702%22%2C%22cr%22%3A%2246002%22%2C%22as%22%3A%22WIFI%22%2C%22uid%22%3A%22d867915aa4c1762406eb5224a5eaa0ba%22%2C%22clid%22%3A110004000%7D&keyword=";
+        try {
+            key = URLEncoder.encode(key,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        s+=key;
+        return s;
+    }
 }
 

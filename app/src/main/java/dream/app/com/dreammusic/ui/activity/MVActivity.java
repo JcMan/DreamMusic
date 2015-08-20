@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -24,8 +25,15 @@ import android.widget.TextView;
 
 
 import com.app.tool.logger.Logger;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 
 import net.tsz.afinal.FinalBitmap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,10 +45,12 @@ import dream.app.com.dreammusic.R;
 import dream.app.com.dreammusic.adapter.MyViewPagerAdapter;
 import dream.app.com.dreammusic.bmob.BMVInfo;
 import dream.app.com.dreammusic.config.ApplicationConfig;
+import dream.app.com.dreammusic.entry.NetAPIEntry;
 import dream.app.com.dreammusic.ui.view.JListView;
 import dream.app.com.dreammusic.ui.view.MyViewPagerIndicator;
 import dream.app.com.dreammusic.util.DialogUtil;
 import dream.app.com.dreammusic.util.DownLoadUtil;
+import dream.app.com.dreammusic.util.MyHttpUtil;
 import dream.app.com.dreammusic.util.PopupWindowUtil;
 
 /**
@@ -60,6 +70,8 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
     private Bitmap loadingBitmap;
     private MVAdapter mNetAdapter;
     private PopupWindow mPopupWindow;
+    private EditText mSearchEdit;
+    private Button mSearchBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -117,9 +129,12 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
         mNetListView.setOnItemClickListener(this);
         mNetListView.setOnItemLongClickListener(this);
         mJListView.setOnRefreshListener(this);
-        new Handler().postDelayed(new Runnable(){
+        mSearchEdit = (EditText) v.findViewById(R.id.et_mv_search);
+        mSearchBtn = (Button) v.findViewById(R.id.btn_mv_search);
+        mSearchBtn.setOnClickListener(this);
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void run(){
+            public void run() {
                 mJListView.readyToRefresh();
             }
         }, 100);
@@ -176,7 +191,62 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
         }
     }
 
-    private void PlayMV(Uri uri) {
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()){
+            case R.id.btn_mv_search:
+                searchMV();
+                break;
+        }
+    }
+
+    private void searchMV(){
+        showLoadingDlg();
+        String mvUrl = NetAPIEntry.getMVUrl(mSearchEdit.getText().toString());
+        MyHttpUtil myHttpUtil = new MyHttpUtil(mvUrl);
+        myHttpUtil.send(new RequestCallBack<String>() {
+            @Override
+            public void onSuccess(ResponseInfo<String> responseInfo) {
+                cancelLoadingDlg();
+                List<BMVInfo> _List = getSearchMVList(responseInfo.result);
+                if (_List != null && _List.size() > 0) {
+                    mNetMVList.clear();
+                    for(int i=0;i<_List.size();i++)
+                        mNetMVList.add(_List.get(i));
+                    mNetAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(HttpException e, String s) {
+                cancelLoadingDlg();
+                DialogUtil.showMessageDialog(MVActivity.this, "访问出错");
+            }
+        });
+
+    }
+
+    private List<BMVInfo> getSearchMVList(String json){
+        List<BMVInfo> _List = new ArrayList<BMVInfo>();
+        try {
+            JSONArray array = new JSONObject(json).getJSONArray("videos");
+            for (int i = 0; i <array.length() ; i++) {
+                JSONObject ob = array.getJSONObject(i);
+                String title = ob.getString("title");
+                String singer = ob.getString("artistName");
+                String url = ob.getString("url");
+                String imgurl = ob.getString("playListPic");
+                BMVInfo mv = new BMVInfo(title,singer,url,imgurl);
+                _List.add(mv);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return _List;
+    }
+
+    private void PlayMV(Uri uri){
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri,"video/mp4");
         startActivity(intent);
