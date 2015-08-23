@@ -117,22 +117,16 @@
                 />
 
         </RelativeLayout>
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ll_play_controller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="35dp"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:orientation="horizontal" >
-            <ImageButton
-                android:id="@+id/ib_play_pre"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:scaleType="fitXY"
-                android:background="@drawable/btn_lrc_selector"
-                android:src="@drawable/player_btn_pre_normal" />
+            android:background="@android:color/transparent">
+
             <RelativeLayout
+                android:id="@+id/v_lrc_bottom"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_width="55dp"
@@ -155,12 +149,36 @@
                     android:src="@drawable/player_btn_pause_normal" />
             </RelativeLayout>
             <ImageButton
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/v_lrc_bottom"
+                android:id="@+id/ib_play_pre"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/btn_lrc_selector"
+                android:src="@drawable/player_btn_pre_normal"
+                />
+            <ImageButton
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/v_lrc_bottom"
                 android:id="@+id/ib_play_next"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:scaleType="fitXY"
                 android:background="@drawable/btn_lrc_selector"
                 android:src="@drawable/player_btn_next_normal" />
-        </LinearLayout>
+            <ImageButton
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/ib_play_next"
+                android:layout_centerVertical="true"
+                android:id="@+id/ib_play_mode"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/btn_lrc_selector"
+                android:src="@drawable/ic_player_mode"
+                android:onClick="onClick"
+                />
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

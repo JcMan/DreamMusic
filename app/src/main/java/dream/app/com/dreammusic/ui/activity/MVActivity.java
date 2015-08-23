@@ -205,9 +205,9 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
         showLoadingDlg();
         String mvUrl = NetAPIEntry.getMVUrl(mSearchEdit.getText().toString());
         MyHttpUtil myHttpUtil = new MyHttpUtil(mvUrl);
-        myHttpUtil.send(new RequestCallBack<String>() {
+        myHttpUtil.send(new RequestCallBack<String>(){
             @Override
-            public void onSuccess(ResponseInfo<String> responseInfo) {
+            public void onSuccess(ResponseInfo<String> responseInfo){
                 cancelLoadingDlg();
                 List<BMVInfo> _List = getSearchMVList(responseInfo.result);
                 if (_List != null && _List.size() > 0) {
@@ -253,7 +253,7 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
         mPopupWindow = PopupWindowUtil.createPopupWindow(this, R.layout.layout_popupwindow_download);
         mPopupWindow.showAtLocation(this.getWindow().getDecorView(),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -278,7 +278,6 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
                 mPopupWindow.dismiss();
             }
         });
-
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

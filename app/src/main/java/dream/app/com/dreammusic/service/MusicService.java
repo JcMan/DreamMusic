@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import dream.app.com.dreammusic.MainActivity;
 import dream.app.com.dreammusic.R;
@@ -52,6 +53,10 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     public static final int STATE_PALYING  = 0;
     public static final int STATE_PAUSE  = 1;
     public static final int STATE_STOP  = 2;
+
+    public static final int PLAY_MODE_SEQ = 0;
+    public static final int PLAY_MODE_RANDOM = 1;
+    public static final int PLAY_MODE_SINGLE = 2;
 
     private List<Music> mMusicList;
     private MediaPlayer mPlayer;
@@ -307,9 +312,18 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     }
 
     public void next(){
-        if(mCurrentPosition+1<mMusicList.size()){
-            play(++mCurrentPosition);
+        int mode = SharedPreferencesUtil.getPlayMode();
+        switch (mode){
+            case PLAY_MODE_SEQ:
+                if(mCurrentPosition+1<mMusicList.size()){
+                    ++mCurrentPosition;
+                }
+                break;
+            case PLAY_MODE_RANDOM:
+                mCurrentPosition = Math.abs(new Random().nextInt()%mMusicList.size());
+                break;
         }
+        play(mCurrentPosition);
     }
     public void pre(){
         if(mCurrentPosition-1>=0){

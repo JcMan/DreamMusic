@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import dream.app.com.dreammusic.config.ApplicationConfig;
 import dream.app.com.dreammusic.entry.SettingEntry;
 import dream.app.com.dreammusic.entry.UserEntry;
+import dream.app.com.dreammusic.service.MusicService;
 
 
 /**
@@ -55,12 +56,12 @@ public class SharedPreferencesUtil {
 
     public static boolean getIsLogin(){
         mPreference = getSharedPreferences(ApplicationConfig.USER);
-        return mPreference.getBoolean(UserEntry.LOGIN,false);
+        return mPreference.getBoolean(UserEntry.LOGIN, false);
     }
 
     public static String getHeadImageUrl(){
         mPreference = getSharedPreferences(ApplicationConfig.USER);
-        return mPreference.getString(UserEntry.HEADIMAGE,"");
+        return mPreference.getString(UserEntry.HEADIMAGE, "");
     }
 
     public static String getUserName(){
@@ -70,7 +71,7 @@ public class SharedPreferencesUtil {
 
     public static boolean getIsSetSleep(){
         mPreference = getSharedPreferences(ApplicationConfig.SETTING);
-        return mPreference.getBoolean(SettingEntry.SETSLEEP,false);
+        return mPreference.getBoolean(SettingEntry.SETSLEEP, false);
     }
 
     public static void setIsSetSleep(boolean result){
@@ -81,7 +82,7 @@ public class SharedPreferencesUtil {
 
     public static void setUpdateInfo(String url){
         mEditor = getEditor(ApplicationConfig.SETTING);
-        mEditor.putString(SettingEntry.UPDATEINFO,url);
+        mEditor.putString(SettingEntry.UPDATEINFO, url);
         mEditor.commit();
     }
 
@@ -110,7 +111,7 @@ public class SharedPreferencesUtil {
 
     public static boolean getAcceptTuiSong(){
         mPreference = getSharedPreferences(ApplicationConfig.SETTING);
-        return mPreference.getBoolean(SettingEntry.ACCEPT_TUISONG,true);
+        return mPreference.getBoolean(SettingEntry.ACCEPT_TUISONG, true);
     }
 
     public static void setAcceptTuiSong(boolean result){
@@ -128,5 +129,16 @@ public class SharedPreferencesUtil {
     public static boolean getShakeEnable(){
         mPreference = getSharedPreferences(ApplicationConfig.SETTING);
         return mPreference.getBoolean(SettingEntry.SHAKE_ENABLE,true);
+    }
+
+    public static int getPlayMode(){
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
+        return mPreference.getInt("mode", MusicService.PLAY_MODE_SEQ);
+    }
+
+    public static void setPlayMode(int mode){
+        mEditor = getEditor(ApplicationConfig.SETTING);
+        mEditor.putInt("mode",mode);
+        mEditor.commit();
     }
 }

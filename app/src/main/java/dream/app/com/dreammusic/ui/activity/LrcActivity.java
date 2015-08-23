@@ -61,6 +61,7 @@ import dream.app.com.dreammusic.entry.BgEntry;
 import dream.app.com.dreammusic.entry.NetAPIEntry;
 import dream.app.com.dreammusic.entry.NetMusicEntry;
 import dream.app.com.dreammusic.entry.UserEntry;
+import dream.app.com.dreammusic.model.Music;
 import dream.app.com.dreammusic.service.MusicService;
 import dream.app.com.dreammusic.ui.view.CDView;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
@@ -72,6 +73,7 @@ import dream.app.com.dreammusic.util.ImageTools;
 import dream.app.com.dreammusic.util.MusicUtil;
 import dream.app.com.dreammusic.util.MyHttpUtil;
 import dream.app.com.dreammusic.util.PopupWindowUtil;
+import dream.app.com.dreammusic.util.SharedPreferencesUtil;
 import dream.app.com.dreammusic.util.ToastUtil;
 import dream.app.com.dreammusic.util.lrc.GetLrc;
 
@@ -230,6 +232,9 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
             case R.id.ib_play_pause:
                 pause();
                 break;
+            case R.id.ib_play_mode:
+                showChooseModeDialog();
+                break;
             case R.id.ib_play_next:
                 next();
                 break;
@@ -258,6 +263,42 @@ public class LrcActivity extends Activity implements View.OnClickListener,MusicS
                 });
                 break;
         }
+    }
+
+    /**
+     * 弹出选择播放模式对话框
+     */
+    private void showChooseModeDialog(){
+        final Dialog dialog = new Dialog(this,R.style.Theme_loading_dialog);
+        View _View = View.inflate(this,R.layout.dialog_music_mode,null);
+        TextView tv_seq = (TextView) _View.findViewById(R.id.tv_playmode_seq);
+        TextView tv_random = (TextView) _View.findViewById(R.id.tv_playmode_random);
+        TextView tv_single = (TextView) _View.findViewById(R.id.tv_playmode_single);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                int mode = MusicService.PLAY_MODE_SEQ;
+                switch (v.getId()){
+                    case R.id.tv_playmode_seq:
+                        mode = MusicService.PLAY_MODE_SEQ;
+                        break;
+                    case R.id.tv_playmode_random:
+                        mode = MusicService.PLAY_MODE_RANDOM;
+                        break;
+                    case R.id.tv_playmode_single:
+                        mode = MusicService.PLAY_MODE_SINGLE;
+                        break;
+                }
+                SharedPreferencesUtil.setPlayMode(mode);
+            }
+        };
+        tv_seq.setOnClickListener(listener);
+        tv_random.setOnClickListener(listener);
+        tv_single.setOnClickListener(listener);
+        dialog.setContentView(_View);
+        DialogUtil.setDialogAttr(dialog,this);
+        dialog.show();
     }
 
     private void showShareDialog(final List<BDownloadMusicInfo> bDownloadMusicInfos) {
