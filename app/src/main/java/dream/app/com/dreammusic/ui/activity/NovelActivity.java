@@ -328,7 +328,7 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
                 searchNovel(searchkey);
                 break;
             case R.id.ib_top_right:
-                ToastUtil.showMessage(this,"Setting");
+                startNewActivity(NovelSettingActivity.class);
                 break;
             default:
                 TextView tv = (TextView)v;

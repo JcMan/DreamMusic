@@ -118,6 +118,14 @@ public class DownLoadUtil {
         request.setDestinationUri(Uri.fromFile(new File(ApplicationConfig.ROOT_PATH+"/"+name)));
         manager.enqueue(request);
     }
+
+    public void downloadFile(String url,String dir,String name){
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setTitle(name);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationUri(Uri.fromFile(new File(ApplicationConfig.ROOT_PATH+"/"+dir)));
+        manager.enqueue(request);
+    }
     public void downloadFile(String url,String name,boolean isShow){
         File file = new File(ApplicationConfig.ROOT_PATH+"/"+name);
         if (file.exists())

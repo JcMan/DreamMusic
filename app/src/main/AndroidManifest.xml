@@ -67,6 +67,7 @@
         <activity android:name=".ui.activity.NovelChapterActivity"></activity>
         <activity android:name=".ui.activity.ReadNovelActivity"></activity>
         <activity android:name=".ui.activity.SearchNovelActivity"></activity>
+        <activity android:name=".ui.activity.NovelSettingActivity"></activity>
 
         <!-- 自定义Service-->
         <service android:name=".service.AlarmTimerService"></service>

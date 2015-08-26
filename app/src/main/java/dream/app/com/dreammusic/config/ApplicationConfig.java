@@ -22,6 +22,7 @@ public class ApplicationConfig {
     public static final String LRC_DIR = APPDIR+"/"+"lrc/";
     public static final String ARTIST_DIR = APPDIR+"/"+"artist/";
     public static final String NOVEL_DIR = APPDIR+"/"+"novel/";
+    public static final String FONT_DIR = APPDIR+"/"+"font/";
 
 
 

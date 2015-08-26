@@ -141,4 +141,15 @@ public class SharedPreferencesUtil {
         mEditor.putInt("mode",mode);
         mEditor.commit();
     }
+
+    public static void setNovelFont(String font){
+        mEditor = getEditor(ApplicationConfig.SETTING);
+        mEditor.putString("font", font);
+        mEditor.commit();
+    }
+
+    public static String getNovelFont(){
+        mPreference = getSharedPreferences(ApplicationConfig.SETTING);
+        return mPreference.getString("font","system");
+    }
 }

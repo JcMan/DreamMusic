@@ -23,10 +23,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+
+import dream.app.com.dreammusic.config.ApplicationConfig;
 
 public class BookPageFactory {
 
@@ -39,6 +42,7 @@ public class BookPageFactory {
 	private Bitmap m_book_bg = null;
 	private int mWidth;
 	private int mHeight;
+	private String font;
 
 	private Vector<String> m_lines = new Vector<String>();
 
@@ -60,6 +64,7 @@ public class BookPageFactory {
 		mWidth = w;
 		mHeight = h;
 		init();
+		font = SharedPreferencesUtil.getNovelFont();
 	}
 
 	public BookPageFactory(Activity activity) {
@@ -75,6 +80,11 @@ public class BookPageFactory {
 		mPaint.setTextAlign(Align.LEFT);
 		mPaint.setTextSize(m_fontSize);
 		mPaint.setColor(m_textColor);
+		font = SharedPreferencesUtil.getNovelFont();
+		if(!font.equals("system")){
+			Typeface typeface = Typeface.createFromFile(ApplicationConfig.FONT_DIR+font+".ttf");
+			mPaint.setTypeface(typeface);
+		}
 		mVisibleWidth = mWidth - marginWidth * 2;
 		mVisibleHeight = mHeight - marginHeight * 2;
 		mLineCount = (int) (mVisibleHeight / (m_fontSize+8)); // 可显示的行数

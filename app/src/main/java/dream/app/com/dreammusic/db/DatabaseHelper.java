@@ -44,24 +44,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table "
+        db.execSQL("create table if not exists"
                 + TABLE_HISTORY
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + " songId integer, duration integer, musicname varchar(20), "
                 + "artist varchar(10), data char,playtime integer,albumId integer,folder char,favorite integer)");
 
-        db.execSQL("create table "
+        db.execSQL("create table if not exists"
                 + TABLE_NOVEL
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "bookname varchar,author varchar,imgurl varchar,mainpageurl varchar,baseurl varchar,lastchapter integer)");
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         if (newVersion>oldVersion){
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVEL);
+            onCreate(db);
         }
-        onCreate(db);
+
     }
 }

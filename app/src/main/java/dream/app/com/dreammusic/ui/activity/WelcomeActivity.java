@@ -68,6 +68,9 @@ public class WelcomeActivity extends BaseActivity implements Handler.Callback{
         File file_novel = new File(ApplicationConfig.NOVEL_DIR);
         if(!file_novel.exists())
             file_novel.mkdirs();
+        File file_font = new File(ApplicationConfig.FONT_DIR);
+        if(!file_font.exists())
+            file_font.mkdirs();
     }
 
     @Override
