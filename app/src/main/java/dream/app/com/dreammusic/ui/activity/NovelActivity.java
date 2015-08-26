@@ -103,6 +103,8 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
         mViewPager = (ViewPager) findViewById(R.id.viewpager_novel);
         initPagerViews();
         initIndicator();
+        setTopRightVisible();
+        setTopRightImg(R.drawable.ic_novel_setting);
     }
 
     private void initIndicator(){
@@ -324,6 +326,9 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
             case R.id.btn_novel_search:
                 String searchkey = mSearchEdit.getText().toString();
                 searchNovel(searchkey);
+                break;
+            case R.id.ib_top_right:
+                ToastUtil.showMessage(this,"Setting");
                 break;
             default:
                 TextView tv = (TextView)v;
