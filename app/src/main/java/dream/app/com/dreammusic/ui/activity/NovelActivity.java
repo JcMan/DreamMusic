@@ -288,8 +288,8 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showLoadingDlg();
                 if(v.getId()==R.id.tv_dialogitem_seechapter){
+                    showLoadingDlg();
                     new Thread(new Runnable(){
                         @Override
                         public void run() {
@@ -303,7 +303,7 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
                                 intent.putExtra("bookurl",entry.getmMainPageUrl());
                                 intent.putExtra("name",entry.getmBookName());
                                 startNewActivityWithAnim(NovelChapterActivity.class,intent);
-                            } catch (IOException e) {
+                            } catch (IOException e){
                                 e.printStackTrace();
                             }
                             cancelLoadingDlg();
@@ -311,7 +311,10 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
                     }).start();
 
                 }else if(v.getId()==R.id.tv_dialogitem_removebook){
-
+                    NovelInfoDAO dao = new NovelInfoDAO(NovelActivity.this);
+                    dao.deleteNovelInfo(entry.getmBookName());
+                    mLocalNovels = dao.getNovels();
+                    mGridView.setAdapter(new GridBookShelfAdapter(NovelActivity.this,mLocalNovels));
                 }
             }
         };
@@ -331,13 +334,14 @@ public class NovelActivity extends BaseActivity implements AdapterView.OnItemCli
                 startNewActivity(NovelSettingActivity.class);
                 break;
             default:
-                TextView tv = (TextView)v;
-                final String keyword = tv.getText().toString();
-                searchNovel(keyword);
+                try {
+                    TextView tv = (TextView)v;
+                    final String keyword = tv.getText().toString();
+                    searchNovel(keyword);
+                }catch (Exception e){}
                 break;
         }
     }
-
     private void searchNovel(final String keyword){
         showLoadingDlg();
         new Thread(new Runnable() {

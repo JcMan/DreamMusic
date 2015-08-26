@@ -1,5 +1,6 @@
 package dream.app.com.dreammusic.ui.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,8 +71,6 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
     private Bitmap loadingBitmap;
     private MVAdapter mNetAdapter;
     private PopupWindow mPopupWindow;
-    private EditText mSearchEdit;
-    private Button mSearchBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -80,7 +79,7 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
         initVariable();
         initView();
         initListener();
-        setTitle("MV");
+        setTitle("MV专区");
     }
 
     @Override
@@ -91,6 +90,36 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
         initViewsList();
         mViewPager.setAdapter(new MyViewPagerAdapter(this, mViewsList));
         initIndicator();
+        setTopRightImg(R.drawable.ic_search_white);
+        setTopRightVisible();
+    }
+
+    @Override
+    protected void clickOnTopRight(){
+        super.clickOnTopRight();
+        final Dialog dialog = new Dialog(this,R.style.Theme_loading_dialog);
+        View v = View.inflate(this,R.layout.dialog_search_mv,null);
+        final EditText et_search = (EditText) v.findViewById(R.id.et_dialog_search_mv);
+        Button btn_cancel = (Button) v.findViewById(R.id.btn_dialog_searchmv_cancel);
+        Button btn_search = (Button) v.findViewById(R.id.btn_dialog_searchmv_ok);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getId()==R.id.btn_dialog_searchmv_cancel){
+                    dialog.dismiss();
+                }else if(v.getId()==R.id.btn_dialog_searchmv_ok){
+                    String key = et_search.getText().toString();
+                    if(key.length()>0)
+                        searchMV(et_search.getText().toString());
+                    dialog.dismiss();
+                }
+            }
+        };
+        btn_cancel.setOnClickListener(listener);
+        btn_search.setOnClickListener(listener);
+        dialog.setContentView(v);
+        DialogUtil.setDialogAttr(dialog, this);
+        dialog.show();
     }
 
     private void initIndicator(){
@@ -129,9 +158,6 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
         mNetListView.setOnItemClickListener(this);
         mNetListView.setOnItemLongClickListener(this);
         mJListView.setOnRefreshListener(this);
-        mSearchEdit = (EditText) v.findViewById(R.id.et_mv_search);
-        mSearchBtn = (Button) v.findViewById(R.id.btn_mv_search);
-        mSearchBtn.setOnClickListener(this);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -194,16 +220,12 @@ public class MVActivity extends BaseActivity implements JListView.PullToRefreshL
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
-            case R.id.btn_mv_search:
-                searchMV();
-                break;
-        }
+
     }
 
-    private void searchMV(){
+    private void searchMV(String key){
         showLoadingDlg();
-        String mvUrl = NetAPIEntry.getMVUrl(mSearchEdit.getText().toString());
+        String mvUrl = NetAPIEntry.getMVUrl(key);
         MyHttpUtil myHttpUtil = new MyHttpUtil(mvUrl);
         myHttpUtil.send(new RequestCallBack<String>(){
             @Override

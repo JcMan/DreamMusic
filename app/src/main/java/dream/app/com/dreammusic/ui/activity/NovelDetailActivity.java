@@ -26,6 +26,7 @@ import dream.app.com.dreammusic.entry.NovelAPI;
 import dream.app.com.dreammusic.entry.NovelEntry;
 import dream.app.com.dreammusic.ui.view.LoadingDialog;
 import dream.app.com.dreammusic.util.DialogUtil;
+import dream.app.com.dreammusic.util.TextUtil;
 
 /**
  * Created by Administrator on 2015/8/10.
@@ -34,7 +35,7 @@ public class NovelDetailActivity extends BaseActivity {
 
     private ImageView mImgView;
     private TextView mNameView,mAuthorView,mStateView,mIntroView;
-    private Button mChapterBtn,mAddBookBtn;
+    private Button mChapterBtn,mAddBookBtn,mReadBtn;
 
     private String mBookName;
     private String mAuthor;
@@ -72,6 +73,7 @@ public class NovelDetailActivity extends BaseActivity {
         mIntroView = (TextView) findViewById(R.id.tv_noveldetail_intro);
         mChapterBtn = (Button) findViewById(R.id.btn_noveldetail_chapter);
         mAddBookBtn = (Button) findViewById(R.id.btn_add_book_to_shelf);
+        mReadBtn = (Button) findViewById(R.id.btn_novel_detail_read);
     }
 
     @Override
@@ -79,6 +81,7 @@ public class NovelDetailActivity extends BaseActivity {
         super.initListener();
         mChapterBtn.setOnClickListener(this);
         mAddBookBtn.setOnClickListener(this);
+        mReadBtn.setOnClickListener(this);
     }
 
     @Override
@@ -91,7 +94,35 @@ public class NovelDetailActivity extends BaseActivity {
             case R.id.btn_add_book_to_shelf:
                 addBookToShelf();
                 break;
+            case R.id.btn_novel_detail_read:
+                readBook();
+                break;
         }
+    }
+
+    private void readBook(){
+        showLoadingDlg();
+        new Thread(new Runnable(){
+            @Override
+            public void run(){
+                try {
+                    Document doc = Jsoup.connect(mBookUrl).get();
+                    int firstChapter = getFirstChapter(doc) + 1;
+                    String url = mBookUrl.replace("index", firstChapter + "");
+                    Document doc_firstchapter = Jsoup.connect(url).get();
+                    String content = NovelAPI.getChapterContent(doc_firstchapter);
+                    String chaptername = NovelAPI.getNetNovelChapters(doc,mBookUrl.replace("index.html","")).get(0).getmChapterName();
+                    String chapterurl = NovelAPI.getNetNovelChapters(doc,mBookUrl.replace("index.html","")).get(0).getmChapterUrl();
+                    TextUtil.writeNovelContent(chaptername, content);
+                    Intent intent = new Intent();
+                    intent.putExtra("firstpageurl",chapterurl);
+                    startNewActivityWithAnim(ReadNovelActivity.class,intent);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                cancelLoadingDlg();
+            }
+        }).start();
     }
 
     private void addBookToShelf(){
@@ -143,7 +174,7 @@ public class NovelDetailActivity extends BaseActivity {
         return chapter;
     }
 
-    private void getNovelChapters() {
+    private void getNovelChapters(){
 
         showLoadingDlg();
         new Thread(new Runnable() {

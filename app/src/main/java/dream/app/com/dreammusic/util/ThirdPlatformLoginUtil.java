@@ -85,7 +85,6 @@ public class ThirdPlatformLoginUtil {
                 object.put("UserName",name);
                 object.put("HeadImage",url);
                 object.put("uid",uid);
-                Logger.e(arg1.toString());
                 saveUserInfo(name, url,uid);
             } catch (JSONException e) {
                 e.printStackTrace();

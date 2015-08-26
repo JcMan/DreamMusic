@@ -30,6 +30,11 @@ public class NovelInfoDAO {
         return id > 0;
     }
 
+    public boolean deleteNovelInfo(String bookName){
+        SQLiteDatabase db = DatabaseHelper.getInstance(mContext);
+        return db.delete(TABLE_NOVEL,"1=1 And bookname = '"+bookName+"'",null) > 0;
+    }
+
     private ContentValues createValues(NovelEntry entry) {
         ContentValues values = new ContentValues();
         values.put("bookname",entry.getmBookName());

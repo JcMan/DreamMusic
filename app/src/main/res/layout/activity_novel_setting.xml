@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
     <include layout="@layout/top"/>
     <RelativeLayout
+        android:background="@drawable/top_btn_selector"
         android:id="@+id/v_novel_setting_font"
         android:onClick="onClick"
         android:layout_width="fill_parent"

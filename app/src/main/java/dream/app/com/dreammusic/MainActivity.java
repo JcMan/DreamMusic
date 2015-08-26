@@ -373,11 +373,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 if (userBeans != null && userBeans.size() > 0){
                     getFragmentManager().beginTransaction().replace(R.id.fr_login_layout, mFragment).commit();
                     ToastUtil.showMessage(MainActivity.this, "登录成功");
-                    Logger.e(mLoginId);
-                    Logger.e("登录成功");
                 } else {
                     loginCount++;
-                    Logger.e("登录失败" + loginCount);
                     if (loginCount == 2) {
                         ToastUtil.showMessage(MainActivity.this, "登录失败");
                         loginCount = 0;
@@ -392,7 +389,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         });
     }
 
-    private void registerBmobAccount() {
+    private void registerBmobAccount(){
         UserBean userBean = new UserBean();
         userBean.setLoginId(mLoginId);
         userBean.setPassword(ApplicationConfig.BMOB_APP_ID);
