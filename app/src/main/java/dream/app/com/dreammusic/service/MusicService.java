@@ -111,7 +111,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     };
 
     private void updateStartPauseImg() {
-        if(mState==STATE_PAUSE) {
+        if(mState==STATE_PAUSE){
             notification.contentView.setImageViewResource(R.id.ib_notification_start_pause,R.drawable.ic_fm_item_play_play);
         }else{
             notification.contentView.setImageViewResource(R.id.ib_notification_start_pause,R.drawable.ic_fm_item_play_pause);
@@ -125,7 +125,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId){
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -236,13 +236,19 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
 
     public int getPlayerPosition(){
-        return mPlayer.getCurrentPosition();
+        int position = 0;
+        try{
+            position = mPlayer.getCurrentPosition();
+        }catch (Exception e){}
+        return position;
     }
 
     public int getMusicDuration(){
-        if(mCurrentPosition>-1)
-            return getMusic(mCurrentPosition).duration;
-        else return 0;
+        try{
+            if(mCurrentPosition>-1)
+                return getMusic(mCurrentPosition).duration;
+        }catch (Exception e){}
+        return 0;
     }
 
     public void seekTo(int position){
@@ -263,6 +269,14 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
     }
 
+    public boolean isStart(){
+        return mState==STATE_PALYING;
+    }
+
+    public boolean isPause(){
+        return mState==STATE_PAUSE;
+    }
+
     public Music getMusic(){
         return getMusic(mCurrentPosition);
     }
@@ -280,14 +294,15 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
                 updateRemoteViews();
                 listener.onMusicPlay();
                 addToHistory(getMusic());
-            } catch (IOException e) {}
+            } catch (IOException e) {
+                next();
+            }
         }
     }
 
     private void addToHistory(Music music){
         PlayHistoryDAO playHistoryDAO = new PlayHistoryDAO(this);
         playHistoryDAO.saveHistory(music,(int)System.currentTimeMillis()/1000);
-
     }
 
     private void updateRemoteViews() {
@@ -302,13 +317,21 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         notification.contentView.setTextViewText(R.id.tv_notification_title,getMusicName());
         notification.contentView.setTextViewText(R.id.tv_notification_singer, getSinger());
         updateStartPauseImg();
-        manager.notify(1,notification);
+        manager.notify(1, notification);
     }
     public boolean isStop(){
         return mState==STATE_STOP;
     }
     public boolean isPlaying(){
         return mState == STATE_PALYING;
+    }
+
+    public int getRandomPosition(){
+        return Math.abs(new Random().nextInt()%mMusicList.size());
+    }
+
+    public void setState(int state){
+        mState= state;
     }
 
     public void next(){
@@ -320,11 +343,13 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
                 }
                 break;
             case PLAY_MODE_RANDOM:
-                mCurrentPosition = Math.abs(new Random().nextInt()%mMusicList.size());
+                mCurrentPosition = getRandomPosition();
                 break;
         }
         play(mCurrentPosition);
     }
+
+
     public void pre(){
         if(mCurrentPosition-1>=0){
             play(--mCurrentPosition);
@@ -358,6 +383,8 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         if(mState==STATE_STOP)
             return "";
         Music music = getMusic(mCurrentPosition);
+        if(music==null)
+            return "";
         if(music.musicName.contains("-")){
             String[] _S = music.musicName.split("-");
             return _S[1].trim();
@@ -374,6 +401,8 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         if(mState==STATE_STOP)
             return "";
         Music music = getMusic(mCurrentPosition);
+        if(music==null)
+            return "";
         if(music.musicName.contains("-")){
             String[] _S = music.musicName.split("-");
             return _S[0].trim();
@@ -392,7 +421,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         return bitmap;
     }
     @Override
-    public void onDestroy() {
+    public void onDestroy(){
         super.onDestroy();
         if(sensorManagerHelper!=null)
             sensorManagerHelper.stop();

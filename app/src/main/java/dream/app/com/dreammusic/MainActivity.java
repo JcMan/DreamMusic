@@ -114,6 +114,8 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         initConn();
     }
 
+
+
     /**
      * 绑定音乐服务
      */
@@ -308,8 +310,10 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
 
     private void startMusic() {
-         mMusicService.start();
-         updatePlayView();
+        if(mMusicService.isPause()){
+             mMusicService.start();
+            updatePlayView();
+        }
     }
 
     private void play(int position){
@@ -317,9 +321,11 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
         updatePlayView();
     }
 
-    private void pauseMusic() {
-        mMusicService.pause();
-        updatePlayView();
+    private void pauseMusic(){
+        if(mMusicService.isStart()){
+            mMusicService.pause();
+            updatePlayView();
+        }
     }
 
     private boolean isPlaying(){
@@ -486,7 +492,7 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
 
     private void startMusicStoreActivity() {
         Intent intent  = new Intent();
-        intent.putExtra(ActivityUtil.TITLE,"乐库");
+        intent.putExtra(ActivityUtil.TITLE, "乐库");
         startNewActivityWithAnim(MusicStoreActivity.class, intent);
     }
 
@@ -506,8 +512,14 @@ public class MainActivity extends InstrumentedActivity implements Handler.Callba
                 mMusicService = ((MusicService.MusicBinder)service).getService();
                 mMusicService.setOnMusicCompletion(MainActivity.this);
                 if(mMusicService.isStop()){
-                    play(1);
-                    pauseMusic();
+                    try{
+                        int pos =mMusicService.getRandomPosition();
+                        play(pos);
+                        pauseMusic();
+                    }catch (Exception e){
+                        mMusicService.setState(MusicService.STATE_STOP);
+                        pauseMusic();
+                    }
                 }
                 initPlayView();
             }

@@ -44,13 +44,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists"
+        db.execSQL("create table if not exists "
                 + TABLE_HISTORY
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + " songId integer, duration integer, musicname varchar(20), "
                 + "artist varchar(10), data char,playtime integer,albumId integer,folder char,favorite integer)");
 
-        db.execSQL("create table if not exists"
+        db.execSQL("create table if not exists "
                 + TABLE_NOVEL
                 + " (_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "bookname varchar,author varchar,imgurl varchar,mainpageurl varchar,baseurl varchar,lastchapter integer)");
