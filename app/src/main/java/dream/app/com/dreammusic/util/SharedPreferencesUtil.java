@@ -111,7 +111,7 @@ public class SharedPreferencesUtil {
 
     public static boolean getAcceptTuiSong(){
         mPreference = getSharedPreferences(ApplicationConfig.SETTING);
-        return mPreference.getBoolean(SettingEntry.ACCEPT_TUISONG, true);
+        return mPreference.getBoolean(SettingEntry.ACCEPT_TUISONG, false);
     }
 
     public static void setAcceptTuiSong(boolean result){

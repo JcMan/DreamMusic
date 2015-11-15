@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    buildToolsVersion '21.0.1'
 
     defaultConfig {
         applicationId "dream.app.com.dreammusic"
@@ -12,8 +12,9 @@ android {
         versionName "1.14"
     }
     android{
-        packagingOptions{
-           exclude 'META-INF/LICENSE.txt'
+        packagingOptions {
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/NOTICE.txt'
         }
     }
     buildTypes{
@@ -26,7 +27,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile files('libs/umeng_social_sdk.jar')
     compile files('libs/SocialSDK_QQZone_1.jar')
